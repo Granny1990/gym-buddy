@@ -6,24 +6,24 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Training">
+<meta name="apple-mobile-web-app-title" content="GymBuddy">
 <meta name="theme-color" content="#E8431D">
 <link rel="icon" href="data:image/png;base64,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AAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEL9D7tpU318LTgQAAAAAElFTkSuQmCC">
 <link rel="apple-touch-icon" href="data:image/png;base64,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AAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEIJAEAoAQAIJQAAoQQAIJQAAIQSAIBQAgAQSgAAQgkAQCgBAAglAAChBAAglAAAhBIAgFACABBKAABCCQBAKAEACCUAAKEEACCUAACEEgCAUAIAEEoAAEL9D7tpU318LTgQAAAAAElFTkSuQmCC">
-<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIlRyYWluaW5ncy1FbmdpbmUiLCAic2hvcnRfbmFtZSI6ICJUcmFpbmluZyIsICJzdGFydF91cmwiOiAiLiIsICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLCAib3JpZW50YXRpb24iOiAicG9ydHJhaXQtcHJpbWFyeSIsICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNFRUVCRTMiLCAidGhlbWVfY29sb3IiOiAiI0U4NDMxRCIsICJpY29ucyI6IFt7InNyYyI6ICJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQWdBQUFBSUFDQUlBQUFCN0drT3RBQUFBQm1KTFIwUUEvd0QvQVArZ3ZhZVRBQUFNUDBsRVFWUjRuTzNkVDRpYzlSM0g4ZWQ1ZG5hM21ld21OdFpJMWlSckMvVlVLMjR2QVZ0UEtyUlFrVjdFZzVWQ1R6MnAwTjVFU2srbHRLVWdncjJVVmhEeDBJcjBIMHBwQ1hneTZsa294SmhvaWFrbTJTd3IyZGw1bmg3cnJPdWltWm5NUFBONXZjN0p3NDk5ZnQ5OVA4OHp5enpseXNyTkJRQjVxa2t2QUlESkVBQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0U2a3g2QVRQbHhQN3EzZ1BWV3JjNjNDbjJmZWEyYnRUTmU3M2kxU3YxUzVmck0xdk5PQmNJRTJaR3BrcTVzbkx6cE5jd0MxWVh5aWVPZE5hNjVUQUgyVzZLNXk3Mm4zNi9iNGN6ZTh6SUZKcGJYbDZhOUJwYWI2MWJQck02Zit2Q1VEdTdLSXFxTE83WVY2MTF5MzllYWV4dlpva1ptVTRDTUt6VmhmS1oxZm5sMFgyWWNtUysvSHEzK3R0NlhZL3NrREJKWm1ScUNjQ3dmbmwwQk5jMU82ek1sMDFSbk5wMGhjTXNNQ05UeTE4QkRlWEUvbXJJWjVxZjVwRWI1dzc3aEo3Mk15UFRUQUNHY3QrQmNmMEFGOHZpZ1J2bXhuUnd1RzdNeURRVGdLSGMyUjNqRC9EdUpXZUgxak1qMDh5UGJ5ZzNqZk1POU5qaUdBOE8xNGNabVdZQ01KUnhYdHdVeTlWWW5wekM5V1JHcHBrQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZDK1RiWGREbldLaHc3TmZYTi9kWHloM1BzTnF4dDFjL3BxOGRmTC9UOWVxbnUrUkoxUHNKY0NDVUNMM2JOY1BiblMyZi9aN3VLV3F2TDJmY1h0K3pvUGZyRjUvTjN0dDY4YVhQN1BYc3JrRVZCYjNiTmMvZnpvWjUzWWo3dDFzZnpkNnZ6eFViK2hpZmF5bDJJSlFDc2Q2aFJQcm5TdWVld096aFcvT05xNTl2L1BETEdYa2dsQUt6MTBhTzRhcnRjKzdxdUw1WGZHOXFvbVdzUmVTdWEwdGRLM1J2RWlwTzk2blI3MlVqWUJhS1dqOHlPNDViN3RDOE1mZzlhemw1SUpRQ3VONUMxTDNxWkVZUzlsRXdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBcU02a0Y4QlVPN0cvdXZkQXRkYXREbmVLZmE0V1dtS2pidDdyRmE5ZXFWKzZYSi9aYWlhOUhLYVhBTEM3MVlYeWlTT2R0VzQ1NllYd3VTMVY1VzJMeFcyTGN3L2ZPUGZjeGY3VDcvZFZnRjI1cUdNWGE5M3lEMStlOTl1LzdUcGw4ZjFEYzA4Zjd5eFhUaVc3RUFCMldsMG9mMzFzZnRuV21CVnIzZXBYeHpvZENlQVRURGs3UFhHazQ3Zi9qUGxHdC96aGwrWW12UXFtamtGbndJbjlsU2MvTSttUkcrY08rOGlQUVFMQWdQc08yQkt6YWJFc0hyakJUUUFEVERzRDd1emFFalByN2lVbmx3RTJCQU51OHBSZ2RoMWJuUFFLbURJQ3dBQTNBRFBNSDRPeWczRUhDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBTTJLaTlPMnBtYmZTZFhBWUlBQVBPYmsxNkJZek5oZTFKcjRBcEl3QU1PTGxSVDNvSmpNdnJtMDR1QXdTQUFTOWU2bC8xbkdCR3ZiTHUxREpBQUJod3ZsYzgrMEYvMHF0ZzlFNXROcSs1QTJDUUFMRFRiLy9iZjMzVHBlSk1XZThYUDN2UEp3RHNKQURzdE4wVWo1L2Rma01EWnNWNnYzanNYTzlzendsbEp3RmdGMWZxNWtmdjlINy9RYjFkK0szUmJxYzJtNGRQOTk2VWMzYmpCWURzYnFzcGZ2UCs5cDh1bGZjZnJPNWFxbTVaS0phOFQ2b2xOdXZpZks5NVk3TitlZDF6Zi9ZaUFPemxuYTNtcVF2OXB5NzRXQmhta0VkQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQzBFb2JkVE9DZy9SSGNCRGF6bDVLSmdDdDlOWkhJempJdVo2aHhWNktKZ0N0OUpmMS92QUhPYmxoYUxHWG9nbEFLLzM1Y3YzdnEwT04zRWJkUFAvaENDYWZ0ck9Ya2dsQUsyMDN4WS9QYlYrKzFxRnJpdUtuLytsZk1yUFlTOWtFb0szT2JEVS9PTk03L2ZtdjNUYnE1aWZ2YnY5anZSN0hxbWdqZXlsV1o5SUw0TnE5ZmJWNThIVHZlemRVM3o1WWZXV3hYSzdLUGY3eFpsMjhzOVdjM0tpZi85RDFHanZaUzVrRW9OMjJtK0tGaS9VTEYxMkNNU3g3S1pCSFFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBeGxKRzlUK3RTRGU4c1M3V2RHcHBrQURPWHMxaGdQZm1GN2pBZUg2OE9NVERNQkdNckpqVEYrYzlicm03NldpOVl6STlOTUFJYnk0cVgrY0M5VDJzc3I2MjV2YVQwek1zMEVZQ2puZThXekg0emxDOUZQYlRhdnVicWgvY3pJTkp0YlhsNmE5QnJhN2MyUG1yVnV0VEsvMXdzMFBxLzFmdkhvMlczdldXSTJtSkdwSlFERHFvdmlYMWVhTzdyVmtSSHQ3L1YrOGRpNTNsdmp1MjJHNjh1TVRDMEJHSUd0cHZqN2VqMWZsbC9yRmxVeDFCWS90ZGs4ZW5iYnptYkdtSkhwVks2czNEenBOY3lPNHd2bC9RZXJ1NWFxV3hhS3BUM2ZxdnB4bTNWeHZ0ZThzVm0vdk82WkpqUE9qRXdWQVFBSTVhK0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVMOUQ3dHBVMzE4TFRnUUFBQUFBRWxGVGtTdVFtQ0MiLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3BuZyIsICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSJ9XX0=">
-<title>Trainings-Engine · Kraftsport</title>
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIkd5bUJ1ZGR5IiwgInNob3J0X25hbWUiOiAiR3ltQnVkZHkiLCAic3RhcnRfdXJsIjogIi4iLCAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0LXByaW1hcnkiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjRUVFQkUzIiwgInRoZW1lX2NvbG9yIjogIiNFODQzMUQiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFnQUFBQUlBQ0FJQUFBQjdHa090QUFBQUJtSkxSMFFBL3dEL0FQK2d2YWVUQUFBTVAwbEVRVlI0bk8zZFQ0aWM5UjNIOGVkNWRuYTNtZXdtTnRaSTFpUnJDL1ZVSzI0dkFWdFBLclJRa1Y3RWc1VkNUejJwME41RVNrK2x0S1VnZ3IyVVZoRHgwSXIwSDBwcENYZ3k2bGtveEpob2lha20yU3dyMmRsNW5oN3JyT3VpbVpuTVBQTjV2YzdKdzQ5OWZ0OTlQODh6eXp6bHlzck5CUUI1cWtrdkFJREpFQUNBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFNmt4NkFUUGx4UDdxM2dQVldyYzYzQ24yZmVhMmJ0VE5lNzNpMVN2MVM1ZnJNMXZOT0JjSUUyWkdwa3E1c25MenBOY3dDMVlYeWllT2ROYTY1VEFIMlc2SzV5NzJuMzYvYjRjemU4eklGSnBiWGw2YTlCcGFiNjFiUHJNNmYrdkNVRHU3S0lxcUxPN1lWNjExeTM5ZWFleHZab2tabVU0Q01LelZoZktaMWZubDBYMlljbVMrL0hxMyt0dDZYWS9za0RCSlptUnFDY0N3Zm5sMEJOYzFPNnpNbDAxUm5OcDBoY01zTUNOVHkxOEJEZVhFL21ySVo1cWY1cEViNXc3N2hKNzJNeVBUVEFDR2N0K0JjZjBBRjh2aWdSdm14blJ3dUc3TXlEUVRnS0hjMlIzakQvRHVKV2VIMWpNajA4eVBieWczamZNTzlOamlHQThPMTRjWm1XWUNNSlJ4WHR3VXk5VllucHpDOVdSR3Bwa0FBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQytUYlhkRG5XS2h3N05mWE4vZFh5aDNQc05xeHQxYy9wcThkZkwvVDllcW51K1JKMVBzSmNDQ1VDTDNiTmNQYm5TMmYvWjd1S1dxdkwyZmNYdCt6b1BmckY1L04zdHQ2OGFYUDdQWHNya0VWQmIzYk5jL2Z6b1o1M1lqN3Qxc2Z6ZDZ2enhVYitoaWZheWwySUpRQ3NkNmhSUHJuU3VlZXdPemhXL09OcTU5di9QRExHWGtnbEFLejEwYU80YXJ0Yys3cXVMNVhmRzlxb21Xc1JlU3VhMHRkSzNSdkVpcE85Nm5SNzJVallCYUtXajh5TzQ1Yjd0QzhNZmc5YXpsNUlKUUN1TjVDMUwzcVpFWVM5bEV3Q0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQXFNNmtGOEJVTzdHL3V2ZEF0ZGF0RG5lS2ZhNFdXbUtqYnQ3ckZhOWVxVis2WEovWmFpYTlIS2FYQUxDNzFZWHlpU09kdFc0NTZZWHd1UzFWNVcyTHhXMkxjdy9mT1BmY3hmN1Q3L2RWZ0YyNXFHTVhhOTN5RDErZTk5dS83VHBsOGYxRGMwOGY3eXhYVGlXN0VBQjJXbDBvZjMxc2Z0bldtQlZyM2VwWHh6b2RDZUFUVERrN1BYR2s0N2YvalBsR3QvemhsK1ltdlFxbWprRm53SW45bFNjL00rbVJHK2NPKzhpUFFRTEFnUHNPMkJLemFiRXNIcmpCVFFBRFREc0Q3dXphRWpQcjdpVW5sd0UyQkFOdThwUmdkaDFiblBRS21ESUN3QUEzQURQTUg0T3lnM0VIQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQU0yS2k5TzJwbWJmU2RYQVlJQUFQT2JrMTZCWXpOaGUxSnI0QXBJd0FNT0xsUlQzb0pqTXZybTA0dUF3U0FBUzllNmwvMW5HQkd2Ykx1MURKQUFCaHd2bGM4KzBGLzBxdGc5RTV0TnErNUEyQ1FBTERUYi8vYmYzM1RwZUpNV2U4WFAzdlBKd0RzSkFEc3ROMFVqNS9kZmtNRFpzVjZ2M2pzWE85c3p3bGxKd0ZnRjFmcTVrZnY5SDcvUWIxZCtLM1JicWMybTRkUDk5NlVjM2JqQllEc2Jxc3BmdlArOXA4dWxmY2ZyTzVhcW01WktKYThUNm9sTnV2aWZLOTVZN04rZWQxemYvWWlBT3psbmEzbXFRdjlweTc0V0JobWtFZEFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUMwRW9iZFRPQ2cvUkhjQkRhemw1S0pnQ3Q5TlpISXpqSXVaNmh4VjZLSmdDdDlKZjEvdkFIT2JsaGFMR1hvZ2xBSy8zNWN2M3ZxME9OM0ViZFBQL2hDQ2FmdHJPWGtnbEFLMjAzeFkvUGJWKysxcUZyaXVLbi8rbGZNclBZUzlrRW9LM09iRFUvT05NNy9mbXYzVGJxNWlmdmJ2OWp2UjdIcW1namV5bFdaOUlMNE5xOWZiVjU4SFR2ZXpkVTN6NVlmV1d4WEs3S1BmN3habDI4czlXYzNLaWYvOUQxR2p2WlM1a0VvTjIybStLRmkvVUxGMTJDTVN4N0taQkhRQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQXhsSkc5VCt0U0RlOHNTN1dkR3Bwa0FET1hzMWhnUGZtRjdqQWVINjhPTVRETUJHTXJKalRGK2M5YnJtNzZXaTlZekk5Tk1BSWJ5NHFYK2NDOVQyc3NyNjI1dmFUMHpNczBFWUNqbmU4V3pINHpsQzlGUGJUYXZ1YnFoL2N6SU5KdGJYbDZhOUJyYTdjMlBtclZ1dFRLLzF3czBQcS8xZnZIbzJXM3ZXV0kybUpHcEpRRERxb3ZpWDFlYU83clZrUkh0Ny9WKzhkaTUzbHZqdTIyRzY4dU1UQzBCR0lHdHB2ajdlajFmbGwvckZsVXgxQlkvdGRrOGVuYmJ6bWJHbUpIcFZLNnMzRHpwTmN5TzR3dmwvUWVydTVhcVd4YUtwVDNmcXZweG0zVnh2dGU4c1ZtL3ZPNlpKalBPakV3VkFRQUk1YStBQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFTDlEN3RwVTMxOExUZ1FBQUFBQUVsRlRrU3VRbUNDIiwgInNpemVzIjogIjUxMng1MTIiLCAidHlwZSI6ICJpbWFnZS9wbmciLCAicHVycG9zZSI6ICJhbnkgbWFza2FibGUifV19">
+<title>GymBuddy · Kraftsport</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#EEEBE3;--paper:#FFFFFF;--ink:#191916;--muted:#6E6B62;--line:#DAD7CD;
     --accent:#E8431D;--accent-dark:#B22C0F;--hi:#E0524B;--mid:#EFA63A;--lo:#F2D06B;--none:#CFCDC4;
-    --ok:#3F8F5B;--okbg:#e4efe7;--warnbg:#fbe7e1;--blue:#2f6f9e;--tagbg:#e9ecf7;--tagfg:#4a5d80;
+    --ok:#3F8F5B;--ok-dark:#2E6B43;--okbg:#e4efe7;--warnbg:#fbe7e1;--blue:#2f6f9e;--tagbg:#e9ecf7;--tagfg:#4a5d80;
     --onbg:#191916;--onfg:#FFFFFF;--musbg:#fbe7e1;--selbg:#fdf1ec;--pillbg:#e7eef4;--body:#3a3833;--r:14px;}
   html{background:var(--bg)}
   html.dark{--bg:#141310;--paper:#201E1A;--ink:#ECE8DF;--muted:#9C988C;--line:#34322B;
     --accent:#F2592F;--accent-dark:#F2592F;--hi:#E0524B;--mid:#EFA63A;--lo:#E7C25E;--none:#403D36;
-    --ok:#5BB07B;--okbg:#22332a;--warnbg:#3a2620;--blue:#5b9bd0;--tagbg:#2b3040;--tagfg:#a6b8da;
+    --ok:#5BB07B;--ok-dark:#86CFA0;--okbg:#22332a;--warnbg:#3a2620;--blue:#5b9bd0;--tagbg:#2b3040;--tagfg:#a6b8da;
     --onbg:#ECE8DF;--onfg:#141310;--musbg:#3a2620;--selbg:#2e201c;--pillbg:#1e2a33;--body:#CFCBC0;color-scheme:dark;}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--ink);font-family:"Hanken Grotesk",sans-serif;line-height:1.55;padding:24px 16px 70px;-webkit-font-smoothing:antialiased}
@@ -78,6 +78,8 @@
   .kpi .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700} .kpi .big{font-family:"Anton",sans-serif;font-size:22px;margin-top:2px} .kpi .st{font-size:11.5px;font-weight:600;margin-top:1px}
   .st.ok{color:var(--ok)} .st.warn{color:var(--accent-dark)}
   .note{background:var(--warnbg);border:1px solid #f3c4b5;border-radius:10px;padding:10px 13px;font-size:13px;margin-top:13px;color:var(--accent-dark)} .note b{font-weight:700}
+  .note.ok{background:rgba(63,143,91,.12);border-color:rgba(63,143,91,.45);color:var(--ok-dark)}
+  .note-sub{margin-top:8px;font-size:11.5px;opacity:.8;font-style:italic}
   .legend{display:flex;gap:13px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:11px} .legend span{display:flex;align-items:center;gap:5px} .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
   /* training */
   .timer-wrap{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:50;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;width:min(560px,calc(100% - 20px));box-shadow:0 8px 28px rgba(0,0,0,.16)}
@@ -147,9 +149,27 @@
   .cat-desc{font-size:14.5px;color:var(--body);line-height:1.6;margin-bottom:4px}
   .cat-cues{margin:2px 0 8px;padding-left:20px} .cat-cues li{font-size:14px;color:var(--body);line-height:1.5;margin-bottom:6px}
   .catmus{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--muted);margin:4px 0} .catmus .sw{width:12px;height:12px;margin-right:7px;vertical-align:-1px}
+  .info-i{cursor:pointer;color:var(--muted);font-size:13px;font-style:normal;user-select:none;-webkit-user-select:none;margin-left:3px} .info-i:hover{color:var(--accent)}
+  .streak-row{display:flex;gap:12px;margin:4px 0 14px}
+  .streak-big,.streak-sm{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 16px;text-align:center}
+  .streak-big{flex:1}.streak-sm{flex:1}
+  .streak-big .sn{font-family:"Anton",sans-serif;font-size:32px;color:var(--accent);line-height:1}
+  .streak-sm .sn2{font-family:"Anton",sans-serif;font-size:32px;color:var(--ink);line-height:1}
+  .streak-row .sl{font-size:12px;color:var(--muted);margin-top:5px}
+  .calwrap{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;gap:3px;justify-content:start}
+  .cal-d{width:13px;height:13px;border-radius:3px;background:var(--line)}
+  .cal-0{background:var(--line)} .cal-1{background:var(--accent);opacity:.5} .cal-2{background:var(--accent)} .cal-f{background:transparent}
+  .callegend{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);margin-top:10px} .callegend .cal-d{width:11px;height:11px}
+  .prgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:10px;margin-top:4px}
+  .prcard{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .prv{font-family:"Anton",sans-serif;font-size:25px;color:var(--accent);line-height:1} .prv span{font-size:13px;color:var(--muted);margin-left:3px;font-family:"Hanken Grotesk",sans-serif;font-weight:600}
+  .prn{font-size:12.5px;color:var(--ink);margin-top:5px;font-weight:600;line-height:1.25}
+  .cc-r{display:flex;align-items:center;gap:10px}
+  .fav-star{cursor:pointer;color:var(--line);font-size:18px;line-height:1;user-select:none;-webkit-user-select:none} .fav-star.on{color:var(--mid)} .fav-star:hover{color:var(--mid)}
+  .catfav-btn{border:1.5px solid var(--line);border-radius:8px;padding:9px 12px;font:inherit;font-size:14px;background:var(--bg);color:var(--muted);cursor:pointer;white-space:nowrap} .catfav-btn.on{border-color:var(--mid);color:var(--mid)}
   #v-train{padding-bottom:120px}
   @media(max-width:560px){
-    .ex{flex-wrap:wrap} .ex-main{flex:1 1 auto;min-width:0} .swap{order:2}
+    .ex{flex-wrap:wrap} .ex-main{flex:1 1 0;min-width:0} .swap{order:2;margin-left:auto;align-self:center}
     .pres{order:3;width:100%;text-align:left;margin-top:5px;white-space:normal}
     .logex-h{flex-wrap:wrap} .logex-h .tg{white-space:normal;flex-basis:100%;margin-top:2px}
     .day-head{flex-wrap:wrap;row-gap:6px}
@@ -161,9 +181,9 @@
 <div class="wrap">
   <header>
     <div class="topbar">
-      <h1>Trainings<span class="dot">.</span>Engine</h1>
+      <h1>Gym<span class="dot">Buddy</span></h1>
       <div class="setbtns">
-        <button class="iconbtn" id="unitBtn" onclick="toggleUnit()" title="Einheit kg/lbs">kg</button>
+        <button class="iconbtn" onclick="openHelp('howto')" title="Anleitung – so nutzt du GymBuddy">?</button>
         <button class="iconbtn" id="themeBtn" onclick="toggleTheme()" title="Hell / Dunkel">☾</button>
       </div>
     </div>
@@ -184,8 +204,8 @@
       <div class="goals" id="goals"></div>
       <div class="grid-ctrl">
         <div><div class="sec-h">Tage / Woche</div><div class="row" id="days"></div></div>
-        <div><div class="sec-h">Erfahrung</div><div class="row" id="level"></div></div>
-        <div><div class="sec-h">Split</div><div class="row" id="split"></div></div>
+        <div><div class="sec-h">Erfahrung <span class="info-i" onclick="openHelp('level')" title="Was bedeuten die Stufen?">ⓘ</span></div><div class="row" id="level"></div></div>
+        <div><div class="sec-h">Split <span class="info-i" onclick="openHelp('split')" title="Welcher Split wann?">ⓘ</span></div><div class="row" id="split"></div></div>
         <div><div class="sec-h">Blocklänge</div><div class="row" id="block"></div></div>
       </div>
       <div style="margin-top:20px"><div class="sec-h">Equipment</div><div class="row" id="equip"></div></div>
@@ -251,6 +271,13 @@
     <p class="hint" style="margin-top:0">Ergänzt eine Übung nur für diese Trainingseinheit.</p>
     <select id="add-sel" style="width:100%"></select>
     <div style="display:flex;gap:8px;margin-top:16px"><button class="btn accent" onclick="confirmAdd()">Hinzufügen</button><button class="btn" onclick="closeAdd()">Abbrechen</button></div>
+  </div>
+</div>
+
+<div id="infomodal" class="modal-bg" style="display:none" onclick="if(event.target===this)closeInfo()">
+  <div class="modal">
+    <div class="modal-h"><span id="info-title">Übung</span><button class="tbtn" onclick="closeInfo()">✕</button></div>
+    <div id="info-body"></div>
   </div>
 </div>
 
@@ -366,12 +393,13 @@ const EX=[
  {n:"Wadenheben stehend (Maschine)",pat:"calf",eq:"ma",lvl:1,t:I,pri:["calves"],sec:[]},
  {n:"Wadenheben sitzend (Soleus)",pat:"calf",eq:"ma",lvl:1,t:I,pri:["calves"],sec:[]},
  {n:"Wadenheben (KH)",pat:"calf",eq:"db",lvl:1,t:I,pri:["calves"],sec:[]},
- {n:"Plank",pat:"core",eq:"bw",lvl:1,t:I,pri:["core"],sec:[]},
+ {n:"Plank",pat:"core",eq:"bw",lvl:1,t:I,pri:["core"],sec:[],tm:1},
  {n:"Hängendes Beinheben",pat:"core",eq:"bw",lvl:2,t:I,pri:["core"],sec:[]},
  {n:"Ab Wheel Rollout",pat:"core",eq:"bw",lvl:3,t:I,pri:["core"],sec:["lowerback"]},
  {n:"Cable Crunch",pat:"core",eq:"ma",lvl:1,t:I,pri:["core"],sec:[]},
  {n:"Russian Twist (KB)",pat:"core",eq:"kb",lvl:2,t:I,pri:["core"],sec:[]},
- {n:"Seitlicher Plank",pat:"core",eq:"bw",lvl:1,t:I,pri:["core"],sec:[]},
+ {n:"Seitlicher Plank",pat:"core",eq:"bw",lvl:1,t:I,pri:["core"],sec:[],tm:1},
+ {n:"Farmer's Carry",pat:"core",eq:"db",lvl:1,t:I,pri:["core"],sec:["back","shoulders"],tm:1},
 ];
 const SCHEME={
  strength:{comp:{sets:4,reps:"3–5",load:"85–90 %",restSec:180,rir:"1–2"},iso:{sets:3,reps:"6–8",load:"~80 %",restSec:120,rir:"1–2"},core:{sets:3,reps:"8–12",restSec:90,rir:"1–2"}},
@@ -394,11 +422,12 @@ const FB={vpull:["hpull"],vpush:["hpush"],hpull:["vpull"],hpush:["vpush"],lunge:
 const MUS={chest:"Brust",back:"Rücken",shoulders:"Schultern",biceps:"Bizeps",triceps:"Trizeps",quads:"Quadrizeps",hamstrings:"Beinbeuger",glutes:"Gesäß",calves:"Waden",core:"Rumpf",lowerback:"unt. Rücken"};
 const EQL={bw:"Eigengewicht",db:"Kurzhantel",bb:"Langhantel",kb:"Kettlebell",ma:"Maschine"};
 const MORDER=["chest","back","shoulders","biceps","triceps","core","lowerback","glutes","quads","hamstrings","calves"];
-const LM={chest:[8,22],back:[10,25],shoulders:[8,24],biceps:[6,20],triceps:[6,18],quads:[8,20],hamstrings:[6,18],glutes:[4,16],calves:[8,18],core:[0,22],lowerback:[2,12]};
+const LM={chest:[8,22],back:[10,25],shoulders:[8,24],biceps:[6,20],triceps:[6,18],quads:[8,20],hamstrings:[6,18],glutes:[4,26],calves:[8,18],core:[0,22],lowerback:[2,12]};
 
 // ============ STATE ============
 const S=jget("tpe.cfg",{goal:"hypertrophy",days:4,level:"int",split:"auto",block:4,unit:"kg",equip:["bw","db","bb","kb","ma"]});
 if(!S.unit)S.unit="kg";
+S.unit="kg"; // kg fest; Umschalter aus UI entfernt, Logik bleibt für späteres Einstellungsmenü
 S.equipSet=new Set(S.equip);
 let PLAN=jget("tpe.plan",null);      // {config, days:[{label,idx,items:[{ex,slot}]}]}
 let curWeek=1, trainSel={day:0,week:1};
@@ -414,8 +443,8 @@ function dayList(){const d=S.days,sp=S.split,lv=S.level;
   if(d===3)return lv==="beg"?["full_a","full_b","full_c"]:["push","pull","legs"];
   if(d===4)return["upper","lower","upper","lower"];if(d===5)return["push","pull","legs","upper","lower"];
   return["push","pull","legs","push","pull","legs"];}
-function pickComp(pat,mx,used){for(const p of[pat,...(FB[pat]||[])]){let pool=EX.filter(e=>e.pat===p&&e.t===C&&S.equipSet.has(e.eq)&&e.lvl<=mx);if(!pool.length)continue;let f=pool.filter(e=>!used.has(e.n));let a=f.length?f:pool;return a[Math.floor(Math.random()*a.length)];}let any=EX.filter(e=>e.pat===pat&&S.equipSet.has(e.eq));return any.length?any[Math.floor(Math.random()*any.length)]:null;}
-function pickIso(mus,mx,used){let pool=EX.filter(e=>(e.t===I||e.pat==="calf"||e.pat==="core")&&e.pri.includes(mus)&&S.equipSet.has(e.eq)&&e.lvl<=mx);if(!pool.length)pool=EX.filter(e=>e.pri.includes(mus)&&S.equipSet.has(e.eq)&&e.lvl<=mx);if(!pool.length)return null;let f=pool.filter(e=>!used.has(e.n));let a=f.length?f:pool;return a[Math.floor(Math.random()*a.length)];}
+function pickComp(pat,mx,used){for(const p of[pat,...(FB[pat]||[])]){let pool=EX.filter(e=>e.pat===p&&e.t===C&&S.equipSet.has(e.eq)&&e.lvl<=mx);if(!pool.length)continue;let f=pool.filter(e=>!used.has(e.n));let a=f.length?f:pool;const fv=a.filter(e=>FAVS().has(e.n));if(fv.length)a=fv;return a[Math.floor(Math.random()*a.length)];}let any=EX.filter(e=>e.pat===pat&&S.equipSet.has(e.eq));return any.length?any[Math.floor(Math.random()*any.length)]:null;}
+function pickIso(mus,mx,used){let pool=EX.filter(e=>(e.t===I||e.pat==="calf"||e.pat==="core")&&e.pri.includes(mus)&&S.equipSet.has(e.eq)&&e.lvl<=mx);if(!pool.length)pool=EX.filter(e=>e.pri.includes(mus)&&S.equipSet.has(e.eq)&&e.lvl<=mx);if(!pool.length)return null;let f=pool.filter(e=>!used.has(e.n));let a=f.length?f:pool;const fv=a.filter(e=>FAVS().has(e.n));if(fv.length)a=fv;return a[Math.floor(Math.random()*a.length)];}
 
 // periodization
 function periodize(cat,week,total){
@@ -451,7 +480,7 @@ function makePlan(){
   if(!items.some(it=>it.ex.pat==="core")){const ex=pickIso("core",mx,used);if(ex){used.add(ex.n);items.push({ex,slot:{type:"iso",mus:"core"}});}}
   return{label:tpl.label,idx:i+1,items:orderItems(items)};});
  PLAN={config:{goal:S.goal,level:S.level,block:S.block},days};
- curWeek=1;jset("tpe.plan",PLAN);saveCfg();renderPlan();
+ curWeek=1;balancePlan();jset("tpe.plan",PLAN);saveCfg();renderPlan();
 }
 function saveCfg(){S.equip=[...S.equipSet];jset("tpe.cfg",{goal:S.goal,days:S.days,level:S.level,split:S.split,block:S.block,unit:S.unit,equip:S.equip});}
 function swap(di,ei){const it=PLAN.days[di].items[ei];const used=new Set();PLAN.days.forEach(p=>p.items.forEach(x=>used.add(x.ex.n)));used.delete(it.ex.n);let cand=it.slot.type==="comp"?pickComp(it.slot.pat,maxLvl(),used):pickIso(it.slot.mus,maxLvl(),used);if(cand){PLAN.days[di].items[ei]={ex:cand,slot:it.slot};jset("tpe.plan",PLAN);renderPlan();}}
@@ -467,6 +496,36 @@ function dayMin(p){let s=360;p.items.forEach(it=>{const pr=periodize(catOf(it.ex
 function heat(r){if(r<=0.05)return"var(--none)";if(r<0.34)return"var(--lo)";if(r<0.67)return"var(--mid)";return"var(--hi)";}
 function volColor(m,v){const[mev,mrv]=LM[m];if(v<mev*0.6)return"var(--hi)";if(v<mev)return"var(--lo)";if(v>mrv)return"var(--mid)";return"var(--ok)";}
 function fmt(v){return v%1?v.toFixed(1):v;}
+
+// ---- favorites ----
+function FAVS(){return new Set(jget("tpe.fav",[]));}
+function isFav(n){return FAVS().has(n);}
+function toggleFav(n){const f=jget("tpe.fav",[]);const i=f.indexOf(n);if(i>=0)f.splice(i,1);else f.push(n);jset("tpe.fav",f);}
+// ---- auto optimize plan to fix volume/frequency hints ----
+function allUsedSet(){const s=new Set();PLAN.days.forEach(p=>p.items.forEach(it=>s.add(it.ex.n)));return s;}
+function fewestDay(){return PLAN.days.reduce((mn,p)=>p.items.length<mn.items.length?p:mn,PLAN.days[0]);}
+function balancePlan(){
+ if(!PLAN)return;
+ const mx=maxLvl();
+ // 1) Über MRV: Iso-Übung entfernen (nur wo der Muskel primär ist)
+ MORDER.forEach(m=>{let a=analyze(),guard=0;
+   while(a.vol[m]>LM[m][1]&&guard++<6){let done=false;
+     for(const p of PLAN.days){const idx=p.items.findIndex(it=>catOf(it.ex)==="iso"&&it.ex.pri[0]===m);
+       if(idx>=0){p.items.splice(idx,1);done=true;break;}}
+     if(!done)break;a=analyze();}});
+ // 2) Unter MEV / nicht abgedeckt: Iso-Übungen ergänzen
+ MORDER.forEach(m=>{let added=0,a=analyze();
+   while(a.vol[m]<LM[m][0]&&added<3){const ex=pickIso(m,mx,allUsedSet());if(!ex)break;
+     const day=PLAN.days.find(p=>!p.items.some(it=>it.ex.pri.includes(m)))||fewestDay();
+     day.items.push({ex,slot:{type:"iso",mus:m}});day.items=orderItems(day.items);
+     added++;a=analyze();}});
+ // 3) Hohes Volumen, aber nur 1x/Woche: auf weitere Tage verteilen (unt. Rücken ausgenommen – dort ist 1x normal)
+ MORDER.forEach(m=>{if(m==="lowerback")return;let a=analyze(),guard=0;
+   while(a.vol[m]>=LM[m][0]*1.4&&a.freq[m]<2&&PLAN.days.length>=2&&guard++<3){
+     const ex=pickIso(m,mx,allUsedSet());if(!ex)break;
+     const day=PLAN.days.find(p=>!p.items.some(it=>it.ex.pri.includes(m)));if(!day)break;
+     day.items.push({ex,slot:{type:"iso",mus:m}});day.items=orderItems(day.items);a=analyze();}});
+}
 
 // ============ RENDER: PLAN ============
 function renderPlan(){
@@ -484,12 +543,14 @@ function renderPlan(){
   p.items.forEach((it,ei)=>{const pr=periodize(catOf(it.ex),curWeek,total);
    const iso=catOf(it.ex)==="iso"?'<span class="iso">Iso</span>':"";
    const mus=it.ex.pri.map(m=>`<span class="tag mus">${MUS[m]}</span>`).join("");
+   const tm=isTm(it.ex.n);
    const e1cur=E1[it.ex.n];const raw=workKg(it.ex.n,pr.loadStr);
    const load=pr.loadStr&&it.ex.eq!=="bw"?` · ${pr.loadStr} 1RM`:"";
-   h+=`<div class="ex"><div class="ex-main"><div class="ex-name">${it.ex.n}${iso}</div>
-     <div class="ex-meta"><span class="tag">${EQL[it.ex.eq]}</span>${mus}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${pr.phase}</span>
-       <span class="tag e1tag" data-n="${it.ex.n}" onclick="openE1Modal(this.dataset.n)">1RM ${e1cur?showW(e1cur)+" "+unitLbl()+" ✎":"+"}</span></div></div>
-     <div class="pres">${raw?`<span class="kg">≈ ${workLoad(raw)} ${unitLbl()}</span><br>`:""}${pr.sets} × ${pr.reps}${load} · P ${secStr(pr.restSec)} · RIR ${pr.rir}</div>
+   const e1tag=tm?"":`<span class="tag e1tag" data-n="${it.ex.n}" onclick="openE1Modal(this.dataset.n)">1RM ${e1cur?showW(e1cur)+" "+unitLbl()+" ✎":"+"}</span>`;
+   const presStr=tm?`${pr.sets} × ${TMSEC[S.goal]} · P ${secStr(pr.restSec)}`:`${raw?`<span class="kg">≈ ${workLoad(raw)} ${unitLbl()}</span><br>`:""}${pr.sets} × ${pr.reps}${load} · P ${secStr(pr.restSec)} · RIR ${pr.rir}`;
+   h+=`<div class="ex"><div class="ex-main"><div class="ex-name">${it.ex.n}${iso} <span class="info-i" data-n="${it.ex.n}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span></div>
+     <div class="ex-meta"><span class="tag">${EQL[it.ex.eq]}</span>${mus}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${pr.phase}</span>${e1tag}</div></div>
+     <div class="pres">${presStr}</div>
      <button class="swap" title="tauschen" onclick="swap(${di},${ei})">↻</button></div>`;});
   h+=`</div>`;});
  // analysis
@@ -506,17 +567,18 @@ function renderPlan(){
  h+=`<div class="kpis"><div class="kpi"><div class="lbl">Druck : Zug</div><div class="big">${a.push}:${a.pull}</div><div class="st ${ppOk?'ok':'warn'}">${ppOk?'ausgewogen':'unausgewogen'}</div></div>
    <div class="kpi"><div class="lbl">Quad : Beinbeuger</div><div class="big">${fmt(a.vol.quads)}:${fmt(a.vol.hamstrings)}</div><div class="st ${qhOk?'ok':'warn'}">${qhOk?'ausgewogen':'Rückseite prüfen'}</div></div></div>`;
  h+=`</div><div>${bodySVG()}<div class="legend"><span><i class="sw" style="background:var(--ok)"></i>im Korridor</span><span><i class="sw" style="background:var(--lo)"></i>unter MEV</span><span><i class="sw" style="background:var(--mid)"></i>über MRV</span><span><i class="sw" style="background:var(--hi)"></i>kaum</span></div>
-   <p class="hint" style="margin-top:7px">Körperschema: relative Beanspruchung.</p></div></div>`;
+   <p class="hint" style="margin-top:7px">Körperschema: Status je Muskel – grün = im Korridor.</p></div></div>`;
  const low=MORDER.filter(m=>{const v=a.vol[m];return v>0&&v<LM[m][0];}),miss=MORDER.filter(m=>a.vol[m]===0);
- const over=MORDER.filter(m=>a.vol[m]>LM[m][1]),lowF=MORDER.filter(m=>a.vol[m]>=LM[m][0]&&a.freq[m]<2);
- let nt=[];if(miss.length)nt.push(`Nicht abgedeckt: <b>${miss.map(m=>MUS[m]).join(", ")}</b>`);
- if(low.length)nt.push(`Unter MEV: <b>${low.map(m=>MUS[m]).join(", ")}</b>`);
- if(over.length)nt.push(`Über MRV (Regeneration prüfen): <b>${over.map(m=>MUS[m]).join(", ")}</b>`);
- if(lowF.length)nt.push(`Nur 1×/Woche: <b>${lowF.map(m=>MUS[m]).join(", ")}</b> – auf 2 Tage verteilen`);
- if(nt.length)h+=`<div class="note"><b>Optimierungshinweise (W${curWeek}):</b><br>· ${nt.join("<br>· ")}</div>`;
+ const over=MORDER.filter(m=>a.vol[m]>LM[m][1]),lowF=MORDER.filter(m=>m!=="lowerback"&&a.vol[m]>=LM[m][0]*1.4&&a.freq[m]<2);
+ let nt=[];if(miss.length)nt.push(`<b>Nicht abgedeckt:</b> ${miss.map(m=>MUS[m]).join(", ")} – keine passende Übung mit deiner aktuellen Geräteauswahl. Geräte erweitern oder Übung manuell ergänzen.`);
+ if(low.length)nt.push(`<b>Unter Mindestvolumen:</b> ${low.map(m=>MUS[m]).join(", ")} – mit aktueller Geräte-/Erfahrungswahl nicht voll abdeckbar. Geräte erweitern oder Übung manuell ergänzen.`);
+ if(over.length)nt.push(`<b>Über Maximalvolumen:</b> ${over.map(m=>MUS[m]).join(", ")} – hoher Wochenumfang. Auf ausreichende Regeneration achten oder Trainingstage reduzieren.`);
+ if(lowF.length)nt.push(`<b>Nur 1×/Woche:</b> ${lowF.map(m=>MUS[m]).join(", ")} – viel Volumen an einem einzigen Tag. Mehr Trainingstage oder ein anderer Split verteilen es besser.`);
+ if(nt.length)h+=`<div class="note"><b>Status &amp; Hinweise (W${curWeek}):</b><br>${nt.map(x=>"· "+x).join("<br>")}<div class="note-sub">Der Plan wurde bereits automatisch ausbalanciert – diese Punkte lassen sich nicht allein über die Übungsauswahl lösen.</div></div>`;
+ else h+=`<div class="note ok"><b>✓ Ausgewogen (W${curWeek})</b><br>Alle Muskelgruppen liegen im optimalen Volumenkorridor. Der Plan wurde automatisch ausbalanciert.</div>`;
  h+=`</div>`;
  out.innerHTML=h;
- MORDER.forEach(m=>{const r=a.vol[m]/Math.max(...MORDER.map(x=>a.vol[x]),1);document.querySelectorAll(`#plan-out [data-m="${m}"]`).forEach(el=>el.style.fill=heat(r));});
+ MORDER.forEach(m=>{document.querySelectorAll(`#plan-out [data-m="${m}"]`).forEach(el=>el.style.fill=volColor(m,a.vol[m]));});
 }
 function weekIsDeload(){return PLAN&&PLAN.config.block>=3&&curWeek===PLAN.config.block;}
 function setWeek(w){curWeek=w;renderPlan();}
@@ -563,15 +625,16 @@ function renderTrain(){
  // exercises
  h+=`<div class="card"><div class="day-head"><span class="day-num">${logState.di+1}</span><span class="day-title">${logState.label}</span><span class="pill ${(PLAN.config.block>=3&&logState.week===PLAN.config.block)?'dl':''}">W${logState.week}</span></div>`;
  logState.ex.forEach((e,xi)=>{const t=e.target;const load=t.loadStr&&!isBW(e.name)?` · ${t.loadStr}`:"";
-  let lastStr="";if(e.last&&e.last.sets&&e.last.sets.length){lastStr=e.last.sets.map(s=>`${showW(s.w)}×${s.r}`).join(", ");}
+  const tm=isTm(e.name);
+  let lastStr="";if(e.last&&e.last.sets&&e.last.sets.length){lastStr=e.last.sets.map(s=>tm?(s.w>0?`${showW(s.w)}×${s.r}s`:`${s.r}s`):`${showW(s.w)}×${s.r}`).join(", ");}
   h+=`<div class="swipewrap"><div class="del-bg">✕ Entfernen</div>
    <div class="logex" ontouchstart="swStart(event,${xi})" ontouchmove="swMove(event,${xi})" ontouchend="swEnd(event,${xi})">
-   <div class="logex-h"><span class="nm">${e.name}</span><span class="tg">Ziel: ${t.sets} × ${t.reps}${load} · RIR ${t.rir} · P ${secStr(t.restSec)} <button class="rm" title="entfernen" onclick="removeLogEx(${xi})">✕</button></span></div>`;
-  if(lastStr)h+=`<div class="last-perf">Zuletzt: <b>${lastStr}</b> ${unitLbl()}</div>`;
+   <div class="logex-h"><span class="nm">${e.name}</span><span class="tg">Ziel: ${tm?`${t.sets} × ${TMSEC[S.goal]}${load}`:`${t.sets} × ${t.reps}${load} · RIR ${t.rir}`} · P ${secStr(t.restSec)} <span class="info-i" data-n="${e.name}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span> <button class="rm" title="entfernen" onclick="removeLogEx(${xi})">✕</button></span></div>`;
+  if(lastStr)h+=`<div class="last-perf">Zuletzt: <b>${lastStr}</b>${tm?"":" "+unitLbl()}</div>`;
   e.sets.forEach((st,si)=>{h+=`<div class="setrow ${st.done?'done':''} ${st.pr?'pr':''}" id="sr-${xi}-${si}">
     <span class="sn">${st.pr?'★':si+1}</span>
     <input type="number" inputmode="decimal" placeholder="${unitLbl()}" value="${st.w}" oninput="logState.ex[${xi}].sets[${si}].w=this.value">
-    <input type="number" inputmode="numeric" placeholder="Wdh" value="${st.r}" oninput="logState.ex[${xi}].sets[${si}].r=this.value">
+    <input type="number" inputmode="numeric" placeholder="${tm?'Sek':'Wdh'}" value="${st.r}" oninput="logState.ex[${xi}].sets[${si}].r=this.value">
     <button class="chk" onclick="doneSet(${xi},${si})">✓</button></div>`;});
   h+=`</div></div>`;});
  h+=`<button class="btn" style="margin-top:14px" onclick="openAdd()">+ Übung hinzufügen</button>`;
@@ -580,11 +643,15 @@ function renderTrain(){
  out.innerHTML=h;
 }
 function isBW(name){const e=EX.find(x=>x.n===name);return e&&e.eq==="bw";}
+function isTm(name){const e=EX.find(x=>x.n===name);return!!(e&&e.tm);}
+const TMSEC={strength:"20–40 s",hypertrophy:"30–60 s",endurance:"45–90 s"};
 function doneSet(xi,si){const ex=logState.ex[xi];const st=ex.sets[si];st.done=!st.done;
  const row=document.getElementById(`sr-${xi}-${si}`);
- if(st.done){const kgw=toKg(st.w),r=+st.r;
-   if(kgw>0&&r>0){const old=jget("tpe.e1rm",{})[ex.name]||0;const v=e1RM(kgw,r);
-     if(old>0&&v>old){st.pr=true;toast("🏆 Neue Bestleistung: "+ex.name+" · "+showW(v)+" "+unitLbl()+" (e1RM)");}else st.pr=false;}
+ if(st.done){
+   if(isTm(ex.name)){const sec=+st.r;if(sec>0){const old=jget("tpe.tmbest",{})[ex.name]||0;if(old>0&&sec>old){st.pr=true;toast("🏆 Längste Haltezeit: "+ex.name+" · "+sec+" s");}else st.pr=false;}}
+   else{const kgw=toKg(st.w),r=+st.r;
+     if(kgw>0&&r>0){const old=jget("tpe.e1rm",{})[ex.name]||0;const v=e1RM(kgw,r);
+       if(old>0&&v>old){st.pr=true;toast("🏆 Neue Bestleistung: "+ex.name+" · "+showW(v)+" "+unitLbl()+" (e1RM)");}else st.pr=false;}}
    startTimer(ex.target.restSec);}
  else st.pr=false;
  if(row){row.classList.toggle("done",st.done);row.classList.toggle("pr",!!st.pr);const sn=row.querySelector(".sn");if(sn)sn.textContent=st.pr?"★":(si+1);}}
@@ -606,16 +673,19 @@ function confirmAdd(){const name=document.getElementById("add-sel").value;const 
  logState.ex.push({name:ex.n,pat:ex.pat,target:pr,last:lastPerf(ex.n),sets:Array.from({length:pr.sets},()=>({w,r:"",done:false}))});
  closeAdd();renderTrain();}
 function finishWorkout(){
- const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done)&&+s.r>0).map(s=>({w:Math.round(toKg(s.w)*10)/10,r:+s.r}))})).filter(e=>e.sets.length);
- if(!entries.length){toast("Noch keine Sätze mit Wiederholungen eingetragen.");return;}
+ const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>({w:Math.round(toKg(s.w)*10)/10,r:+s.r}))})).filter(e=>e.sets.length);
+ if(!entries.length){toast("Noch keine Sätze eingetragen.");return;}
  const totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
  const log=jget("tpe.log",[]);
  log.unshift({id:Date.now(),date:new Date().toISOString(),week:logState.week,dayLabel:logState.label,entries,totalSets});
  jset("tpe.log",log);
- const e1=jget("tpe.e1rm",{});const prs=[];
- entries.forEach(e=>{let best=0;e.sets.forEach(s=>{if(s.w>0&&s.r>0)best=Math.max(best,e1RM(s.w,s.r));});
-   if(best>0){const old=e1[e.name]||0;if(old>0&&best>old)prs.push(e.name);if(best>old)e1[e.name]=Math.round(best*10)/10;}});
- jset("tpe.e1rm",e1);stopTimer();logState=null;
+ const e1=jget("tpe.e1rm",{}),tb=jget("tpe.tmbest",{});const prs=[];
+ entries.forEach(e=>{
+   if(isTm(e.name)){let best=0;e.sets.forEach(s=>{if(s.r>0)best=Math.max(best,s.r);});
+     if(best>0){const old=tb[e.name]||0;if(old>0&&best>old)prs.push(e.name);if(best>old)tb[e.name]=best;}}
+   else{let best=0;e.sets.forEach(s=>{if(s.w>0&&s.r>0)best=Math.max(best,e1RM(s.w,s.r));});
+     if(best>0){const old=e1[e.name]||0;if(old>0&&best>old)prs.push(e.name);if(best>old)e1[e.name]=Math.round(best*10)/10;}}});
+ jset("tpe.e1rm",e1);jset("tpe.tmbest",tb);stopTimer();logState=null;
  if(prs.length)toast("🏆 Neue Bestleistung: "+prs.join(", "));
  else toast("Einheit gespeichert ✓ ("+totalSets+" Sätze)");
  showView("hist");
@@ -669,19 +739,103 @@ function saveE1(){const name=modalEx||document.getElementById("m-sel").value;con
 function removeE1(){const name=modalEx||document.getElementById("m-sel").value;const e1=jget("tpe.e1rm",{});delete e1[name];jset("tpe.e1rm",e1);closeModal();afterDataChange();}
 function setE1(name,val){const e1=jget("tpe.e1rm",{});const v=toKg(+val);if(v>0)e1[name]=Math.round(v*10)/10;else delete e1[name];jset("tpe.e1rm",e1);afterDataChange();}
 function afterDataChange(){if(PLAN)renderPlan();const hv=document.getElementById("v-hist");if(hv&&hv.classList.contains("on"))renderHist();}
-function exportData(){const data={app:"trainings-engine",v:1,exported:new Date().toISOString(),cfg:jget("tpe.cfg",{}),plan:jget("tpe.plan",null),e1rm:jget("tpe.e1rm",{}),log:jget("tpe.log",[])};
+function exportData(){const data={app:"trainings-engine",v:1,exported:new Date().toISOString(),cfg:jget("tpe.cfg",{}),plan:jget("tpe.plan",null),e1rm:jget("tpe.e1rm",{}),tmbest:jget("tpe.tmbest",{}),log:jget("tpe.log",[])};
  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);
  const a=document.createElement("a");a.href=url;a.download="trainings-engine-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function importData(input){const f=input.files&&input.files[0];if(!f)return;const rd=new FileReader();
  rd.onload=()=>{try{const d=JSON.parse(rd.result);
-   if(d.cfg)jset("tpe.cfg",d.cfg);if("plan" in d)jset("tpe.plan",d.plan);if(d.e1rm)jset("tpe.e1rm",d.e1rm);if(d.log)jset("tpe.log",d.log);
-   const cfg=jget("tpe.cfg",{});Object.assign(S,cfg);if(!S.unit)S.unit="kg";S.equipSet=new Set(S.equip&&S.equip.length?S.equip:["bw","db","bb","kb","ma"]);
+   if(d.cfg)jset("tpe.cfg",d.cfg);if("plan" in d)jset("tpe.plan",d.plan);if(d.e1rm)jset("tpe.e1rm",d.e1rm);if(d.tmbest)jset("tpe.tmbest",d.tmbest);if(d.log)jset("tpe.log",d.log);
+   const cfg=jget("tpe.cfg",{});Object.assign(S,cfg);S.unit="kg";S.equipSet=new Set(S.equip&&S.equip.length?S.equip:["bw","db","bb","kb","ma"]);
    PLAN=jget("tpe.plan",null);curWeek=1;logState=null;
    refresh();applyUnitUI();renderPlan();renderHist();toast("Daten erfolgreich importiert ✓");
  }catch(e){alert("Import fehlgeschlagen – ungültige oder beschädigte Datei.");}};
  rd.readAsText(f);input.value="";}
 
 // ============ HISTORY ============
+function openCat(name){catSel=name;showView("cat");}
+function openInfo(name){const e=EX.find(x=>x.n===name);if(!e)return;const info=catInfo(e);const iso=e.t!==C&&e.pat!=="core";
+ document.getElementById("info-title").textContent=e.n;
+ document.getElementById("info-body").innerHTML=`<button class="btn" style="margin-bottom:12px" onclick="toggleFav('${name}');openInfo('${name}')">${isFav(name)?"★ Favorit entfernen":"☆ Als Favorit merken"}</button><div class="ex-meta" style="margin-bottom:12px"><span class="tag">${EQL[e.eq]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${LVL[e.lvl]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${iso?"Isolation":"Grundübung"}</span></div>
+   <div class="sec-h">Ausführung</div><p class="cat-desc" style="margin-bottom:12px">${info.desc}</p>
+   <div class="sec-h">Worauf achten</div><ul class="cat-cues">${info.cues.map(c=>`<li>${c}</li>`).join("")}</ul>
+   <div class="sec-h" style="margin-top:14px">Beanspruchte Muskulatur</div>
+   <div class="catmus"><span><i class="sw" style="background:var(--hi)"></i>Primär: ${e.pri.map(m=>MUS[m]).join(", ")}</span>${e.sec.length?`<span><i class="sw" style="background:var(--mid)"></i>Sekundär: ${e.sec.map(m=>MUS[m]).join(", ")}</span>`:""}</div>`;
+ document.getElementById("infomodal").style.display="flex";}
+function closeInfo(){document.getElementById("infomodal").style.display="none";}
+const HELP={
+ howto:{title:"So nutzt du GymBuddy",html:`<p class="cat-desc">In fünf Schritten von der Planung bis zum Fortschritt:</p>
+   <ol class="cat-cues" style="padding-left:22px">
+   <li><b>Plan erstellen</b> – im Reiter <b>Plan</b> Ziel, Tage pro Woche, Erfahrung, Split und Blocklänge wählen und generieren. Die App verteilt die Übungen ausgewogen über alle Muskelgruppen. Über die ⓘ-Symbole kannst du Erfahrung und Split nachlesen.</li>
+   <li><b>Maximalkraft hinterlegen</b> (optional, empfohlen) – tippe bei einer Übung auf das 1RM-Feld und trage dein Maximum direkt ein oder lass es aus einem Testsatz berechnen. Dann zeigt der Plan konkrete Arbeitsgewichte statt nur Prozentwerte.</li>
+   <li><b>Trainieren</b> – im Reiter <b>Training</b> den Tag wählen, je Satz Gewicht und Wiederholungen eintragen und abhaken. Der Pausentimer startet automatisch und vibriert am Ende. „Zuletzt" zeigt dir deine letzte Leistung als Ziel zum Überbieten.</li>
+   <li><b>Übungen verstehen</b> – das ⓘ neben jeder Übung öffnet Technik, Hinweise und beanspruchte Muskeln. Den vollen Katalog mit Muskelbild findest du im Reiter <b>Katalog</b>.</li>
+   <li><b>Fortschritt verfolgen</b> – im Reiter <b>Verlauf</b> siehst du Trainingskalender, Streak, Bestleistungen und deine Kraftentwicklung.</li>
+   </ol>
+   <div class="sec-h" style="margin-top:14px">Das Wichtigste für Fortschritt</div>
+   <ul class="cat-cues"><li><b>Progressive Überlastung:</b> versuche über die Wochen, deine letzte Leistung leicht zu überbieten – ein paar Kilo oder eine Wiederholung mehr.</li>
+   <li><b>Technik vor Gewicht:</b> sauber ausführen schlägt schwer und unsauber.</li>
+   <li><b>Periodisierung nutzen:</b> im Plan die Woche weiterschalten – die Vorgaben steigern sich über den Block, die letzte Woche ist ein Deload zur Erholung.</li>
+   <li><b>Dranbleiben:</b> Konstanz schlägt einzelne perfekte Einheiten – der Streak im Verlauf hilft dabei.</li></ul>
+   <div class="sec-h" style="margin-top:14px">Gut zu wissen</div>
+   <ul class="cat-cues"><li>Oben rechts schaltest du zwischen hellem und dunklem Design um.</li>
+   <li>Deine Daten liegen lokal auf dem Gerät – sichere sie ab und zu über „Exportieren" im Verlauf.</li>
+   <li>Für ein App-Gefühl die Seite zum Home-Bildschirm hinzufügen.</li></ul>`},
+ level:{title:"Erfahrungsstufe",html:`<p class="cat-desc">Die Stufe steuert, welche Übungen in den Plan kommen – sortiert nach technischem Anspruch:</p>
+   <div class="sec-h" style="margin-top:10px">Einsteiger</div><p class="cat-desc">Nur technisch einfache, gut kontrollierbare Übungen – oft an Maschinen oder als saubere Grundbewegung.</p>
+   <div class="sec-h" style="margin-top:12px">Geübt</div><p class="cat-desc">Zusätzlich mittelschwere Übungen mit freien Gewichten und anspruchsvolleren Varianten.</p>
+   <div class="sec-h" style="margin-top:12px">Fortgeschritten</div><p class="cat-desc">Auch komplexe Übungen mit hoher Technik- und Koordinationsanforderung, z. B. schweres Kreuzheben oder Klimmzüge.</p>
+   <p class="hint" style="margin-top:12px">Außerdem: Bei Split „Automatisch" und 3 Tagen pro Woche erhalten Einsteiger einen Ganzkörperplan, Geübte und Fortgeschrittene einen Push/Pull/Beine-Plan.</p>`},
+ split:{title:"Trainings-Splits",html:`<p class="cat-desc">Die Aufteilung bestimmt, welche Muskelgruppen an welchem Tag drankommen:</p>
+   <div class="sec-h" style="margin-top:10px">Ganzkörper</div><p class="cat-desc">Jede Einheit trainiert den ganzen Körper. Ideal bei 1–3 Tagen pro Woche und für Einsteiger: jeder Muskel wird 2–3× pro Woche getroffen, sehr zeiteffizient.</p>
+   <div class="sec-h" style="margin-top:12px">Ober / Unter</div><p class="cat-desc">Oberkörper- und Unterkörper-Tage im Wechsel. Gute Wahl bei 4 Tagen: ausgewogene Balance aus Frequenz (2× pro Muskel) und Umfang je Einheit.</p>
+   <div class="sec-h" style="margin-top:12px">Push / Pull / Beine</div><p class="cat-desc">Drücken, Ziehen und Beine an getrennten Tagen. Stark bei 3 oder 6 Tagen: viel Volumen pro Muskelgruppe je Einheit; bei 6 Tagen wird jeder Muskel 2× pro Woche getroffen.</p>
+   <div class="sec-h" style="margin-top:12px">Automatisch</div><p class="cat-desc">GymBuddy wählt anhand deiner Tage pro Woche und deiner Erfahrung die passende Aufteilung.</p>
+   <p class="hint" style="margin-top:12px">Faustregel: Für Muskelaufbau ist eine Frequenz von rund 2× pro Woche je Muskel günstig – deshalb bei wenigen Tagen Ganzkörper, bei mehr Tagen eine feinere Aufteilung.</p>`}
+};
+function openHelp(k){const d=HELP[k];if(!d)return;document.getElementById("info-title").textContent=d.title;document.getElementById("info-body").innerHTML=d.html;document.getElementById("infomodal").style.display="flex";}
+
+function dayKey(d){d=new Date(d);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function startOfWeek(d){d=new Date(d);const off=(d.getDay()+6)%7;d.setHours(0,0,0,0);d.setDate(d.getDate()-off);return d;}
+function trainingCalendar(log){
+ const cnt={};log.forEach(s=>{const k=dayKey(s.date);cnt[k]=(cnt[k]||0)+1;});
+ const weeks=13,today=new Date();today.setHours(0,0,0,0);
+ const curMon=startOfWeek(today),start=new Date(curMon);start.setDate(start.getDate()-(weeks-1)*7);
+ let cells="";
+ for(let w=0;w<weeks;w++)for(let dow=0;dow<7;dow++){
+   const dt=new Date(start);dt.setDate(start.getDate()+w*7+dow);
+   const k=dayKey(dt),c=cnt[k]||0,future=dt>today;
+   const lvl=future?"f":(c===0?"0":c===1?"1":"2");
+   cells+=`<div class="cal-d cal-${lvl}" title="${k}${c?": "+c+" Einheit"+(c>1?"en":""):""}"></div>`;
+ }
+ const weekSet=new Set(log.map(s=>startOfWeek(s.date).getTime()));
+ let streak=0,probe=new Date(curMon);
+ if(!weekSet.has(curMon.getTime()))probe.setDate(probe.getDate()-7);
+ while(weekSet.has(probe.getTime())){streak++;probe.setDate(probe.getDate()-7);}
+ const thisWeek=log.filter(s=>startOfWeek(s.date).getTime()===curMon.getTime()).length;
+ return {cells,streak,thisWeek};
+}
+function consistencyHTML(log){
+ const c=trainingCalendar(log);
+ return `<div class="panel"><div class="sec-h">Konstanz</div>
+  <div class="streak-row">
+    <div class="streak-big"><div class="sn">${c.streak}</div><div class="sl">Wochen-Streak${c.streak>0?" 🔥":""}</div></div>
+    <div class="streak-sm"><div class="sn2">${c.thisWeek}</div><div class="sl">diese Woche</div></div></div>
+  <div class="calwrap">${c.cells}</div>
+  <div class="callegend"><span>weniger</span><i class="cal-d cal-0"></i><i class="cal-d cal-1"></i><i class="cal-d cal-2"></i><span>mehr</span></div></div>`;
+}
+function prBoardHTML(e1){
+ const entries=Object.entries(e1).sort((a,b)=>b[1]-a[1]);
+ if(!entries.length)return"";
+ const cards=entries.map(([n,v])=>`<div class="prcard"><div class="prv">${showW(v)}<span>${unitLbl()}</span></div><div class="prn">${n}</div></div>`).join("");
+ return `<div class="panel"><div class="sec-h">Bestleistungen · geschätztes 1RM</div><div class="prgrid">${cards}</div></div>`;
+}
+function tmBoardHTML(tb){
+ const entries=Object.entries(tb).sort((a,b)=>b[1]-a[1]);
+ if(!entries.length)return"";
+ const cards=entries.map(([n,v])=>`<div class="prcard"><div class="prv">${v}<span>s</span></div><div class="prn">${n}</div></div>`).join("");
+ return `<div class="panel"><div class="sec-h">Bestleistungen · längste Haltezeit</div><div class="prgrid">${cards}</div></div>`;
+}
+
 function histTopSections(e1){
  const entries=Object.entries(e1).sort((a,b)=>a[0].localeCompare(b[0]));
  let m=`<div class="panel"><div class="sec-h">1RM verwalten &amp; Lastrechner</div>
@@ -715,9 +869,12 @@ function renderHist(){
    <div class="stat"><div class="n">${totalSets}</div><div class="l">Sätze gesamt</div></div>
    <div class="stat"><div class="n">${week}</div><div class="l">letzte 7 Tage</div></div>
    <div class="stat"><div class="n">${Object.keys(e1).length}</div><div class="l">Übungen mit e1RM</div></div></div></div>`;
+ h+=consistencyHTML(log);
+ h+=prBoardHTML(e1);
+ h+=tmBoardHTML(jget("tpe.tmbest",{}));
  // e1RM bestlist + chart
  const exNames=[...new Set(log.flatMap(s=>s.entries.map(e=>e.name)))];
- h+=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Kraftentwicklung (e1RM)</span></div>
+ h+=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Kraft- / Haltezeit-Entwicklung</span></div>
    <div class="row" style="margin-bottom:10px"><select id="exsel" onchange="drawE1()">${exNames.map(n=>`<option>${n}</option>`).join("")}</select></div>
    <div id="e1chart"></div></div>`;
  // volume trend
@@ -729,9 +886,9 @@ function renderHist(){
  h+=`</div>`;
  out.innerHTML=top+h;drawE1();drawVol();
 }
-function drawE1(){const log=jget("tpe.log",[]);const sel=document.getElementById("exsel");if(!sel)return;const name=sel.value;
- const pts=[];log.slice().reverse().forEach(s=>{s.entries.filter(e=>e.name===name).forEach(e=>{let mx=0;e.sets.forEach(st=>{if(st.w>0&&st.r>0)mx=Math.max(mx,e1RM(st.w,st.r));});if(mx)pts.push({x:new Date(s.date).getTime(),y:Math.round(fromKg(mx)*10)/10});});});
- document.getElementById("e1chart").innerHTML=pts.length>1?lineChart(pts,unitLbl()):'<p class="hint">Mindestens zwei Einträge nötig, um einen Verlauf zu zeichnen.</p>';}
+function drawE1(){const log=jget("tpe.log",[]);const sel=document.getElementById("exsel");if(!sel)return;const name=sel.value;const tm=isTm(name);
+ const pts=[];log.slice().reverse().forEach(s=>{s.entries.filter(e=>e.name===name).forEach(e=>{let mx=0;e.sets.forEach(st=>{if(tm){if(st.r>0)mx=Math.max(mx,st.r);}else{if(st.w>0&&st.r>0)mx=Math.max(mx,e1RM(st.w,st.r));}});if(mx)pts.push({x:new Date(s.date).getTime(),y:tm?mx:Math.round(fromKg(mx)*10)/10});});});
+ document.getElementById("e1chart").innerHTML=pts.length>1?lineChart(pts,tm?"s":unitLbl()):'<p class="hint">Mindestens zwei Einträge nötig, um einen Verlauf zu zeichnen.</p>';}
 function drawVol(){const log=jget("tpe.log",[]);const pts=log.slice().reverse().map(s=>({x:new Date(s.date).getTime(),y:s.totalSets}));
  document.getElementById("volchart").innerHTML=pts.length?barChart(pts):'<p class="hint">Noch keine Daten.</p>';}
 function lineChart(pts,unit){const W=600,H=180,p=34;const xs=pts.map(o=>o.x),ys=pts.map(o=>o.y);
@@ -754,7 +911,7 @@ function bodySVG(){return `
 <style>.sil{fill:var(--none);stroke:currentColor;stroke-opacity:.28;stroke-width:1.1}
 .reg{fill:var(--none);stroke:currentColor;stroke-opacity:.32;stroke-width:.9}
 .def{fill:none;stroke:currentColor;stroke-opacity:.2;stroke-width:1}
-.cp{font-family:"Anton",sans-serif;font-size:12px;letter-spacing:1px;fill:var(--muted);text-anchor:middle}</style>
+.cp{font-family:"Anton",sans-serif;font-size:18px;letter-spacing:1.5px;fill:var(--muted);text-anchor:middle}</style>
 <ellipse class="sil" cx="158" cy="40" rx="18" ry="22"/><path class="sil" d="M150 58 L166 58 L168 74 L148 74 Z"/><path class="sil" d="M158 74 C138 74 128 78 118 84
       C104 90 96 100 94 112
       C98 130 104 150 108 168
@@ -850,13 +1007,14 @@ function renderCatalog(){const out=document.getElementById("cat-out");if(!out)re
     <input id="catq" type="text" placeholder="Übung suchen…" value="${catF.q}" oninput="catF.q=this.value;renderCatalog();const i=document.getElementById('catq');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}">
     <select onchange="catF.mus=this.value;renderCatalog()"><option value="">Alle Muskeln</option>${MORDER.map(m=>`<option value="${m}" ${catF.mus===m?"selected":""}>${MUS[m]}</option>`).join("")}</select>
     <select onchange="catF.eq=this.value;renderCatalog()"><option value="">Alle Geräte</option>${Object.entries(EQL).map(([k,v])=>`<option value="${k}" ${catF.eq===k?"selected":""}>${v}</option>`).join("")}</select>
+    <button class="catfav-btn ${catF.fav?"on":""}" onclick="catF.fav=!catF.fav;renderCatalog()">★ Favoriten</button>
   </div></div>`;
  const q=catF.q.toLowerCase();
- const list=EX.filter(e=>(!catF.mus||e.pri.includes(catF.mus)||e.sec.includes(catF.mus))&&(!catF.eq||e.eq===catF.eq)&&(!q||e.n.toLowerCase().includes(q)));
+ const list=EX.filter(e=>(!catF.mus||e.pri.includes(catF.mus)||e.sec.includes(catF.mus))&&(!catF.eq||e.eq===catF.eq)&&(!catF.fav||isFav(e.n))&&(!q||e.n.toLowerCase().includes(q)));
  h+=`<div class="catlist">`;
  list.forEach(e=>{const iso=e.t!==C&&e.pat!=="core";
   h+=`<div class="catcard" data-n="${e.n}" onclick="catSel=this.dataset.n;renderCatalog()">
-   <div class="catcard-h"><span class="cc-name">${e.n}</span><span class="cc-arrow">›</span></div>
+   <div class="catcard-h"><span class="cc-name">${e.n}</span><span class="cc-r"><span class="fav-star ${isFav(e.n)?"on":""}" data-n="${e.n}" onclick="event.stopPropagation();toggleFav(this.dataset.n);renderCatalog()">★</span><span class="cc-arrow">›</span></span></div>
    <div class="ex-meta"><span class="tag">${EQL[e.eq]}</span>${e.pri.map(m=>`<span class="tag mus">${MUS[m]}</span>`).join("")}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${iso?"Isolation":"Grundübung"}</span></div></div>`;});
  h+=`</div>`;
  if(!list.length)h+=`<p class="empty">Keine Übung gefunden.</p>`;
@@ -864,7 +1022,7 @@ function renderCatalog(){const out=document.getElementById("cat-out");if(!out)re
 }
 function renderCatDetail(out){const e=EX.find(x=>x.n===catSel);if(!e){catSel=null;return renderCatalog();}
  const info=catInfo(e);const iso=e.t!==C&&e.pat!=="core";
- out.innerHTML=`<div class="panel"><button class="btn" onclick="catSel=null;renderCatalog()">‹ Zurück zum Katalog</button>
+ out.innerHTML=`<div class="panel"><div class="row" style="gap:8px"><button class="btn" onclick="catSel=null;renderCatalog()">‹ Zurück</button><button class="btn" onclick="toggleFav('${e.n}');renderCatalog()">${isFav(e.n)?"★ Favorit":"☆ Favorit"}</button></div>
   <h2 class="cat-title">${e.n}</h2>
   <div class="ex-meta" style="margin-bottom:16px"><span class="tag">${EQL[e.eq]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${LVL[e.lvl]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${iso?"Isolation":"Grundübung"}</span></div>
   <div class="sec-h">Ausführung</div><p class="cat-desc">${info.desc}</p>
