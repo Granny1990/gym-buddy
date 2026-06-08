@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- GymBuddy · Version 0.2 · Übungsbilder (free-exercise-db, Auto-Wechsel Start/Ende) -->
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -175,6 +176,10 @@
     .day-head{flex-wrap:wrap;row-gap:6px}
   }
   @media print{.tabs,.panel,.gen,.timer-wrap,details.method,.btn,footer .np{display:none}.view{display:block!important}.card{break-inside:avoid}}
+  .exgif-wrap{margin:2px auto 14px;max-width:240px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+  .exgif{display:block;width:100%;height:auto;max-height:240px;object-fit:contain;margin:0 auto;background:var(--bg)}
+  .exgif-cap{font-size:11px;color:var(--muted);text-align:center;padding:6px 8px;background:var(--paper);border-top:1px solid var(--line)}
+  .exgif-cap b{color:var(--accent);font-weight:700}
 </style>
 </head>
 <body>
@@ -753,15 +758,23 @@ function importData(input){const f=input.files&&input.files[0];if(!f)return;cons
 
 // ============ HISTORY ============
 function openCat(name){catSel=name;showView("cat");}
+const IMGHOSTS=["https://cdn.jsdelivr.net/gh/yuhonas/free-exercise-db@main/exercises/","https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/"];
+const IMG={"Bankdrücken (LH)":["Barbell_Bench_Press_-_Medium_Grip/0.jpg","Barbell_Bench_Press_-_Medium_Grip/1.jpg"],"Schrägbankdrücken (LH)":["Barbell_Incline_Bench_Press_-_Medium_Grip/0.jpg","Barbell_Incline_Bench_Press_-_Medium_Grip/1.jpg"],"Enges Bankdrücken":["Close-Grip_Barbell_Bench_Press/0.jpg","Close-Grip_Barbell_Bench_Press/1.jpg"],"Kurzhantel-Bankdrücken":["Dumbbell_Bench_Press/0.jpg","Dumbbell_Bench_Press/1.jpg"],"Schrägbankdrücken (KH)":["Incline_Dumbbell_Press/0.jpg","Incline_Dumbbell_Press/1.jpg"],"Brustpresse (Maschine)":["Machine_Bench_Press/0.jpg","Machine_Bench_Press/1.jpg"],"Liegestütze":["Pushups/0.jpg","Pushups/1.jpg"],"Dips (Brustfokus)":["Dips_-_Chest_Version/0.jpg","Dips_-_Chest_Version/1.jpg"],"Kettlebell Floor Press":["One-Arm_Kettlebell_Floor_Press/0.jpg","One-Arm_Kettlebell_Floor_Press/1.jpg"],"Schulterdrücken (LH)":["Barbell_Shoulder_Press/0.jpg","Barbell_Shoulder_Press/1.jpg"],"Schulterdrücken (KH)":["Dumbbell_Shoulder_Press/0.jpg","Dumbbell_Shoulder_Press/1.jpg"],"Arnold Press":["Arnold_Dumbbell_Press/0.jpg","Arnold_Dumbbell_Press/1.jpg"],"Kettlebell Overhead Press":["Two-Arm_Kettlebell_Military_Press/0.jpg","Two-Arm_Kettlebell_Military_Press/1.jpg"],"Schulterpresse (Maschine)":["Machine_Shoulder_Military_Press/0.jpg","Machine_Shoulder_Military_Press/1.jpg"],"Pike Push-ups":["Decline_Push-Up/0.jpg","Decline_Push-Up/1.jpg"],"Handstand-Liegestütze":["Handstand_Push-Ups/0.jpg","Handstand_Push-Ups/1.jpg"],"Langhantelrudern":["Bent_Over_Barbell_Row/0.jpg","Bent_Over_Barbell_Row/1.jpg"],"Pendlay Row":["Bent_Over_Barbell_Row/0.jpg","Bent_Over_Barbell_Row/1.jpg"],"T-Bar Rudern":["Lying_T-Bar_Row/0.jpg","Lying_T-Bar_Row/1.jpg"],"Kurzhantelrudern (einarmig)":["One-Arm_Dumbbell_Row/0.jpg","One-Arm_Dumbbell_Row/1.jpg"],"Kabelrudern (sitzend)":["Seated_Cable_Rows/0.jpg","Seated_Cable_Rows/1.jpg"],"Maschinenrudern":["Leverage_Iso_Row/0.jpg","Leverage_Iso_Row/1.jpg"],"Kettlebell Row":["One-Arm_Kettlebell_Row/0.jpg","One-Arm_Kettlebell_Row/1.jpg"],"Umgekehrtes Rudern":["Inverted_Row/0.jpg","Inverted_Row/1.jpg"],"Klimmzüge":["Pullups/0.jpg","Pullups/1.jpg"],"Klimmzüge (eng/Untergriff)":["Chin-Up/0.jpg","Chin-Up/1.jpg"],"Latzug (Maschine)":["Wide-Grip_Lat_Pulldown/0.jpg","Wide-Grip_Lat_Pulldown/1.jpg"],"Klimmzüge (assistiert)":["Band_Assisted_Pull-Up/0.jpg","Band_Assisted_Pull-Up/1.jpg"],"Kniebeuge (LH)":["Barbell_Full_Squat/0.jpg","Barbell_Full_Squat/1.jpg"],"Frontkniebeuge":["Front_Barbell_Squat/0.jpg","Front_Barbell_Squat/1.jpg"],"Hackenschmidt-Kniebeuge":["Hack_Squat/0.jpg","Hack_Squat/1.jpg"],"Beinpresse (Maschine)":["Leg_Press/0.jpg","Leg_Press/1.jpg"],"Goblet Squat (KB)":["Goblet_Squat/0.jpg","Goblet_Squat/1.jpg"],"Kettlebell Front Squat":["Front_Barbell_Squat/0.jpg","Front_Barbell_Squat/1.jpg"],"Eigengewicht-Kniebeuge":["Bodyweight_Squat/0.jpg","Bodyweight_Squat/1.jpg"],"Pistol Squat":["Kettlebell_Pistol_Squat/0.jpg","Kettlebell_Pistol_Squat/1.jpg"],"Kreuzheben (LH)":["Barbell_Deadlift/0.jpg","Barbell_Deadlift/1.jpg"],"Sumo-Kreuzheben":["Sumo_Deadlift/0.jpg","Sumo_Deadlift/1.jpg"],"Rumänisches Kreuzheben (LH)":["Romanian_Deadlift/0.jpg","Romanian_Deadlift/1.jpg"],"RDL (Kurzhantel)":["Stiff-Legged_Dumbbell_Deadlift/0.jpg","Stiff-Legged_Dumbbell_Deadlift/1.jpg"],"Hip Thrust (LH)":["Barbell_Hip_Thrust/0.jpg","Barbell_Hip_Thrust/1.jpg"],"Kettlebell Swing":["One-Arm_Kettlebell_Swings/0.jpg","One-Arm_Kettlebell_Swings/1.jpg"],"Kettlebell Deadlift":["Kettlebell_One-Legged_Deadlift/0.jpg","Kettlebell_One-Legged_Deadlift/1.jpg"],"Glute Bridge":["Butt_Lift_Bridge/0.jpg","Butt_Lift_Bridge/1.jpg"],"Hyperextension (Rückenstrecker)":["Hyperextensions_Back_Extensions/0.jpg","Hyperextensions_Back_Extensions/1.jpg"],"Ausfallschritte":["Bodyweight_Walking_Lunge/0.jpg","Bodyweight_Walking_Lunge/1.jpg"],"Walking Lunges (KH)":["Dumbbell_Lunges/0.jpg","Dumbbell_Lunges/1.jpg"],"Bulgarian Split Squat":["Split_Squat_with_Dumbbells/0.jpg","Split_Squat_with_Dumbbells/1.jpg"],"Step-ups (KH)":["Dumbbell_Step_Ups/0.jpg","Dumbbell_Step_Ups/1.jpg"],"Kettlebell Lunge":["Kettlebell_Turkish_Get-Up_Lunge_style/0.jpg","Kettlebell_Turkish_Get-Up_Lunge_style/1.jpg"],"Kurzhantel-Fliegende":["Dumbbell_Flyes/0.jpg","Dumbbell_Flyes/1.jpg"],"Kabelzug Crossover":["Cable_Crossover/0.jpg","Cable_Crossover/1.jpg"],"Pec Deck (Maschine)":["Butterfly/0.jpg","Butterfly/1.jpg"],"Seitheben (KH)":["Side_Lateral_Raise/0.jpg","Side_Lateral_Raise/1.jpg"],"Seitheben (Kabel)":["Cable_Seated_Lateral_Raise/0.jpg","Cable_Seated_Lateral_Raise/1.jpg"],"Reverse Flys (KH)":["Reverse_Flyes/0.jpg","Reverse_Flyes/1.jpg"],"Face Pulls":["Face_Pull/0.jpg","Face_Pull/1.jpg"],"Frontheben (KH)":["Front_Dumbbell_Raise/0.jpg","Front_Dumbbell_Raise/1.jpg"],"Überzüge (Pullover, KH)":["Bent-Arm_Dumbbell_Pullover/0.jpg","Bent-Arm_Dumbbell_Pullover/1.jpg"],"Straight-Arm Pulldown":["Straight-Arm_Pulldown/0.jpg","Straight-Arm_Pulldown/1.jpg"],"Shrugs (Nackenheben, KH)":["Dumbbell_Shrug/0.jpg","Dumbbell_Shrug/1.jpg"],"Bizeps-Curls (KH)":["Dumbbell_Bicep_Curl/0.jpg","Dumbbell_Bicep_Curl/1.jpg"],"Hammer Curls":["Hammer_Curls/0.jpg","Hammer_Curls/1.jpg"],"Langhantel-Curls":["Barbell_Curl/0.jpg","Barbell_Curl/1.jpg"],"Scott-Curls (Preacher)":["Preacher_Curl/0.jpg","Preacher_Curl/1.jpg"],"Kabel-Curls":["Cable_Preacher_Curl/0.jpg","Cable_Preacher_Curl/1.jpg"],"Trizepsdrücken Seil (Kabel)":["Triceps_Pushdown_-_Rope_Attachment/0.jpg","Triceps_Pushdown_-_Rope_Attachment/1.jpg"],"Skullcrusher (SZ-Hantel)":["Lying_Triceps_Press/0.jpg","Lying_Triceps_Press/1.jpg"],"Überkopf-Trizepsstrecken (KH)":["Standing_Dumbbell_Triceps_Extension/0.jpg","Standing_Dumbbell_Triceps_Extension/1.jpg"],"Bank-Dips":["Bench_Dips/0.jpg","Bench_Dips/1.jpg"],"Beinstrecker (Maschine)":["Leg_Extensions/0.jpg","Leg_Extensions/1.jpg"],"Sissy Squat":["Weighted_Sissy_Squat/0.jpg","Weighted_Sissy_Squat/1.jpg"],"Beinbeuger liegend (Maschine)":["Lying_Leg_Curls/0.jpg","Lying_Leg_Curls/1.jpg"],"Beinbeuger sitzend (Maschine)":["Seated_Leg_Curl/0.jpg","Seated_Leg_Curl/1.jpg"],"Nordic Hamstring Curl":["Natural_Glute_Ham_Raise/0.jpg","Natural_Glute_Ham_Raise/1.jpg"],"Glute Kickback (Kabel)":["Glute_Kickback/0.jpg","Glute_Kickback/1.jpg"],"Abduktoren (Maschine)":["Thigh_Abductor/0.jpg","Thigh_Abductor/1.jpg"],"Wadenheben stehend":["Standing_Calf_Raises/0.jpg","Standing_Calf_Raises/1.jpg"],"Wadenheben stehend (Maschine)":["Standing_Calf_Raises/0.jpg","Standing_Calf_Raises/1.jpg"],"Wadenheben sitzend (Soleus)":["Seated_Calf_Raise/0.jpg","Seated_Calf_Raise/1.jpg"],"Wadenheben (KH)":["Standing_Dumbbell_Calf_Raise/0.jpg","Standing_Dumbbell_Calf_Raise/1.jpg"],"Plank":["Plank/0.jpg","Plank/1.jpg"],"Hängendes Beinheben":["Hanging_Leg_Raise/0.jpg","Hanging_Leg_Raise/1.jpg"],"Ab Wheel Rollout":["Ab_Roller/0.jpg","Ab_Roller/1.jpg"],"Cable Crunch":["Cable_Crunch/0.jpg","Cable_Crunch/1.jpg"],"Russian Twist (KB)":["Russian_Twist/0.jpg","Russian_Twist/1.jpg"],"Seitlicher Plank":["Side_Bridge/0.jpg","Side_Bridge/1.jpg"],"Farmer's Carry":["Farmers_Walk/0.jpg","Farmers_Walk/1.jpg"]};
+function exImgPaths(name){return IMG[name]||null;}
+function exImgHTML(name,key){if(!IMG[name])return "";return `<div class="exgif-wrap" id="exgif-wrap-${key}"><img class="exgif" id="exgif-${key}" alt="Bewegungsablauf: ${name}"><div class="exgif-cap"><span id="exgif-phase-${key}">Start</span> &middot; Bilder: <b>free-exercise-db</b> (gemeinfrei)</div></div>`;}
+let imgTimer=null;
+function stopImgCycle(){if(imgTimer){clearInterval(imgTimer);imgTimer=null;}}
+function startImgCycle(name,key){stopImgCycle();const paths=exImgPaths(name);const img=document.getElementById("exgif-"+key);if(!paths||!img)return;const wrap=document.getElementById("exgif-wrap-"+key),ph=document.getElementById("exgif-phase-"+key);let host=0;function probe(){const test=new Image();test.onload=function(){const base=IMGHOSTS[host];const urls=[base+encodeURI(paths[0]),base+encodeURI(paths[1])];const pre=new Image();pre.src=urls[1];img.src=urls[0];let i=0;imgTimer=setInterval(function(){i^=1;img.src=urls[i];if(ph)ph.textContent=i?"Ende":"Start";},1100);};test.onerror=function(){host++;if(host<IMGHOSTS.length)probe();else if(ph)ph.textContent="Bild nicht verfügbar";};test.src=IMGHOSTS[host]+encodeURI(paths[0]);}probe();}
+
 function openInfo(name){const e=EX.find(x=>x.n===name);if(!e)return;const info=catInfo(e);const iso=e.t!==C&&e.pat!=="core";
  document.getElementById("info-title").textContent=e.n;
- document.getElementById("info-body").innerHTML=`<button class="btn" style="margin-bottom:12px" onclick="toggleFav('${name}');openInfo('${name}')">${isFav(name)?"★ Favorit entfernen":"☆ Als Favorit merken"}</button><div class="ex-meta" style="margin-bottom:12px"><span class="tag">${EQL[e.eq]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${LVL[e.lvl]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${iso?"Isolation":"Grundübung"}</span></div>
+ document.getElementById("info-body").innerHTML=`${exImgHTML(name,"info")}<button class="btn" style="margin-bottom:12px" onclick="toggleFav('${name}');openInfo('${name}')">${isFav(name)?"★ Favorit entfernen":"☆ Als Favorit merken"}</button><div class="ex-meta" style="margin-bottom:12px"><span class="tag">${EQL[e.eq]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${LVL[e.lvl]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${iso?"Isolation":"Grundübung"}</span></div>
    <div class="sec-h">Ausführung</div><p class="cat-desc" style="margin-bottom:12px">${info.desc}</p>
    <div class="sec-h">Worauf achten</div><ul class="cat-cues">${info.cues.map(c=>`<li>${c}</li>`).join("")}</ul>
    <div class="sec-h" style="margin-top:14px">Beanspruchte Muskulatur</div>
    <div class="catmus"><span><i class="sw" style="background:var(--hi)"></i>Primär: ${e.pri.map(m=>MUS[m]).join(", ")}</span>${e.sec.length?`<span><i class="sw" style="background:var(--mid)"></i>Sekundär: ${e.sec.map(m=>MUS[m]).join(", ")}</span>`:""}</div>`;
- document.getElementById("infomodal").style.display="flex";}
-function closeInfo(){document.getElementById("infomodal").style.display="none";}
+ document.getElementById("infomodal").style.display="flex";startImgCycle(name,"info");}
+function closeInfo(){stopImgCycle();document.getElementById("infomodal").style.display="none";}
 const HELP={
  howto:{title:"So nutzt du GymBuddy",html:`<p class="cat-desc">In fünf Schritten von der Planung bis zum Fortschritt:</p>
    <ol class="cat-cues" style="padding-left:22px">
@@ -779,7 +792,8 @@ const HELP={
    <div class="sec-h" style="margin-top:14px">Gut zu wissen</div>
    <ul class="cat-cues"><li>Oben rechts schaltest du zwischen hellem und dunklem Design um.</li>
    <li>Deine Daten liegen lokal auf dem Gerät – sichere sie ab und zu über „Exportieren" im Verlauf.</li>
-   <li>Für ein App-Gefühl die Seite zum Home-Bildschirm hinzufügen.</li></ul>`},
+   <li>Für ein App-Gefühl die Seite zum Home-Bildschirm hinzufügen.</li></ul>
+   <p class="hint" style="margin-top:14px;text-align:center;opacity:.7">GymBuddy · Version 0.2</p>`},
  level:{title:"Erfahrungsstufe",html:`<p class="cat-desc">Die Stufe steuert, welche Übungen in den Plan kommen – sortiert nach technischem Anspruch:</p>
    <div class="sec-h" style="margin-top:10px">Einsteiger</div><p class="cat-desc">Nur technisch einfache, gut kontrollierbare Übungen – oft an Maschinen oder als saubere Grundbewegung.</p>
    <div class="sec-h" style="margin-top:12px">Geübt</div><p class="cat-desc">Zusätzlich mittelschwere Übungen mit freien Gewichten und anspruchsvolleren Varianten.</p>
@@ -1001,6 +1015,7 @@ const LVL=["","Einsteiger","Geübt","Fortgeschritten"];
 let catSel=null, catF={mus:"",eq:"",q:""};
 function renderCatalog(){const out=document.getElementById("cat-out");if(!out)return;
  if(catSel){renderCatDetail(out);return;}
+ stopImgCycle();
  let h=`<div class="panel"><div class="sec-h">Übungskatalog</div>
   <p class="hint">Technik, Ausführungshinweise und beanspruchte Muskulatur für alle ${EX.length} Übungen.</p>
   <div class="catfilters">
@@ -1025,6 +1040,7 @@ function renderCatDetail(out){const e=EX.find(x=>x.n===catSel);if(!e){catSel=nul
  out.innerHTML=`<div class="panel"><div class="row" style="gap:8px"><button class="btn" onclick="catSel=null;renderCatalog()">‹ Zurück</button><button class="btn" onclick="toggleFav('${e.n}');renderCatalog()">${isFav(e.n)?"★ Favorit":"☆ Favorit"}</button></div>
   <h2 class="cat-title">${e.n}</h2>
   <div class="ex-meta" style="margin-bottom:16px"><span class="tag">${EQL[e.eq]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${LVL[e.lvl]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${iso?"Isolation":"Grundübung"}</span></div>
+  ${exImgHTML(e.n,"cat")}
   <div class="sec-h">Ausführung</div><p class="cat-desc">${info.desc}</p>
   <div class="sec-h" style="margin-top:16px">Worauf achten</div><ul class="cat-cues">${info.cues.map(c=>`<li>${c}</li>`).join("")}</ul>
   <div class="sec-h" style="margin-top:16px">Beanspruchte Muskulatur</div>
@@ -1032,10 +1048,11 @@ function renderCatDetail(out){const e=EX.find(x=>x.n===catSel);if(!e){catSel=nul
   ${bodySVG()}</div>`;
  e.sec.forEach(m=>document.querySelectorAll(`#cat-out [data-m="${m}"]`).forEach(el=>el.style.fill="var(--mid)"));
  e.pri.forEach(m=>document.querySelectorAll(`#cat-out [data-m="${m}"]`).forEach(el=>el.style.fill="var(--hi)"));
+ startImgCycle(e.n,"cat");
 }
 
 // ============ CONTROLS / VIEWS ============
-function showView(v){document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.v===v));
+function showView(v){stopImgCycle();document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.v===v));
  document.querySelectorAll(".view").forEach(s=>s.classList.remove("on"));document.getElementById("v-"+v).classList.add("on");
  if(v==="hist")renderHist();if(v==="train"){if(!logState&&PLAN)buildLog();else renderTrain();}if(v==="cat")renderCatalog();}
 function chip(parent,label,active,on){const b=document.createElement("button");b.className="chip"+(active?" on":"");b.textContent=label;b.onclick=on;parent.appendChild(b);return b;}
