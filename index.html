@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- GymBuddy · Version 0.2 · Übungsbilder (free-exercise-db, Auto-Wechsel Start/Ende) -->
+<!-- GymBuddy · Version 0.3 · Top-Set/Back-off (Kraft), Aufwärmsätze, Einstellungen -->
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -180,6 +180,39 @@
   .exgif{display:block;width:100%;height:auto;max-height:240px;object-fit:contain;margin:0 auto;background:var(--bg)}
   .exgif-cap{font-size:11px;color:var(--muted);text-align:center;padding:6px 8px;background:var(--paper);border-top:1px solid var(--line)}
   .exgif-cap b{color:var(--accent);font-weight:700}
+  .setrow-opt{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .setrow-opt:last-of-type{border-bottom:none}
+  .opt-t{font-weight:600;font-size:15px} .opt-d{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+  .toggle{flex:none;width:48px;height:28px;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);position:relative;cursor:pointer;transition:.18s;padding:0}
+  .toggle .knob{position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;background:var(--muted);transition:.18s}
+  .toggle.on{background:var(--accent);border-color:var(--accent)} .toggle.on .knob{left:23px;background:#fff}
+  .warmlabel{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:6px 0 3px}
+  .warmrow{display:flex;align-items:center;gap:8px;padding:4px 0;color:var(--muted);font-size:13.5px}
+  .warmrow .wn{width:34px;text-align:center;color:var(--accent)}
+  .setrow.topset input{border-color:var(--accent)} .setrow.topset .sn{color:var(--accent);font-weight:700}
+  .ton-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:4px 0 12px}
+  .ton-v{font-family:"Anton",sans-serif;font-size:30px;color:var(--accent);line-height:1}
+  .ton-l{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-top:3px}
+  .ton-fun{font-size:13.5px;color:var(--ink);max-width:320px;line-height:1.45}
+  .sessrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)} .sessrow:last-child{border-bottom:none}
+  .sess-info{flex:1 1 130px;min-width:120px;font-size:13.5px} .sess-info b{font-weight:600} .sess-info .dt{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+  .sess-bar{flex:1 1 70px;height:9px;background:var(--bg);border:1px solid var(--line);border-radius:6px;overflow:hidden;min-width:50px}
+  .sess-fill{height:100%;background:var(--mid)}
+  .sess-ton{flex:none;width:76px;text-align:right;font-size:13px;font-weight:600;color:var(--ink)}
+  details.acc summary{cursor:pointer;display:flex;align-items:center;gap:10px;list-style:none}
+  details.acc summary::-webkit-details-marker{display:none}
+  details.acc summary::after{content:"▾";color:var(--muted);transition:transform .2s;margin-left:auto}
+  details.acc[open] summary::after{transform:rotate(180deg)}
+  .acc-meta{font-size:11.5px;color:var(--muted);font-weight:600}
+  .set-sec{margin-top:18px;padding-top:4px;border-top:1px solid var(--line)} .set-sec:first-of-type{border-top:none;margin-top:6px}
+  .charttip{position:fixed;z-index:200;background:var(--ink);color:var(--paper);font-size:12px;padding:6px 9px;border-radius:8px;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.3);display:none;line-height:1.4;white-space:nowrap}
+  .cal2{display:grid;grid-template-columns:auto repeat(7,1fr);gap:3px;margin-top:4px}
+  .cal2 .h{font-size:10px;color:var(--muted);text-align:center;font-weight:700;padding-bottom:3px}
+  .cal2 .kw{font-size:10px;color:var(--muted);text-align:right;padding-right:7px;align-self:center;white-space:nowrap}
+  .cal2 .cd{height:27px;display:flex;align-items:center;justify-content:center;border-radius:7px;border:1px solid var(--line);color:var(--muted);font-size:11.5px;font-variant-numeric:tabular-nums}
+  .cal2 .cd.train{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+  .cal2 .cd.future{opacity:.3}
+  .cal2 .cd.today{box-shadow:0 0 0 2px var(--accent)}
 </style>
 </head>
 <body>
@@ -190,6 +223,7 @@
       <div class="setbtns">
         <button class="iconbtn" onclick="openHelp('howto')" title="Anleitung – so nutzt du GymBuddy">?</button>
         <button class="iconbtn" id="themeBtn" onclick="toggleTheme()" title="Hell / Dunkel">☾</button>
+        <button class="iconbtn" onclick="openSettings()" title="Einstellungen">⚙</button>
       </div>
     </div>
     <p class="lede">Evidenzbasierter Generator mit Periodisierung, Lastberechnung, Volumen-Landmarks (MEV–MRV),
@@ -283,6 +317,34 @@
   <div class="modal">
     <div class="modal-h"><span id="info-title">Übung</span><button class="tbtn" onclick="closeInfo()">✕</button></div>
     <div id="info-body"></div>
+  </div>
+</div>
+
+<div id="setmodal" class="modal-bg" style="display:none" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <div class="modal-h"><span>Einstellungen</span><button class="tbtn" onclick="closeSettings()">✕</button></div>
+    <div class="setrow-opt">
+      <div><div class="opt-t">Aufwärmsätze anzeigen</div><div class="opt-d">Aufwärmrampe vor Grundübungen mit freiem Gewicht/Maschine. Reine Anzeige – zählt nicht ins Volumen und wird nicht protokolliert.</div></div>
+      <button id="sw-warmup" class="toggle" onclick="toggleWarmup()" role="switch" aria-label="Aufwärmsätze"><span class="knob"></span></button>
+    </div>
+    <div class="setrow-opt">
+      <div><div class="opt-t">Top-Set &amp; Back-off (Kraft)</div><div class="opt-d">Im Ziel „Kraft": ein schwerer Top-Satz plus leichtere Folgesätze bei Grundübungen. Aus = gleichmäßige Sätze.</div></div>
+      <button id="sw-topset" class="toggle" onclick="toggleTopset()" role="switch" aria-label="Top-Set Back-off"><span class="knob"></span></button>
+    </div>
+    <p class="hint" style="margin-top:10px">Änderungen wirken sofort. Eine bereits laufende Trainingseinheit übernimmt die Satzstruktur erst beim nächsten Start der Einheit.</p>
+    <div class="set-sec">
+      <div class="sec-h">kg ↔ lbs Umrechner</div>
+      <div class="row" style="align-items:center;gap:8px">
+        <input id="cv-kg" type="number" inputmode="decimal" placeholder="kg" oninput="cvFrom('kg')" style="width:110px"><span class="hint" style="margin:0">kg</span>
+        <span style="font-weight:700">=</span>
+        <input id="cv-lb" type="number" inputmode="decimal" placeholder="lbs" oninput="cvFrom('lb')" style="width:110px"><span class="hint" style="margin:0">lbs</span></div>
+    </div>
+    <div class="set-sec">
+      <div class="sec-h">Daten sichern &amp; übertragen</div>
+      <p class="hint" style="margin-top:0">Exportiere deinen kompletten Stand (Plan, 1RM-Werte, Verlauf) als Datei – oder lade eine Sicherung, auch auf einem anderen Gerät.</p>
+      <div class="row"><button class="btn accent" onclick="exportData()">⬇ Exportieren (JSON)</button>
+        <label class="btn" style="cursor:pointer">⬆ Importieren<input type="file" accept="application/json,.json" style="display:none" onchange="importData(this)"></label></div>
+    </div>
   </div>
 </div>
 
@@ -431,6 +493,8 @@ const LM={chest:[8,22],back:[10,25],shoulders:[8,24],biceps:[6,20],triceps:[6,18
 
 // ============ STATE ============
 const S=jget("tpe.cfg",{goal:"hypertrophy",days:4,level:"int",split:"auto",block:4,unit:"kg",equip:["bw","db","bb","kb","ma"]});
+const cfgUI=jget("tpe.ui",{warmup:false,topset:true});
+function saveUI(){jset("tpe.ui",{warmup:!!cfgUI.warmup,topset:cfgUI.topset!==false});}
 if(!S.unit)S.unit="kg";
 S.unit="kg"; // kg fest; Umschalter aus UI entfernt, Logik bleibt für späteres Einstellungsmenü
 S.equipSet=new Set(S.equip);
@@ -455,17 +519,20 @@ function pickIso(mus,mx,used){let pool=EX.filter(e=>(e.t===I||e.pat==="calf"||e.
 function periodize(cat,week,total){
  const hasDL=total>=3,isDL=hasDL&&week===total,buildN=hasDL?total-1:total;
  const s=SCHEME[S.goal][cat];const k=Math.min(week,buildN),frac=buildN>1?(k-1)/(buildN-1):0;
- let sets=s.sets,reps=s.reps,loadStr=s.load||null,restSec=s.restSec,rir=s.rir,phase="Aufbau";
+ let sets=s.sets,reps=s.reps,loadStr=s.load||null,restSec=s.restSec,rir=s.rir,phase="Aufbau",setPlan=null;
  if(cat==="core")return{sets:isDL?2:s.sets,reps:s.reps,loadStr:null,restSec:s.restSec,rir:isDL?"3–4":s.rir,phase:isDL?"Deload":"Basis",isDL};
  if(isDL){sets=Math.max(2,Math.round(s.sets/2));rir="3–4";phase="Deload";
   if(S.goal==="strength"){reps=cat==="comp"?"5":"8";loadStr=cat==="comp"?"~65 %":"~60 %";}
   else if(S.goal==="hypertrophy"){loadStr=cat==="comp"?"~60 %":"~55 %";}
   else{reps=s.reps;loadStr="~45 %";}
   return{sets,reps,loadStr,restSec,rir,phase,isDL};}
- if(S.goal==="strength"){if(cat==="comp"){const ld=Math.round(80+frac*10);reps=String(Math.round(6-frac*3));loadStr=ld+" %";phase=frac<0.5?"Aufbau":"Intensivierung";}else{reps="6–8";loadStr="~80 %";phase="Assistenz";}}
+ if(S.goal==="strength"){if(cat==="comp"){const ld=Math.round(80+frac*10);const topReps=Math.round(6-frac*3);reps=String(topReps);loadStr=ld+" %";phase=frac<0.5?"Aufbau":"Intensivierung";
+   if(cfgUI.topset!==false){const boLoad=Math.max(60,ld-10),boReps=topReps+2,boSets=Math.max(2,s.sets-1);
+     setPlan=[{reps:topReps,loadPct:ld,top:true}];for(let i=0;i<boSets;i++)setPlan.push({reps:boReps,loadPct:boLoad});sets=setPlan.length;}
+  }else{reps="6–8";loadStr="~80 %";phase="Assistenz";}}
  else if(S.goal==="hypertrophy"){const add=Math.round(frac*2);sets=3+add;loadStr=s.load;reps=s.reps;phase=frac<0.34?"Aufbau":(frac<0.84?"Akkumulation":"Intensivierung");}
  else{const rhi=cat==="comp"?22:25;const r=Math.round(15+frac*(rhi-15));reps=r+"+";loadStr=s.load;sets=s.sets+(frac>0.6?1:0);phase="Aufbau";}
- return{sets,reps,loadStr,restSec,rir,phase,isDL:false};
+ return{sets,reps,loadStr,restSec,rir,phase,isDL:false,setPlan};
 }
 function catOf(ex){return ex.pat==="core"?"core":(ex.t===C?"comp":"iso");}
 // Exercise order: multi-joint/large before single-joint, core last (ACSM / Simão et al.)
@@ -475,6 +542,26 @@ function orderItems(items){return items.map((it,i)=>[it,i]).sort((a,b)=>(ordKey(
 function e1RM(w,r){return Math.round(w*(1+r/30)*10)/10;}
 function pctMid(ls){if(!ls)return null;const n=(ls.match(/\d+/g)||[]).map(Number);return n.length?n.reduce((a,b)=>a+b,0)/n.length:null;}
 function workKg(name,loadStr){const e=jget("tpe.e1rm",{})[name];const p=pctMid(loadStr);if(!e||!p)return null;return e*p/100;}
+function setWeight(name,pct){const e=jget("tpe.e1rm",{})[name];return e?workLoad(e*pct/100):"";}
+function makeSets(name,pr){
+ if(pr.setPlan&&pr.setPlan.length)return pr.setPlan.map(sp=>({w:setWeight(name,sp.loadPct),r:"",done:false,tr:String(sp.reps),top:!!sp.top,pct:sp.loadPct}));
+ const raw=workKg(name,pr.loadStr),w=raw?workLoad(raw):"";const tr=typeof pr.reps==="string"?pr.reps:String(pr.reps);
+ return Array.from({length:pr.sets},()=>({w,r:"",done:false,tr}));
+}
+function topWorkKg(name,pr){const e=jget("tpe.e1rm",{})[name];if(!e)return null;let pct=null;
+ if(pr.setPlan&&pr.setPlan.length)pct=Math.max(...pr.setPlan.map(s=>s.loadPct));else pct=pctMid(pr.loadStr);
+ return pct?e*pct/100:null;}
+function warmupSets(name,pr){
+ if(!cfgUI.warmup)return[];const def=EX.find(x=>x.n===name);if(!def)return[];
+ if(catOf(def)!=="comp"||def.eq==="bw"||isTm(name))return[];
+ const top=topWorkKg(name,pr);if(!top)return[];const topR=workLoad(top);const out=[];
+ if(def.eq==="bb"&&topR>40)out.push({w:20,r:8});
+ [[0.5,5],[0.7,3],[0.85,2]].forEach(([p,r])=>{const w=workLoad(top*p);if(w>0&&w<topR&&!out.some(o=>o.w===w))out.push({w,r});});
+ return out;}
+function presetSummary(pr){
+ if(pr.setPlan&&pr.setPlan.length){const top=pr.setPlan.find(s=>s.top)||pr.setPlan[0];const bo=pr.setPlan.filter(s=>!s.top);
+   let str=`1 × ${top.reps} @ ${top.loadPct} %`;if(bo.length)str+=` + ${bo.length} × ${bo[0].reps} @ ${bo[0].loadPct} %`;return str;}
+ return null;}
 
 // ============ GENERATE ============
 function makePlan(){
@@ -552,7 +639,8 @@ function renderPlan(){
    const e1cur=E1[it.ex.n];const raw=workKg(it.ex.n,pr.loadStr);
    const load=pr.loadStr&&it.ex.eq!=="bw"?` · ${pr.loadStr} 1RM`:"";
    const e1tag=tm?"":`<span class="tag e1tag" data-n="${it.ex.n}" onclick="openE1Modal(this.dataset.n)">1RM ${e1cur?showW(e1cur)+" "+unitLbl()+" ✎":"+"}</span>`;
-   const presStr=tm?`${pr.sets} × ${TMSEC[S.goal]} · P ${secStr(pr.restSec)}`:`${raw?`<span class="kg">≈ ${workLoad(raw)} ${unitLbl()}</span><br>`:""}${pr.sets} × ${pr.reps}${load} · P ${secStr(pr.restSec)} · RIR ${pr.rir}`;
+   const ps=presetSummary(pr);
+   const presStr=tm?`${pr.sets} × ${TMSEC[S.goal]} · P ${secStr(pr.restSec)}`:`${raw?`<span class="kg">≈ ${workLoad(raw)} ${unitLbl()}</span><br>`:""}${ps||`${pr.sets} × ${pr.reps}${load}`} · P ${secStr(pr.restSec)} · RIR ${pr.rir}`;
    h+=`<div class="ex"><div class="ex-main"><div class="ex-name">${it.ex.n}${iso} <span class="info-i" data-n="${it.ex.n}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span></div>
      <div class="ex-meta"><span class="tag">${EQL[it.ex.eq]}</span>${mus}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${pr.phase}</span>${e1tag}</div></div>
      <div class="pres">${presStr}</div>
@@ -596,8 +684,7 @@ function buildLog(){
  if(!PLAN){document.getElementById("train-out").innerHTML='<p class="empty">Erstelle zuerst einen Plan.</p>';return;}
  const di=trainSel.day,wk=trainSel.week,day=PLAN.days[di];
  logState={di,week:wk,label:day.label,ex:day.items.map(it=>{const pr=periodize(catOf(it.ex),wk,PLAN.config.block);
-   const raw=workKg(it.ex.n,pr.loadStr);const w=raw?workLoad(raw):"";
-   return{name:it.ex.n,pat:it.ex.pat,target:pr,last:lastPerf(it.ex.n),sets:Array.from({length:pr.sets},()=>({w,r:"",done:false}))};})};
+   return{name:it.ex.n,pat:it.ex.pat,target:pr,last:lastPerf(it.ex.n),sets:makeSets(it.ex.n,pr)};})};
  renderTrain();
 }
 function renderTrain(){
@@ -634,12 +721,14 @@ function renderTrain(){
   let lastStr="";if(e.last&&e.last.sets&&e.last.sets.length){lastStr=e.last.sets.map(s=>tm?(s.w>0?`${showW(s.w)}×${s.r}s`:`${s.r}s`):`${showW(s.w)}×${s.r}`).join(", ");}
   h+=`<div class="swipewrap"><div class="del-bg">✕ Entfernen</div>
    <div class="logex" ontouchstart="swStart(event,${xi})" ontouchmove="swMove(event,${xi})" ontouchend="swEnd(event,${xi})">
-   <div class="logex-h"><span class="nm">${e.name}</span><span class="tg">Ziel: ${tm?`${t.sets} × ${TMSEC[S.goal]}${load}`:`${t.sets} × ${t.reps}${load} · RIR ${t.rir}`} · P ${secStr(t.restSec)} <span class="info-i" data-n="${e.name}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span> <button class="rm" title="entfernen" onclick="removeLogEx(${xi})">✕</button></span></div>`;
+   <div class="logex-h"><span class="nm">${e.name}</span><span class="tg">Ziel: ${tm?`${t.sets} × ${TMSEC[S.goal]}${load}`:(presetSummary(t)?`${presetSummary(t)} · RIR ${t.rir}`:`${t.sets} × ${t.reps}${load} · RIR ${t.rir}`)} · P ${secStr(t.restSec)} <span class="info-i" data-n="${e.name}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span> <button class="rm" title="entfernen" onclick="removeLogEx(${xi})">✕</button></span></div>`;
   if(lastStr)h+=`<div class="last-perf">Zuletzt: <b>${lastStr}</b>${tm?"":" "+unitLbl()}</div>`;
-  e.sets.forEach((st,si)=>{h+=`<div class="setrow ${st.done?'done':''} ${st.pr?'pr':''}" id="sr-${xi}-${si}">
-    <span class="sn">${st.pr?'★':si+1}</span>
+  const warm=warmupSets(e.name,t);
+  if(warm.length){h+=`<div class="warmlabel">Aufwärmen · zählt nicht</div>`;warm.forEach(ws=>{h+=`<div class="warmrow"><span class="wn">↑</span><span>${ws.w>0?showW(ws.w)+" "+unitLbl():"leere Stange"} × ${ws.r}</span></div>`;});}
+  e.sets.forEach((st,si)=>{h+=`<div class="setrow ${st.done?'done':''} ${st.pr?'pr':''} ${st.top?'topset':''}" id="sr-${xi}-${si}">
+    <span class="sn">${st.pr?'★':(st.top?'▲':si+1)}</span>
     <input type="number" inputmode="decimal" placeholder="${unitLbl()}" value="${st.w}" oninput="logState.ex[${xi}].sets[${si}].w=this.value">
-    <input type="number" inputmode="numeric" placeholder="${tm?'Sek':'Wdh'}" value="${st.r}" oninput="logState.ex[${xi}].sets[${si}].r=this.value">
+    <input type="number" inputmode="numeric" placeholder="${tm?'Sek':(st.tr||'Wdh')}" value="${st.r}" oninput="logState.ex[${xi}].sets[${si}].r=this.value">
     <button class="chk" onclick="doneSet(${xi},${si})">✓</button></div>`;});
   h+=`</div></div>`;});
  h+=`<button class="btn" style="margin-top:14px" onclick="openAdd()">+ Übung hinzufügen</button>`;
@@ -674,8 +763,8 @@ function openAdd(){const sel=document.getElementById("add-sel");
  document.getElementById("addmodal").style.display="flex";}
 function closeAdd(){document.getElementById("addmodal").style.display="none";}
 function confirmAdd(){const name=document.getElementById("add-sel").value;const ex=EX.find(e=>e.n===name);if(!ex||!logState){closeAdd();return;}
- const pr=periodize(catOf(ex),logState.week,PLAN.config.block);const raw=workKg(ex.n,pr.loadStr);const w=raw?workLoad(raw):"";
- logState.ex.push({name:ex.n,pat:ex.pat,target:pr,last:lastPerf(ex.n),sets:Array.from({length:pr.sets},()=>({w,r:"",done:false}))});
+ const pr=periodize(catOf(ex),logState.week,PLAN.config.block);
+ logState.ex.push({name:ex.n,pat:ex.pat,target:pr,last:lastPerf(ex.n),sets:makeSets(ex.n,pr)});
  closeAdd();renderTrain();}
 function finishWorkout(){
  const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>({w:Math.round(toKg(s.w)*10)/10,r:+s.r}))})).filter(e=>e.sets.length);
@@ -775,6 +864,11 @@ function openInfo(name){const e=EX.find(x=>x.n===name);if(!e)return;const info=c
    <div class="catmus"><span><i class="sw" style="background:var(--hi)"></i>Primär: ${e.pri.map(m=>MUS[m]).join(", ")}</span>${e.sec.length?`<span><i class="sw" style="background:var(--mid)"></i>Sekundär: ${e.sec.map(m=>MUS[m]).join(", ")}</span>`:""}</div>`;
  document.getElementById("infomodal").style.display="flex";startImgCycle(name,"info");}
 function closeInfo(){stopImgCycle();document.getElementById("infomodal").style.display="none";}
+function syncToggles(){const a=document.getElementById("sw-warmup");if(a)a.classList.toggle("on",!!cfgUI.warmup);const b=document.getElementById("sw-topset");if(b)b.classList.toggle("on",cfgUI.topset!==false);}
+function openSettings(){syncToggles();document.getElementById("setmodal").style.display="flex";}
+function closeSettings(){document.getElementById("setmodal").style.display="none";}
+function toggleWarmup(){cfgUI.warmup=!cfgUI.warmup;saveUI();syncToggles();if(logState)renderTrain();}
+function toggleTopset(){cfgUI.topset=(cfgUI.topset===false);saveUI();syncToggles();if(typeof PLAN!=="undefined"&&PLAN)renderPlan();if(logState)toast("Übernommen – wirkt beim nächsten Start der Einheit.");}
 const HELP={
  howto:{title:"So nutzt du GymBuddy",html:`<p class="cat-desc">In fünf Schritten von der Planung bis zum Fortschritt:</p>
    <ol class="cat-cues" style="padding-left:22px">
@@ -791,9 +885,9 @@ const HELP={
    <li><b>Dranbleiben:</b> Konstanz schlägt einzelne perfekte Einheiten – der Streak im Verlauf hilft dabei.</li></ul>
    <div class="sec-h" style="margin-top:14px">Gut zu wissen</div>
    <ul class="cat-cues"><li>Oben rechts schaltest du zwischen hellem und dunklem Design um.</li>
-   <li>Deine Daten liegen lokal auf dem Gerät – sichere sie ab und zu über „Exportieren" im Verlauf.</li>
+   <li>Deine Daten liegen lokal auf dem Gerät – sichere sie ab und zu über „Exportieren" in den Einstellungen (Zahnrad oben rechts).</li>
    <li>Für ein App-Gefühl die Seite zum Home-Bildschirm hinzufügen.</li></ul>
-   <p class="hint" style="margin-top:14px;text-align:center;opacity:.7">GymBuddy · Version 0.2</p>`},
+   <p class="hint" style="margin-top:14px;text-align:center;opacity:.7">GymBuddy · Version 0.3</p>`},
  level:{title:"Erfahrungsstufe",html:`<p class="cat-desc">Die Stufe steuert, welche Übungen in den Plan kommen – sortiert nach technischem Anspruch:</p>
    <div class="sec-h" style="margin-top:10px">Einsteiger</div><p class="cat-desc">Nur technisch einfache, gut kontrollierbare Übungen – oft an Maschinen oder als saubere Grundbewegung.</p>
    <div class="sec-h" style="margin-top:12px">Geübt</div><p class="cat-desc">Zusätzlich mittelschwere Übungen mit freien Gewichten und anspruchsvolleren Varianten.</p>
@@ -828,14 +922,29 @@ function trainingCalendar(log){
  const thisWeek=log.filter(s=>startOfWeek(s.date).getTime()===curMon.getTime()).length;
  return {cells,streak,thisWeek};
 }
+function isoWeek(d){d=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=(d.getUTCDay()+6)%7;d.setUTCDate(d.getUTCDate()-day+3);const f=new Date(Date.UTC(d.getUTCFullYear(),0,4));return 1+Math.round(((d-f)/864e5-3+((f.getUTCDay()+6)%7))/7);}
 function consistencyHTML(log){
- const c=trainingCalendar(log);
- return `<div class="panel"><div class="sec-h">Konstanz</div>
-  <div class="streak-row">
-    <div class="streak-big"><div class="sn">${c.streak}</div><div class="sl">Wochen-Streak${c.streak>0?" 🔥":""}</div></div>
-    <div class="streak-sm"><div class="sn2">${c.thisWeek}</div><div class="sl">diese Woche</div></div></div>
-  <div class="calwrap">${c.cells}</div>
-  <div class="callegend"><span>weniger</span><i class="cal-d cal-0"></i><i class="cal-d cal-1"></i><i class="cal-d cal-2"></i><span>mehr</span></div></div>`;
+ const cnt={};log.forEach(s=>{const k=dayKey(s.date);cnt[k]=(cnt[k]||0)+1;});
+ const weeks=13,today=new Date();today.setHours(0,0,0,0);
+ const curMon=startOfWeek(today),start=new Date(curMon);start.setDate(start.getDate()-(weeks-1)*7);
+ const weekSet=new Set(log.map(s=>startOfWeek(s.date).getTime()));
+ let streak=0,probe=new Date(curMon);
+ if(!weekSet.has(curMon.getTime()))probe.setDate(probe.getDate()-7);
+ while(weekSet.has(probe.getTime())){streak++;probe.setDate(probe.getDate()-7);}
+ const wd=["M","D","M","D","F","S","S"];
+ let g='<div class="cal2"><div class="h"></div>'+wd.map(x=>`<div class="h">${x}</div>`).join("");
+ for(let w=0;w<weeks;w++){const mon=new Date(start);mon.setDate(start.getDate()+w*7);
+   g+=`<div class="kw">KW&nbsp;${isoWeek(mon)}</div>`;
+   for(let dow=0;dow<7;dow++){const dt=new Date(mon);dt.setDate(mon.getDate()+dow);
+     const k=dayKey(dt),c=cnt[k]||0,future=dt>today,isToday=dt.getTime()===today.getTime();
+     const cls=["cd",c>0?"train":"",future?"future":"",isToday?"today":""].filter(Boolean).join(" ");
+     g+=`<div class="${cls}" title="${k}${c?": "+c+" Einheit"+(c>1?"en":""):""}">${dt.getDate()}</div>`;}
+ }
+ g+='</div>';
+ return `<div class="panel"><div class="sec-h">Trainingskalender · letzte 13 Wochen</div>
+  <div class="streak-row"><div class="streak-big"><div class="sn">${streak}</div><div class="sl">Wochen-Streak${streak>0?" 🔥":""}</div></div></div>
+  ${g}
+  <p class="hint" style="margin-top:10px">Markierte (orange) Tage = trainiert. Zahl = Tag des Monats, KW = Kalenderwoche. Der Streak zählt aufeinanderfolgende Wochen mit mindestens einer Einheit.</p></div>`;
 }
 function prBoardHTML(e1){
  const entries=Object.entries(e1).sort((a,b)=>b[1]-a[1]);
@@ -852,68 +961,103 @@ function tmBoardHTML(tb){
 
 function histTopSections(e1){
  const entries=Object.entries(e1).sort((a,b)=>a[0].localeCompare(b[0]));
- let m=`<div class="panel"><div class="sec-h">1RM verwalten &amp; Lastrechner</div>
-   <p class="hint">Hinterlege dein 1RM (oder geschätztes Maximum) pro Übung – daraus berechnet die App die Arbeitsgewichte im Plan.</p>
-   <button class="btn accent" onclick="openE1Modal('')">+ Übung hinzufügen / berechnen</button>`;
- if(entries.length){m+='<div style="margin-top:12px">';entries.forEach(([n,v])=>{m+=`<div class="e1row"><span>${n}</span><span><input type="number" inputmode="decimal" value="${showW(v)}" onchange="setE1('${n}',this.value)"> ${unitLbl()}</span></div>`;});m+='</div>';}
- else m+='<p class="hint" style="margin-top:10px">Noch keine 1RM-Werte gespeichert.</p>';
- m+='</div>';
- const fs='width:110px;border:1.5px solid var(--line);border-radius:8px;padding:8px;font:inherit;font-size:15px;background:var(--bg);color:var(--ink)';
- m+=`<div class="panel"><div class="sec-h">kg ↔ lbs Umrechner</div>
-   <div class="row" style="align-items:center;gap:8px">
-     <input id="cv-kg" type="number" inputmode="decimal" placeholder="kg" oninput="cvFrom('kg')" style="${fs}"><span class="hint" style="margin:0">kg</span>
-     <span style="font-weight:700">=</span>
-     <input id="cv-lb" type="number" inputmode="decimal" placeholder="lbs" oninput="cvFrom('lb')" style="${fs}"><span class="hint" style="margin:0">lbs</span></div></div>`;
- m+=`<div class="panel"><div class="sec-h">Daten sichern &amp; übertragen</div>
-   <p class="hint">Exportiere deinen kompletten Stand (Plan, 1RM-Werte, Verlauf) als Datei – oder lade eine Sicherung, auch auf einem anderen Gerät.</p>
-   <div class="row"><button class="btn accent" onclick="exportData()">⬇ Exportieren (JSON)</button>
-     <label class="btn" style="cursor:pointer">⬆ Importieren<input type="file" accept="application/json,.json" style="display:none" onchange="importData(this)"></label></div></div>`;
- return m;
+ const list=entries.length
+   ? '<div style="margin-top:12px">'+entries.map(([n,v])=>`<div class="e1row"><span>${n}</span><span><input type="number" inputmode="decimal" value="${showW(v)}" onchange="setE1('${n}',this.value)"> ${unitLbl()}</span></div>`).join('')+'</div>'
+   : '<p class="hint" style="margin-top:10px">Noch keine 1RM-Werte gespeichert.</p>';
+ return `<div class="panel"><details class="acc">
+   <summary><span class="sec-h" style="margin:0;flex:1">1RM verwalten &amp; Lastrechner</span><span class="acc-meta">${entries.length} Übung${entries.length===1?"":"en"}</span></summary>
+   <p class="hint" style="margin-top:10px">Hinterlege dein 1RM (oder geschätztes Maximum) pro Übung – daraus berechnet die App die Arbeitsgewichte im Plan.</p>
+   <button class="btn accent" onclick="openE1Modal('')">+ Übung hinzufügen / berechnen</button>
+   ${list}
+ </details></div>`;
 }
 function cvFrom(u){const k=document.getElementById("cv-kg"),l=document.getElementById("cv-lb");if(!k||!l)return;
  if(u==="kg"){const v=+k.value;l.value=v?Math.round(v*UNIT.lbPerKg*10)/10:"";}else{const v=+l.value;k.value=v?Math.round(v*UNIT.kgPerLb*10)/10:"";}}
+function fmtTon(kg){const v=fromKg(kg);if(v>=1000)return (v/1000).toFixed(v>=10000?0:1).replace(".",",")+" t";return Math.round(v).toLocaleString("de-DE")+" "+unitLbl();}
+function tonnageFunFact(kg){
+ if(kg<=0)return "Noch kein Gewicht bewegt – leg los! 💪";
+ const items=[[4.5,"eine Hauskatze","Hauskatzen","🐈"],[75,"einen Menschen","Menschen","🧍"],[250,"ein Klavier","Klaviere","🎹"],[750,"eine Kuh","Kühe","🐄"],[1300,"ein Auto","Autos","🚗"],[6000,"einen Elefanten","Elefanten","🐘"],[12000,"einen Schulbus","Schulbusse","🚌"],[40000,"einen Sattelschlepper","Sattelschlepper","🚚"],[150000,"einen Blauwal","Blauwale","🐋"],[400000,"einen Jumbo-Jet","Jumbo-Jets","✈️"],[10000000,"den Eiffelturm","Eiffeltürme","🗼"]];
+ let pick=items[0];for(const it of items){if(kg/it[0]>=1)pick=it;}
+ const mult=kg/pick[0];
+ if(mult<1.5)return `Das ist etwa so viel wie ${pick[1]} ${pick[3]}.`;
+ const m=mult>=10?Math.round(mult):Math.round(mult*10)/10;
+ return `Das entspricht ≈ ${String(m).replace(".",",")}× ${pick[2]} ${pick[3]}.`;
+}
+function sessionsHTML(log){
+ const rows=log.slice(0,14).map(s=>{let ton=0;s.entries.forEach(e=>{if(!isTm(e.name))e.sets.forEach(st=>ton+=(+st.w||0)*(+st.r||0));});return{s,ton};});
+ const maxTon=Math.max(1,...rows.map(r=>r.ton));
+ const body=rows.map(({s,ton})=>{const d=new Date(s.date);const w=Math.max(4,Math.round(ton/maxTon*100));
+   return `<div class="sessrow"><div class="sess-info"><b>${s.dayLabel}</b><span class="dt">${d.toLocaleDateString("de-DE")} · W${s.week} · ${s.totalSets} Sätze</span></div>
+     <div class="sess-bar"><div class="sess-fill" style="width:${w}%"></div></div>
+     <div class="sess-ton">${ton>0?fmtTon(ton):"–"}</div></div>`;}).join("");
+ return `<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Letzte Einheiten &amp; Volumen</span>
+   <button class="btn" style="margin-left:auto" onclick="if(confirm('Gesamten Verlauf wirklich löschen?')){jset('tpe.log',[]);jset('tpe.e1rm',{});jset('tpe.tmbest',{});renderHist();}">Verlauf löschen</button></div>
+   <p class="hint" style="margin:0 0 10px">Balkenlänge = bewegtes Gewicht (Volumen) der Einheit – so siehst du auf einen Blick, wie schwer jede Einheit war.</p>
+   ${body}</div>`;
+}
 function renderHist(){
  const out=document.getElementById("hist-out");if(!out)return;const log=jget("tpe.log",[]),e1=jget("tpe.e1rm",{});
  const top=histTopSections(e1);
  if(!log.length){out.innerHTML=top+'<div class="panel"><p class="empty">Noch keine Einheiten gespeichert. Logge dein erstes Training im Bereich „Training".</p></div>';return;}
- const totalSets=log.reduce((a,s)=>a+s.totalSets,0);
- const days7=Date.now()-7*864e5,week=log.filter(s=>new Date(s.date).getTime()>days7).length;
- let h=`<div class="panel"><div class="sec-h">Übersicht</div><div class="stat-grid">
-   <div class="stat"><div class="n">${log.length}</div><div class="l">Einheiten</div></div>
-   <div class="stat"><div class="n">${totalSets}</div><div class="l">Sätze gesamt</div></div>
-   <div class="stat"><div class="n">${week}</div><div class="l">letzte 7 Tage</div></div>
-   <div class="stat"><div class="n">${Object.keys(e1).length}</div><div class="l">Übungen mit e1RM</div></div></div></div>`;
+ let tonnage=0,totalReps=0;const exCount={};
+ log.forEach(s=>{s.entries.forEach(e=>{const tm=isTm(e.name);exCount[e.name]=(exCount[e.name]||0)+1;
+   e.sets.forEach(st=>{if(!tm){tonnage+=(+st.w||0)*(+st.r||0);totalReps+=(+st.r||0);}});});});
+ const fav=Object.entries(exCount).sort((a,b)=>b[1]-a[1])[0];
+ let h=`<div class="panel"><div class="sec-h">Übersicht</div>
+   <div class="ton-banner"><div><div class="ton-v">${fmtTon(tonnage)}</div><div class="ton-l">bewegtes Gesamtgewicht</div></div>
+     <div class="ton-fun">${tonnageFunFact(tonnage)}</div></div>
+   <div class="stat-grid">
+     <div class="stat"><div class="n">${log.length}</div><div class="l">Einheiten gesamt</div></div>
+     <div class="stat"><div class="n">${totalReps.toLocaleString("de-DE")}</div><div class="l">Wiederholungen gesamt</div></div>
+     <div class="stat"><div class="n" style="font-size:17px;line-height:1.25;padding-top:7px">${fav?fav[0]:"–"}</div><div class="l">Lieblingsübung${fav?" · "+fav[1]+"×":""}</div></div></div></div>`;
  h+=consistencyHTML(log);
  h+=prBoardHTML(e1);
  h+=tmBoardHTML(jget("tpe.tmbest",{}));
- // e1RM bestlist + chart
  const exNames=[...new Set(log.flatMap(s=>s.entries.map(e=>e.name)))];
- h+=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Kraft- / Haltezeit-Entwicklung</span></div>
+ h+=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Kraftentwicklung</span></div>
+   <p class="hint" style="margin:0 0 10px">Geschätztes 1RM je Einheit für die gewählte Übung – eine steigende Kurve bedeutet Fortschritt.</p>
    <div class="row" style="margin-bottom:10px"><select id="exsel" onchange="drawE1()">${exNames.map(n=>`<option>${n}</option>`).join("")}</select></div>
    <div id="e1chart"></div></div>`;
- // volume trend
- h+=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Volumen-Verlauf (Sätze/Einheit)</span></div><div id="volchart"></div></div>`;
- // sessions
- h+=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Letzte Einheiten</span>
-   <button class="btn" style="margin-left:auto" onclick="if(confirm('Gesamten Verlauf löschen?')){jset('tpe.log',[]);jset('tpe.e1rm',{});renderHist();}">Verlauf löschen</button></div>`;
- log.slice(0,12).forEach(s=>{const d=new Date(s.date);h+=`<div class="sess"><span><b>${s.dayLabel}</b> · W${s.week}<br><span class="dt">${d.toLocaleDateString("de-DE")} ${d.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})}</span></span><span>${s.totalSets} Sätze</span></div>`;});
- h+=`</div>`;
- out.innerHTML=top+h;drawE1();drawVol();
+ h+=sessionsHTML(log);
+ out.innerHTML=top+h;drawE1();
 }
 function drawE1(){const log=jget("tpe.log",[]);const sel=document.getElementById("exsel");if(!sel)return;const name=sel.value;const tm=isTm(name);
  const pts=[];log.slice().reverse().forEach(s=>{s.entries.filter(e=>e.name===name).forEach(e=>{let mx=0;e.sets.forEach(st=>{if(tm){if(st.r>0)mx=Math.max(mx,st.r);}else{if(st.w>0&&st.r>0)mx=Math.max(mx,e1RM(st.w,st.r));}});if(mx)pts.push({x:new Date(s.date).getTime(),y:tm?mx:Math.round(fromKg(mx)*10)/10});});});
  document.getElementById("e1chart").innerHTML=pts.length>1?lineChart(pts,tm?"s":unitLbl()):'<p class="hint">Mindestens zwei Einträge nötig, um einen Verlauf zu zeichnen.</p>';}
 function drawVol(){const log=jget("tpe.log",[]);const pts=log.slice().reverse().map(s=>({x:new Date(s.date).getTime(),y:s.totalSets}));
  document.getElementById("volchart").innerHTML=pts.length?barChart(pts):'<p class="hint">Noch keine Daten.</p>';}
-function lineChart(pts,unit){const W=600,H=180,p=34;const xs=pts.map(o=>o.x),ys=pts.map(o=>o.y);
- const xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...ys)*.95,ymax=Math.max(...ys)*1.05;
- const X=x=>p+(xmax===xmin?0.5:(x-xmin)/(xmax-xmin))*(W-2*p),Y=y=>H-p-(ymax===ymin?0.5:(y-ymin)/(ymax-ymin))*(H-2*p);
- let path=pts.map((o,i)=>(i?"L":"M")+X(o.x).toFixed(1)+" "+Y(o.y).toFixed(1)).join(" ");
- let dots=pts.map(o=>`<circle cx="${X(o.x).toFixed(1)}" cy="${Y(o.y).toFixed(1)}" r="3.5" fill="var(--accent)"/>`).join("");
- let yl=`<text x="4" y="${Y(ymax)+4}" font-size="11" fill="var(--muted)">${Math.round(ymax)} ${unit}</text><text x="4" y="${Y(ymin)+4}" font-size="11" fill="var(--muted)">${Math.round(ymin)} ${unit}</text>`;
- return `<svg width="100%" viewBox="0 0 ${W} ${H}"><line x1="${p}" y1="${H-p}" x2="${W-p}" y2="${H-p}" stroke="var(--line)"/><path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2"/>${dots}${yl}
-   <text x="${p}" y="${H-8}" font-size="11" fill="var(--muted)">${new Date(xmin).toLocaleDateString("de-DE")}</text>
-   <text x="${W-p}" y="${H-8}" font-size="11" fill="var(--muted)" text-anchor="end">${new Date(xmax).toLocaleDateString("de-DE")}</text></svg>`;}
+function lineChart(pts,unit){const W=620,H=215,pl=46,pr=16,pt=16,pb=44;
+ const xs=pts.map(o=>o.x),ys=pts.map(o=>o.y);
+ const xmin=Math.min(...xs),xmax=Math.max(...xs);
+ let ymin=Math.min(...ys),ymax=Math.max(...ys);
+ if(ymin===ymax){ymin-=1;ymax+=1;}else{const pad=(ymax-ymin)*0.12;ymin-=pad;ymax+=pad;}
+ const X=x=>pl+(xmax===xmin?0.5:(x-xmin)/(xmax-xmin))*(W-pl-pr);
+ const Y=y=>H-pb-(ymax===ymin?0.5:(y-ymin)/(ymax-ymin))*(H-pt-pb);
+ let grid="",ylab="";
+ for(let i=0;i<=3;i++){const v=ymin+(ymax-ymin)*i/3,yy=Y(v);
+   grid+=`<line x1="${pl}" y1="${yy.toFixed(1)}" x2="${W-pr}" y2="${yy.toFixed(1)}" stroke="var(--line)" stroke-opacity=".55"/>`;
+   ylab+=`<text x="${pl-7}" y="${(yy+4).toFixed(1)}" font-size="11" fill="var(--muted)" text-anchor="end">${Math.round(v)}</text>`;}
+ const xlab=[xmin,(xmin+xmax)/2,xmax].map((xv,i)=>{const xx=X(xv),anc=i===0?"start":i===2?"end":"middle";
+   return `<text x="${xx.toFixed(1)}" y="${H-pb+18}" font-size="11" fill="var(--muted)" text-anchor="${anc}">${new Date(xv).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}</text>`;}).join("");
+ const path=pts.map((o,i)=>(i?"L":"M")+X(o.x).toFixed(1)+" "+Y(o.y).toFixed(1)).join(" ");
+ const dots=pts.map(o=>{const cx=X(o.x).toFixed(1),cy=Y(o.y).toFixed(1),ds=new Date(o.x).toLocaleDateString("de-DE");
+   return `<circle cx="${cx}" cy="${cy}" r="3.6" fill="var(--accent)"/><circle cx="${cx}" cy="${cy}" r="14" fill="transparent" style="cursor:pointer" onmousemove="chartTip(event,'${ds}','${o.y} ${unit}')" onmouseleave="chartTipHide()" ontouchstart="chartTip(event,'${ds}','${o.y} ${unit}')" ontouchend="chartTipHide()"/>`;}).join("");
+ const ycy=pt+(H-pt-pb)/2,yt=unit==="s"?"Haltezeit (s)":"1RM ("+unit+")";
+ const yTitle=`<text x="13" y="${ycy}" font-size="11" fill="var(--muted)" text-anchor="middle" transform="rotate(-90 13 ${ycy})">${yt}</text>`;
+ const xTitle=`<text x="${pl+(W-pl-pr)/2}" y="${H-4}" font-size="11" fill="var(--muted)" text-anchor="middle">Datum</text>`;
+ return `<svg width="100%" viewBox="0 0 ${W} ${H}" style="overflow:visible">${grid}
+   <line x1="${pl}" y1="${pt}" x2="${pl}" y2="${H-pb}" stroke="var(--line)"/>
+   <line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line)"/>
+   <path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2"/>${dots}${ylab}${xlab}${yTitle}${xTitle}</svg>`;}
+let chartTipT=null;
+function chartTip(ev,dateStr,valStr){let t=document.getElementById("charttip");
+ if(!t){t=document.createElement("div");t.id="charttip";t.className="charttip";document.body.appendChild(t);}
+ const touch=ev.touches&&ev.touches[0],p=touch||ev;
+ t.innerHTML=`<b>${valStr}</b><br>${dateStr}`;t.style.display="block";
+ t.style.left=Math.max(8,Math.min((window.innerWidth||360)-140,p.clientX+12))+"px";
+ t.style.top=Math.max(8,p.clientY-46)+"px";
+ clearTimeout(chartTipT);if(touch){chartTipT=setTimeout(chartTipHide,2500);if(ev.cancelable)ev.preventDefault();}}
+function chartTipHide(){const t=document.getElementById("charttip");if(t)t.style.display="none";}
 function barChart(pts){const W=600,H=160,p=30;const n=pts.length,ymax=Math.max(...pts.map(o=>o.y),1)*1.1;
  const bw=Math.min(40,(W-2*p)/n-6);let bars="";
  pts.forEach((o,i)=>{const x=p+i*((W-2*p)/n)+((W-2*p)/n-bw)/2;const hgt=(o.y/ymax)*(H-2*p);bars+=`<rect x="${x.toFixed(1)}" y="${(H-p-hgt).toFixed(1)}" width="${bw.toFixed(1)}" height="${hgt.toFixed(1)}" rx="3" fill="var(--mid)"/><text x="${(x+bw/2).toFixed(1)}" y="${H-p-hgt-4}" font-size="10" fill="var(--muted)" text-anchor="middle">${o.y}</text>`;});
@@ -921,59 +1065,12 @@ function barChart(pts){const W=600,H=160,p=30;const n=pts.length,ymax=Math.max(.
 
 // ============ BODY SVG ============
 function bodySVG(){return `
-<svg width="100%" viewBox="0 0 640 455" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink);max-width:440px">
-<style>.sil{fill:var(--none);stroke:currentColor;stroke-opacity:.28;stroke-width:1.1}
-.reg{fill:var(--none);stroke:currentColor;stroke-opacity:.32;stroke-width:.9}
-.def{fill:none;stroke:currentColor;stroke-opacity:.2;stroke-width:1}
+<svg width="100%" viewBox="0 0 640 490" xmlns="http://www.w3.org/2000/svg" style="color:var(--ink);max-width:440px">
+<style>.sil{fill:var(--none);stroke:currentColor;stroke-opacity:.34;stroke-width:1.2}
+.reg{fill:var(--none);stroke:currentColor;stroke-opacity:.4;stroke-width:.9}
+.def{fill:none;stroke:currentColor;stroke-opacity:.22;stroke-width:1}
 .cp{font-family:"Anton",sans-serif;font-size:18px;letter-spacing:1.5px;fill:var(--muted);text-anchor:middle}</style>
-<ellipse class="sil" cx="158" cy="40" rx="18" ry="22"/><path class="sil" d="M150 58 L166 58 L168 74 L148 74 Z"/><path class="sil" d="M158 74 C138 74 128 78 118 84
-      C104 90 96 100 94 112
-      C98 130 104 150 108 168
-      C112 188 118 206 120 224
-      C118 240 114 252 112 262
-      C128 270 146 272 158 272
-      C170 272 188 270 204 262
-      C202 252 198 240 196 224
-      C198 206 204 188 208 168
-      C212 150 218 130 222 112
-      C220 100 212 90 198 84
-      C188 78 178 74 158 74 Z"/><path class="sil" d="M106 92 C92 98 84 112 82 130
-      C80 150 80 170 82 186
-      C76 206 72 226 72 244
-      C72 252 80 254 84 248
-      C88 230 92 210 94 192
-      C98 172 100 150 100 128
-      C102 114 104 102 108 96 Z"/><path class="sil" d="M 210.0 92.0 C 224.0 98.0 232.0 112.0 234.0 130.0 C 236.0 150.0 236.0 170.0 234.0 186.0 C 240.0 206.0 244.0 226.0 244.0 244.0 C 244.0 252.0 236.0 254.0 232.0 248.0 C 228.0 230.0 224.0 210.0 222.0 192.0 C 218.0 172.0 216.0 150.0 216.0 128.0 C 214.0 114.0 212.0 102.0 208.0 96.0 Z"/><path class="sil" d="M74 246 C70 256 72 268 78 270 C84 270 86 258 84 248 Z"/><path class="sil" d="M 242.0 246.0 C 246.0 256.0 244.0 268.0 238.0 270.0 C 232.0 270.0 230.0 258.0 232.0 248.0 Z"/><path class="sil" d="M114 264 C108 286 110 312 114 336
-      C116 356 114 376 116 396
-      C117 414 120 428 126 430
-      C132 430 134 416 134 398
-      C136 372 138 340 142 316
-      C146 296 150 280 154 268
-      C142 262 126 262 114 264 Z"/><path class="sil" d="M 202.0 264.0 C 208.0 286.0 206.0 312.0 202.0 336.0 C 200.0 356.0 202.0 376.0 200.0 396.0 C 199.0 414.0 196.0 428.0 190.0 430.0 C 184.0 430.0 182.0 416.0 182.0 398.0 C 180.0 372.0 178.0 340.0 174.0 316.0 C 170.0 296.0 166.0 280.0 162.0 268.0 C 174.0 262.0 190.0 262.0 202.0 264.0 Z"/><path class="sil" d="M126 428 C122 436 128 442 136 440 L136 428 Z"/><path class="sil" d="M 190.0 428.0 C 194.0 436.0 188.0 442.0 180.0 440.0 L 180.0 428.0 Z"/><path class="reg" data-m="shoulders" d="M118 84 C102 88 94 100 94 114 C100 122 110 122 116 114 C118 104 118 94 118 86 Z"/><path class="reg" data-m="shoulders" d="M 198.0 84.0 C 214.0 88.0 222.0 100.0 222.0 114.0 C 216.0 122.0 206.0 122.0 200.0 114.0 C 198.0 104.0 198.0 94.0 198.0 86.0 Z"/><path class="reg" data-m="chest" d="M154 86 C138 86 124 92 118 102 C116 116 122 130 136 134 C148 136 154 130 154 118 Z"/><path class="reg" data-m="chest" d="M 162.0 86.0 C 178.0 86.0 192.0 92.0 198.0 102.0 C 200.0 116.0 194.0 130.0 180.0 134.0 C 168.0 136.0 162.0 130.0 162.0 118.0 Z"/><path class="reg" data-m="biceps" d="M98 120 C88 132 86 152 88 170 C94 176 100 172 100 160 C102 144 102 130 104 120 Z"/><path class="reg" data-m="biceps" d="M 218.0 120.0 C 228.0 132.0 230.0 152.0 228.0 170.0 C 222.0 176.0 216.0 172.0 216.0 160.0 C 214.0 144.0 214.0 130.0 212.0 120.0 Z"/><path class="reg" data-m="core" d="M138 138 C136 162 138 190 142 214 C150 222 166 222 174 214 C178 190 180 162 178 138 C168 134 148 134 138 138 Z"/><path class="reg" data-m="quads" d="M118 270 C112 292 114 318 120 338 C130 344 140 338 142 320 C144 298 138 278 132 268 Z"/><path class="reg" data-m="quads" d="M 198.0 270.0 C 204.0 292.0 202.0 318.0 196.0 338.0 C 186.0 344.0 176.0 338.0 174.0 320.0 C 172.0 298.0 178.0 278.0 184.0 268.0 Z"/><path class="reg" data-m="calves" d="M120 344 C116 364 118 384 122 400 C128 404 132 396 132 382 C132 366 128 350 126 342 Z"/><path class="reg" data-m="calves" d="M 196.0 344.0 C 200.0 364.0 198.0 384.0 194.0 400.0 C 188.0 404.0 184.0 396.0 184.0 382.0 C 184.0 366.0 188.0 350.0 190.0 342.0 Z"/><path class="def" d="M158 86 L158 134"/><path class="def" d="M143 158 L173 158"/><path class="def" d="M143 180 L173 180"/><path class="def" d="M143 202 L173 202"/><path class="def" d="M158 138 L158 214"/><text class="cp" x="158" y="20">VORDERSEITE</text><ellipse class="sil" cx="482" cy="40" rx="18" ry="22"/><path class="sil" d="M474 58 L490 58 L492 74 L472 74 Z"/><path class="sil" d="M482 74 C462 74 452 78 442 84
-      C428 90 420 100 418 112
-      C422 130 428 150 432 168
-      C436 188 442 206 444 224
-      C442 240 438 252 436 262
-      C452 270 470 272 482 272
-      C494 272 512 270 528 262
-      C526 252 522 240 520 224
-      C522 206 528 188 532 168
-      C536 150 542 130 546 112
-      C544 100 536 90 522 84
-      C512 78 502 74 482 74 Z"/><path class="sil" d="M430 92 C416 98 408 112 406 130
-      C404 150 404 170 406 186
-      C400 206 396 226 396 244
-      C396 252 404 254 408 248
-      C412 230 416 210 418 192
-      C422 172 424 150 424 128
-      C426 114 428 102 432 96 Z"/><path class="sil" d="M 534.0 92.0 C 548.0 98.0 556.0 112.0 558.0 130.0 C 560.0 150.0 560.0 170.0 558.0 186.0 C 564.0 206.0 568.0 226.0 568.0 244.0 C 568.0 252.0 560.0 254.0 556.0 248.0 C 552.0 230.0 548.0 210.0 546.0 192.0 C 542.0 172.0 540.0 150.0 540.0 128.0 C 538.0 114.0 536.0 102.0 532.0 96.0 Z"/><path class="sil" d="M398 246 C394 256 396 268 402 270 C408 270 410 258 408 248 Z"/><path class="sil" d="M 566.0 246.0 C 570.0 256.0 568.0 268.0 562.0 270.0 C 556.0 270.0 554.0 258.0 556.0 248.0 Z"/><path class="sil" d="M438 264 C432 286 434 312 438 336
-      C440 356 438 376 440 396
-      C441 414 444 428 450 430
-      C456 430 458 416 458 398
-      C460 372 462 340 466 316
-      C470 296 474 280 478 268
-      C466 262 450 262 438 264 Z"/><path class="sil" d="M 526.0 264.0 C 532.0 286.0 530.0 312.0 526.0 336.0 C 524.0 356.0 526.0 376.0 524.0 396.0 C 523.0 414.0 520.0 428.0 514.0 430.0 C 508.0 430.0 506.0 416.0 506.0 398.0 C 504.0 372.0 502.0 340.0 498.0 316.0 C 494.0 296.0 490.0 280.0 486.0 268.0 C 498.0 262.0 514.0 262.0 526.0 264.0 Z"/><path class="sil" d="M450 428 C446 436 452 442 460 440 L460 428 Z"/><path class="sil" d="M 514.0 428.0 C 518.0 436.0 512.0 442.0 504.0 440.0 L 504.0 428.0 Z"/><path class="reg" data-m="shoulders" d="M442 84 C426 88 418 100 418 114 C424 122 434 122 440 114 C442 104 442 94 442 86 Z"/><path class="reg" data-m="shoulders" d="M 522.0 84.0 C 538.0 88.0 546.0 100.0 546.0 114.0 C 540.0 122.0 530.0 122.0 524.0 114.0 C 522.0 104.0 522.0 94.0 522.0 86.0 Z"/><path class="reg" data-m="back" d="M482 80 C460 82 442 88 436 100 C438 108 452 112 482 112 C512 112 526 108 528 100 C522 88 504 82 482 80 Z"/><path class="reg" data-m="back" d="M438 114 C432 132 434 156 444 176 C456 184 470 182 476 170 C474 148 470 126 462 116 C452 113 444 113 438 114 Z"/><path class="reg" data-m="back" d="M 526.0 114.0 C 532.0 132.0 530.0 156.0 520.0 176.0 C 508.0 184.0 494.0 182.0 488.0 170.0 C 490.0 148.0 494.0 126.0 502.0 116.0 C 512.0 113.0 520.0 113.0 526.0 114.0 Z"/><path class="reg" data-m="triceps" d="M422 120 C412 132 410 152 412 170 C418 176 424 172 424 160 C426 144 426 130 428 120 Z"/><path class="reg" data-m="triceps" d="M 542.0 120.0 C 552.0 132.0 554.0 152.0 552.0 170.0 C 546.0 176.0 540.0 172.0 540.0 160.0 C 538.0 144.0 538.0 130.0 536.0 120.0 Z"/><path class="reg" data-m="lowerback" d="M466 180 C464 196 466 210 470 220 C478 224 486 224 494 220 C498 210 500 196 498 180 C490 176 474 176 466 180 Z"/><path class="reg" data-m="glutes" d="M478 226 C460 226 442 232 438 248 C438 262 450 270 466 268 C476 266 478 256 478 244 Z"/><path class="reg" data-m="glutes" d="M 486.0 226.0 C 504.0 226.0 522.0 232.0 526.0 248.0 C 526.0 262.0 514.0 270.0 498.0 268.0 C 488.0 266.0 486.0 256.0 486.0 244.0 Z"/><path class="reg" data-m="hamstrings" d="M442 272 C436 294 438 318 444 338 C454 344 464 338 466 320 C468 298 462 280 456 270 Z"/><path class="reg" data-m="hamstrings" d="M 522.0 272.0 C 528.0 294.0 526.0 318.0 520.0 338.0 C 510.0 344.0 500.0 338.0 498.0 320.0 C 496.0 298.0 502.0 280.0 508.0 270.0 Z"/><path class="reg" data-m="calves" d="M444 344 C440 366 442 388 446 404 C452 408 456 400 456 384 C456 368 452 352 450 344 Z"/><path class="reg" data-m="calves" d="M 520.0 344.0 C 524.0 366.0 522.0 388.0 518.0 404.0 C 512.0 408.0 508.0 400.0 508.0 384.0 C 508.0 368.0 512.0 352.0 514.0 344.0 Z"/><path class="def" d="M482 80 L482 224"/><text class="cp" x="482" y="20">RÜCKSEITE</text>
-</svg>`;}
+<ellipse class="sil" cx="160.0" cy="48.0" rx="18.0" ry="22.0"/><path class="sil" d="M 151.0 66.0 C 154.3 62.7 165.7 62.7 169.0 66.0 C 172.3 69.3 174.3 82.7 171.0 86.0 C 167.7 89.3 152.3 89.3 149.0 86.0 C 145.7 82.7 147.7 69.3 151.0 66.0 Z"/><path class="sil" d="M 160.0 82.0 C 146.7 82.0 127.3 86.3 120.0 90.0 C 112.7 93.7 114.7 94.3 116.0 104.0 C 117.3 113.7 125.7 134.0 128.0 148.0 C 130.3 162.0 130.3 174.3 130.0 188.0 C 129.7 201.7 122.7 221.0 126.0 230.0 C 129.3 239.0 142.7 240.0 150.0 242.0 C 157.3 244.0 162.7 244.0 170.0 242.0 C 177.3 240.0 190.7 239.0 194.0 230.0 C 197.3 221.0 190.3 201.7 190.0 188.0 C 189.7 174.3 189.7 162.0 192.0 148.0 C 194.3 134.0 202.7 113.7 204.0 104.0 C 205.3 94.3 207.3 93.7 200.0 90.0 C 192.7 86.3 173.3 82.0 160.0 82.0 Z"/><path class="sil" d="M 118.0 92.0 C 115.7 91.0 108.7 95.0 106.0 104.0 C 103.3 113.0 102.7 131.0 102.0 146.0 C 101.3 161.0 101.7 178.3 102.0 194.0 C 102.3 209.7 103.3 228.7 104.0 240.0 C 104.7 251.3 105.0 255.3 106.0 262.0 C 107.0 268.7 107.7 276.7 110.0 280.0 C 112.3 283.3 118.7 285.0 120.0 282.0 C 121.3 279.0 118.7 269.0 118.0 262.0 C 117.3 255.0 116.7 251.3 116.0 240.0 C 115.3 228.7 114.0 209.7 114.0 194.0 C 114.0 178.3 115.0 160.0 116.0 146.0 C 117.0 132.0 119.7 119.0 120.0 110.0 C 120.3 101.0 120.3 93.0 118.0 92.0 Z"/><path class="sil" d="M 202.0 92.0 C 204.3 91.0 211.3 95.0 214.0 104.0 C 216.7 113.0 217.3 131.0 218.0 146.0 C 218.7 161.0 218.3 178.3 218.0 194.0 C 217.7 209.7 216.7 228.7 216.0 240.0 C 215.3 251.3 215.0 255.3 214.0 262.0 C 213.0 268.7 212.3 276.7 210.0 280.0 C 207.7 283.3 201.3 285.0 200.0 282.0 C 198.7 279.0 201.3 269.0 202.0 262.0 C 202.7 255.0 203.3 251.3 204.0 240.0 C 204.7 228.7 206.0 209.7 206.0 194.0 C 206.0 178.3 205.0 160.0 204.0 146.0 C 203.0 132.0 200.3 119.0 200.0 110.0 C 199.7 101.0 199.7 93.0 202.0 92.0 Z"/><path class="sil" d="M 126.0 234.0 C 119.7 244.0 117.3 282.7 118.0 304.0 C 118.7 325.3 127.7 343.0 130.0 362.0 C 132.3 381.0 131.7 403.7 132.0 418.0 C 132.3 432.3 134.0 441.0 132.0 448.0 C 130.0 455.0 118.3 457.7 120.0 460.0 C 121.7 462.3 137.3 464.0 142.0 462.0 C 146.7 460.0 146.7 455.3 148.0 448.0 C 149.3 440.7 149.3 432.3 150.0 418.0 C 150.7 403.7 151.3 381.0 152.0 362.0 C 152.7 343.0 153.3 323.7 154.0 304.0 C 154.7 284.3 160.7 255.7 156.0 244.0 C 151.3 232.3 132.3 224.0 126.0 234.0 Z"/><path class="sil" d="M 194.0 234.0 C 200.3 244.0 202.7 282.7 202.0 304.0 C 201.3 325.3 192.3 343.0 190.0 362.0 C 187.7 381.0 188.3 403.7 188.0 418.0 C 187.7 432.3 186.0 441.0 188.0 448.0 C 190.0 455.0 201.7 457.7 200.0 460.0 C 198.3 462.3 182.7 464.0 178.0 462.0 C 173.3 460.0 173.3 455.3 172.0 448.0 C 170.7 440.7 170.7 432.3 170.0 418.0 C 169.3 403.7 168.7 381.0 168.0 362.0 C 167.3 343.0 166.7 323.7 166.0 304.0 C 165.3 284.3 159.3 255.7 164.0 244.0 C 168.7 232.3 187.7 224.0 194.0 234.0 Z"/><ellipse class="reg" data-m="shoulders" cx="120.0" cy="98.0" rx="13.0" ry="12.0"/><ellipse class="reg" data-m="shoulders" cx="200.0" cy="98.0" rx="13.0" ry="12.0"/><path class="reg" data-m="chest" d="M 158.0 94.0 C 153.3 90.0 135.3 94.3 130.0 98.0 C 124.7 101.7 123.7 111.0 126.0 116.0 C 128.3 121.0 138.7 127.0 144.0 128.0 C 149.3 129.0 155.7 127.7 158.0 122.0 C 160.3 116.3 162.7 98.0 158.0 94.0 Z"/><path class="reg" data-m="chest" d="M 162.0 94.0 C 166.7 90.0 184.7 94.3 190.0 98.0 C 195.3 101.7 196.3 111.0 194.0 116.0 C 191.7 121.0 181.3 127.0 176.0 128.0 C 170.7 129.0 164.3 127.7 162.0 122.0 C 159.7 116.3 157.3 98.0 162.0 94.0 Z"/><ellipse class="reg" data-m="biceps" cx="110.0" cy="150.0" rx="8.0" ry="21.0"/><ellipse class="reg" data-m="biceps" cx="210.0" cy="150.0" rx="8.0" ry="21.0"/><path class="reg" data-m="core" d="M 145.0 132.0 C 150.2 122.0 169.8 122.0 175.0 132.0 C 180.2 142.0 178.5 180.3 176.0 192.0 C 173.5 203.7 165.3 202.0 160.0 202.0 C 154.7 202.0 146.5 203.7 144.0 192.0 C 141.5 180.3 139.8 142.0 145.0 132.0 Z"/><path class="reg" data-m="quads" d="M 140.0 250.0 C 135.7 258.0 127.0 282.3 126.0 300.0 C 125.0 317.7 129.7 347.0 134.0 356.0 C 138.3 365.0 148.7 363.0 152.0 354.0 C 155.3 345.0 154.0 319.0 154.0 302.0 C 154.0 285.0 154.3 260.7 152.0 252.0 C 149.7 243.3 144.3 242.0 140.0 250.0 Z"/><path class="reg" data-m="quads" d="M 180.0 250.0 C 184.3 258.0 193.0 282.3 194.0 300.0 C 195.0 317.7 190.3 347.0 186.0 356.0 C 181.7 365.0 171.3 363.0 168.0 354.0 C 164.7 345.0 166.0 319.0 166.0 302.0 C 166.0 285.0 165.7 260.7 168.0 252.0 C 170.3 243.3 175.7 242.0 180.0 250.0 Z"/><ellipse class="reg" data-m="calves" cx="140.0" cy="406.0" rx="9.0" ry="30.0"/><ellipse class="reg" data-m="calves" cx="180.0" cy="406.0" rx="9.0" ry="30.0"/><path class="def" d="M 160 132 L 160 200"/><path class="def" d="M 146 150 L 174 150"/><path class="def" d="M 146 166 L 174 166"/><path class="def" d="M 146 182 L 174 182"/><ellipse class="sil" cx="480.0" cy="48.0" rx="18.0" ry="22.0"/><path class="sil" d="M 471.0 66.0 C 474.3 62.7 485.7 62.7 489.0 66.0 C 492.3 69.3 494.3 82.7 491.0 86.0 C 487.7 89.3 472.3 89.3 469.0 86.0 C 465.7 82.7 467.7 69.3 471.0 66.0 Z"/><path class="sil" d="M 480.0 82.0 C 466.7 82.0 447.3 86.3 440.0 90.0 C 432.7 93.7 434.7 94.3 436.0 104.0 C 437.3 113.7 445.7 134.0 448.0 148.0 C 450.3 162.0 450.3 174.3 450.0 188.0 C 449.7 201.7 442.7 221.0 446.0 230.0 C 449.3 239.0 462.7 240.0 470.0 242.0 C 477.3 244.0 482.7 244.0 490.0 242.0 C 497.3 240.0 510.7 239.0 514.0 230.0 C 517.3 221.0 510.3 201.7 510.0 188.0 C 509.7 174.3 509.7 162.0 512.0 148.0 C 514.3 134.0 522.7 113.7 524.0 104.0 C 525.3 94.3 527.3 93.7 520.0 90.0 C 512.7 86.3 493.3 82.0 480.0 82.0 Z"/><path class="sil" d="M 438.0 92.0 C 435.7 91.0 428.7 95.0 426.0 104.0 C 423.3 113.0 422.7 131.0 422.0 146.0 C 421.3 161.0 421.7 178.3 422.0 194.0 C 422.3 209.7 423.3 228.7 424.0 240.0 C 424.7 251.3 425.0 255.3 426.0 262.0 C 427.0 268.7 427.7 276.7 430.0 280.0 C 432.3 283.3 438.7 285.0 440.0 282.0 C 441.3 279.0 438.7 269.0 438.0 262.0 C 437.3 255.0 436.7 251.3 436.0 240.0 C 435.3 228.7 434.0 209.7 434.0 194.0 C 434.0 178.3 435.0 160.0 436.0 146.0 C 437.0 132.0 439.7 119.0 440.0 110.0 C 440.3 101.0 440.3 93.0 438.0 92.0 Z"/><path class="sil" d="M 522.0 92.0 C 524.3 91.0 531.3 95.0 534.0 104.0 C 536.7 113.0 537.3 131.0 538.0 146.0 C 538.7 161.0 538.3 178.3 538.0 194.0 C 537.7 209.7 536.7 228.7 536.0 240.0 C 535.3 251.3 535.0 255.3 534.0 262.0 C 533.0 268.7 532.3 276.7 530.0 280.0 C 527.7 283.3 521.3 285.0 520.0 282.0 C 518.7 279.0 521.3 269.0 522.0 262.0 C 522.7 255.0 523.3 251.3 524.0 240.0 C 524.7 228.7 526.0 209.7 526.0 194.0 C 526.0 178.3 525.0 160.0 524.0 146.0 C 523.0 132.0 520.3 119.0 520.0 110.0 C 519.7 101.0 519.7 93.0 522.0 92.0 Z"/><path class="sil" d="M 446.0 234.0 C 439.7 244.0 437.3 282.7 438.0 304.0 C 438.7 325.3 447.7 343.0 450.0 362.0 C 452.3 381.0 451.7 403.7 452.0 418.0 C 452.3 432.3 454.0 441.0 452.0 448.0 C 450.0 455.0 438.3 457.7 440.0 460.0 C 441.7 462.3 457.3 464.0 462.0 462.0 C 466.7 460.0 466.7 455.3 468.0 448.0 C 469.3 440.7 469.3 432.3 470.0 418.0 C 470.7 403.7 471.3 381.0 472.0 362.0 C 472.7 343.0 473.3 323.7 474.0 304.0 C 474.7 284.3 480.7 255.7 476.0 244.0 C 471.3 232.3 452.3 224.0 446.0 234.0 Z"/><path class="sil" d="M 514.0 234.0 C 520.3 244.0 522.7 282.7 522.0 304.0 C 521.3 325.3 512.3 343.0 510.0 362.0 C 507.7 381.0 508.3 403.7 508.0 418.0 C 507.7 432.3 506.0 441.0 508.0 448.0 C 510.0 455.0 521.7 457.7 520.0 460.0 C 518.3 462.3 502.7 464.0 498.0 462.0 C 493.3 460.0 493.3 455.3 492.0 448.0 C 490.7 440.7 490.7 432.3 490.0 418.0 C 489.3 403.7 488.7 381.0 488.0 362.0 C 487.3 343.0 486.7 323.7 486.0 304.0 C 485.3 284.3 479.3 255.7 484.0 244.0 C 488.7 232.3 507.7 224.0 514.0 234.0 Z"/><ellipse class="reg" data-m="shoulders" cx="440.0" cy="98.0" rx="13.0" ry="12.0"/><ellipse class="reg" data-m="shoulders" cx="520.0" cy="98.0" rx="13.0" ry="12.0"/><path class="reg" data-m="back" d="M 480.0 84.0 C 472.7 84.0 460.3 85.0 458.0 94.0 C 455.7 103.0 462.3 129.0 466.0 138.0 C 469.7 147.0 475.3 148.0 480.0 148.0 C 484.7 148.0 490.3 147.0 494.0 138.0 C 497.7 129.0 504.3 103.0 502.0 94.0 C 499.7 85.0 487.3 84.0 480.0 84.0 Z"/><path class="reg" data-m="back" d="M 470.0 148.0 C 465.3 148.3 452.0 150.7 450.0 158.0 C 448.0 165.3 454.0 185.3 458.0 192.0 C 462.0 198.7 470.7 204.0 474.0 198.0 C 477.3 192.0 478.7 164.3 478.0 156.0 C 477.3 147.7 474.7 147.7 470.0 148.0 Z"/><path class="reg" data-m="back" d="M 490.0 148.0 C 494.7 148.3 508.0 150.7 510.0 158.0 C 512.0 165.3 506.0 185.3 502.0 192.0 C 498.0 198.7 489.3 204.0 486.0 198.0 C 482.7 192.0 481.3 164.3 482.0 156.0 C 482.7 147.7 485.3 147.7 490.0 148.0 Z"/><ellipse class="reg" data-m="triceps" cx="430.0" cy="150.0" rx="8.0" ry="21.0"/><ellipse class="reg" data-m="triceps" cx="530.0" cy="150.0" rx="8.0" ry="21.0"/><path class="reg" data-m="lowerback" d="M 468.0 198.0 C 472.3 193.7 487.7 193.7 492.0 198.0 C 496.3 202.3 496.0 218.3 494.0 224.0 C 492.0 229.7 484.7 232.0 480.0 232.0 C 475.3 232.0 468.0 229.7 466.0 224.0 C 464.0 218.3 463.7 202.3 468.0 198.0 Z"/><path class="reg" data-m="glutes" d="M 478.0 234.0 C 473.3 233.3 454.7 232.0 450.0 238.0 C 445.3 244.0 445.7 264.0 450.0 270.0 C 454.3 276.0 471.3 278.7 476.0 274.0 C 480.7 269.3 477.7 248.7 478.0 242.0 C 478.3 235.3 482.7 234.7 478.0 234.0 Z"/><path class="reg" data-m="glutes" d="M 482.0 234.0 C 486.7 233.3 505.3 232.0 510.0 238.0 C 514.7 244.0 514.3 264.0 510.0 270.0 C 505.7 276.0 488.7 278.7 484.0 274.0 C 479.3 269.3 482.3 248.7 482.0 242.0 C 481.7 235.3 477.3 234.7 482.0 234.0 Z"/><path class="reg" data-m="hamstrings" d="M 458.0 284.0 C 453.7 283.7 446.7 289.7 446.0 302.0 C 445.3 314.3 449.7 349.0 454.0 358.0 C 458.3 367.0 469.0 365.0 472.0 356.0 C 475.0 347.0 474.3 316.0 472.0 304.0 C 469.7 292.0 462.3 284.3 458.0 284.0 Z"/><path class="reg" data-m="hamstrings" d="M 502.0 284.0 C 506.3 283.7 513.3 289.7 514.0 302.0 C 514.7 314.3 510.3 349.0 506.0 358.0 C 501.7 367.0 491.0 365.0 488.0 356.0 C 485.0 347.0 485.7 316.0 488.0 304.0 C 490.3 292.0 497.7 284.3 502.0 284.0 Z"/><ellipse class="reg" data-m="calves" cx="460.0" cy="404.0" rx="10.0" ry="32.0"/><ellipse class="reg" data-m="calves" cx="500.0" cy="404.0" rx="10.0" ry="32.0"/><path class="def" d="M 480 86 L 480 232"/><text class="cp" x="160" y="478">VORDERSEITE</text><text class="cp" x="480" y="478">RÜCKSEITE</text></svg>`;}
 
 // ============ EXERCISE CATALOG ============
 const PATINFO={
