@@ -30,7 +30,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--ink);font-family:"Hanken Grotesk",sans-serif;line-height:1.55;padding:24px 16px 70px;-webkit-font-smoothing:antialiased}
   .wrap{max-width:1060px;margin:0 auto;padding-bottom:104px}
-  .navbar{position:fixed;left:8px;right:8px;bottom:calc(4px + env(safe-area-inset-bottom));z-index:120;display:flex;gap:2px;
+  .navbar{position:fixed;left:8px;right:8px;bottom:calc(2px + env(safe-area-inset-bottom));z-index:120;display:flex;gap:2px;
     background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(16px) saturate(1.3);backdrop-filter:blur(16px) saturate(1.3);
     border:1.5px solid var(--line);border-radius:22px;padding:7px;
     box-shadow:0 14px 36px rgba(0,0,0,.34), 0 4px 12px rgba(0,0,0,.18), 0 0 22px rgba(232,67,29,.14), inset 0 1px 0 rgba(255,255,255,.65)}
@@ -67,11 +67,18 @@
   .gen:hover{background:var(--accent-dark)}
   .btn{border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 15px;font:inherit;font-weight:600;font-size:13.5px;cursor:pointer}
   .btn:hover{border-color:var(--ink)} .btn.accent{background:var(--accent);color:#fff;border-color:var(--accent)} .btn.accent:hover{background:var(--accent-dark)}
-  .weeks{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
-  .wbtn{border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:8px 13px;font:inherit;font-weight:600;font-size:13px;cursor:pointer;text-align:center;line-height:1.2}
-  .wbtn small{display:block;font-size:10px;color:var(--muted);font-weight:600}
+  .weeks{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin-top:6px}
+  .goal-badge{display:inline-block;background:var(--accent);color:#fff;font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.5px;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin:10px 0 4px;box-shadow:0 3px 10px rgba(232,67,29,.32)}
+  .wbtn{min-width:0;border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:7px 3px;font:inherit;font-weight:600;font-size:12.5px;cursor:pointer;text-align:center;line-height:1.2}
+  .wbtn small{display:block;font-size:9px;color:var(--muted);font-weight:600}
   .wbtn.on{background:var(--onbg);color:var(--onfg);border-color:var(--onbg)} .wbtn.on small{color:var(--onfg);opacity:.55}
   .wbtn.deload{border-style:dashed} .wbtn.on.deload{background:var(--blue);border-color:var(--blue)}
+  .selh{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-top:14px}
+  .selh:first-child{margin-top:0}
+  .daysel{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+  .dbtn{flex:1 1 auto;min-width:96px;border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:8px 12px;font:inherit;cursor:pointer;text-align:center;line-height:1.2;display:flex;flex-direction:column;gap:1px}
+  .dbtn b{font-size:13px;font-weight:700} .dbtn span{font-size:11px;color:var(--muted)}
+  .dbtn.on{background:var(--onbg);color:var(--onfg);border-color:var(--onbg)} .dbtn.on span{color:var(--onfg);opacity:.6}
   .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-top:16px;overflow:hidden}
   .day-head{display:flex;align-items:center;gap:11px;border-bottom:2px solid var(--ink);padding-bottom:9px;margin-bottom:4px}
   .day-num{font-family:"Anton",sans-serif;font-size:26px;color:var(--accent);line-height:1}
@@ -144,8 +151,8 @@
   details.method summary{font-family:"Anton",sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;padding:15px 0;color:var(--muted)} details.method[open] summary{color:var(--ink)}
   .method p{font-size:13px;margin:0 0 11px;color:var(--body);line-height:1.55} .method b{font-weight:600;color:var(--ink)}
   footer{margin-top:28px;color:var(--muted);font-size:11.5px;text-align:center;line-height:1.6}
-  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.42);display:flex;align-items:center;justify-content:center;z-index:100;padding:18px}
-  .modal{background:var(--paper);border-radius:var(--r);padding:22px;width:min(430px,100%);max-height:90vh;overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.42);display:flex;align-items:center;justify-content:center;z-index:210;padding:18px 18px calc(18px + env(safe-area-inset-bottom))}
+  .modal{background:var(--paper);border-radius:var(--r);padding:20px;width:min(430px,100%);max-height:86vh;overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,.25)}
   .modal-h{display:flex;justify-content:space-between;align-items:center;font-family:"Anton",sans-serif;font-size:17px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
   .modal input,.modal select{border:1.5px solid var(--line);border-radius:8px;padding:9px;font:inherit;font-size:15px;background:var(--bg)}
   .modal input:focus,.modal select:focus{outline:none;border-color:var(--accent);background:var(--paper)}
@@ -168,6 +175,7 @@
   .catfilters{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
   .catfilters input,.catfilters select{border:1.5px solid var(--line);border-radius:8px;padding:9px;font:inherit;font-size:14px;background:var(--bg);color:var(--ink)}
   .catfilters input{flex:1;min-width:150px} .catfilters input:focus,.catfilters select:focus{outline:none;border-color:var(--accent)}
+  .catreset{border:1.5px solid var(--line);background:var(--bg);border-radius:8px;padding:9px 13px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)} .catreset:hover{border-color:var(--accent);color:var(--accent)}
   .catlist{display:flex;flex-direction:column;gap:10px;margin-top:14px}
   .catgroup{border:1px solid var(--line);border-radius:var(--r);margin-bottom:9px;overflow:hidden;background:var(--bg)}
   .catgroup>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 15px}
@@ -298,8 +306,9 @@
   .daycard[open]>summary.daysum{border-bottom:2px solid var(--ink);margin-bottom:4px;padding-bottom:9px}
   .dsum-txt{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}
   .dsum-txt .day-title{flex:none;font-size:18px}
-  .dsum-meta{font-size:12px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .dsum-start{flex-shrink:0}
+  .dsum-meta{font-size:12px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;line-height:1.3}
+  .dsum-mus{font-size:12px;color:var(--muted);font-weight:400;line-height:1.3;overflow-wrap:anywhere}
+  .dsum-start{flex-shrink:0;padding:8px 12px;font-size:12.5px}
   .daycard[open] .cfg-chev{transform:rotate(180deg)}
   .daybody{padding:0 18px 16px}
 </style>
@@ -736,7 +745,7 @@ function updateCfgPanel(collapse){const p=document.getElementById("cfgPanel");if
  p.classList.toggle("done",has);
  if(ic)ic.textContent=has?"✓":"⚙";
  if(ti)ti.textContent=has?"Trainingsplan erstellt":"Plan konfigurieren";
- if(me)me.textContent=has?(planMeta()+" · tippen zum Anpassen"):"Ziel & Parameter wählen, dann erstellen.";
+ if(me)me.textContent=has?"Tippen zum Anpassen":"Ziel & Parameter wählen, dann erstellen.";
  if(bt)bt.textContent=has?"Plan aktualisieren":"Trainingsblock erstellen";
  if(collapse===true)p.removeAttribute("open");else if(collapse===false)p.setAttribute("open","");}
 function makePlan(){
@@ -799,16 +808,17 @@ function renderPlan(){
  const out=document.getElementById("plan-out");if(!PLAN){out.innerHTML='<p class="empty">Ziel und Parameter wählen, dann Trainingsblock erstellen.</p>';return;}
  const total=PLAN.config.block;const E1=jget("tpe.e1rm",{});
  let h=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Trainingsblock · ${total} Wochen</span></div>
-   <p class="hint">Woche wählen – Vorgaben passen sich an (Progression + Deload). Ziel: <b>${GOALS[PLAN.config.goal].label}</b></p><div class="weeks">`;
+   <div class="goal-badge">Ziel: ${GOALS[PLAN.config.goal].label}</div>
+   <p class="hint">Woche wählen – Vorgaben passen sich an (Progression + Deload).</p><div class="weeks">`;
  for(let w=1;w<=total;w++){const dl=(total>=3&&w===total);
    h+=`<button class="wbtn ${w===curWeek?'on':''} ${dl?'deload':''}" onclick="setWeek(${w})">W${w}<small>${dl?'Deload':'Aufbau'}</small></button>`;}
  h+=`</div></div>`;
  PLAN.days.forEach((p,di)=>{
   const musList=[...new Set(p.items.flatMap(it=>it.ex.pri))].map(m=>MUS[m]).join(", ");
   h+=`<details class="card daycard"><summary class="day-head daysum"><span class="day-num">${p.idx}</span>
-    <span class="dsum-txt"><span class="day-title">${p.label}</span><span class="dsum-meta">${p.items.length} Übungen · ≈ ${dayMin(p)} min${musList?" · "+musList:""}</span></span>
+    <span class="dsum-txt"><span class="day-title">${p.label}</span><span class="dsum-meta">${p.items.length} Übungen · ≈ ${dayMin(p)} min</span>${musList?`<span class="dsum-mus">${musList}</span>`:""}</span>
     <span class="pill ${weekIsDeload()?'dl':''}">W${curWeek}</span>
-    <button class="btn accent dsum-start" type="button" onclick="event.stopPropagation();startWorkout(${di})">Training starten</button>
+    <button class="btn accent dsum-start" type="button" onclick="event.stopPropagation();startWorkout(${di})">Start</button>
     <span class="cfg-chev">▾</span></summary>
     <div class="daybody">`;
   p.items.forEach((it,ei)=>{const pr=periodize(catOf(it.ex),curWeek,total);
@@ -868,12 +878,12 @@ function buildLog(){
 }
 function renderTrain(){
  const out=document.getElementById("train-out");if(!logState){out.innerHTML='<p class="empty">Erstelle zuerst einen Plan, wähle dann Trainingstag und Woche.</p>';return;}
- let opt="";PLAN.days.forEach((d,i)=>opt+=`<option value="${i}" ${i===logState.di?"selected":""}>Tag ${i+1}: ${d.label}</option>`);
- let wopt="";for(let w=1;w<=PLAN.config.block;w++)wopt+=`<option value="${w}" ${w===logState.week?"selected":""}>Woche ${w}${(PLAN.config.block>=3&&w===PLAN.config.block)?" (Deload)":""}</option>`;
- let h=`<div class="panel"><div class="row" style="align-items:center;gap:12px">
-   <select onchange="trainSel.day=+this.value;buildLog()">${opt}</select>
-   <select onchange="trainSel.week=+this.value;buildLog()">${wopt}</select>
-   <span class="hint" style="margin:0">Gewicht &amp; Wdh eintragen, Satz mit ✓ abschließen – startet die Pause.</span></div></div>`;
+ let dayBtns="";PLAN.days.forEach((d,i)=>dayBtns+=`<button class="dbtn ${i===logState.di?'on':''}" onclick="trainSel.day=${i};buildLog()"><b>Tag ${i+1}</b><span>${d.label}</span></button>`);
+ let wkBtns="";for(let w=1;w<=PLAN.config.block;w++){const dl=(PLAN.config.block>=3&&w===PLAN.config.block);wkBtns+=`<button class="wbtn ${w===logState.week?'on':''} ${dl?'deload':''}" onclick="trainSel.week=${w};buildLog()">W${w}<small>${dl?'Deload':'Aufbau'}</small></button>`;}
+ let h=`<div class="panel">
+   <div class="selh">Woche</div><div class="weeks">${wkBtns}</div>
+   <div class="selh">Trainingstag</div><div class="daysel">${dayBtns}</div>
+   <p class="hint" style="margin:12px 0 0">Gewicht &amp; Wdh eintragen, Satz mit ✓ abschließen – startet die Pause.</p></div>`;
  // timer
  h+=`<div class="timer-wrap ${timerMin?'min':''}" id="timerWrap">
    <div class="timer-full">
@@ -1451,8 +1461,8 @@ function renderCatalog(){const out=document.getElementById("cat-out");if(!out)re
   <div class="catfilters">
     <input id="catq" type="text" placeholder="Übung suchen…" value="${catF.q}" oninput="catF.q=this.value;renderCatalog();const i=document.getElementById('catq');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}">
     <select onchange="catF.mus=this.value;renderCatalog()"><option value="">Alle Muskeln</option>${MORDER.map(m=>`<option value="${m}" ${catF.mus===m?"selected":""}>${MUS[m]}</option>`).join("")}</select>
-    <select onchange="catF.eq=this.value;renderCatalog()"><option value="">Alle Geräte</option>${Object.entries(EQL).map(([k,v])=>`<option value="${k}" ${catF.eq===k?"selected":""}>${v}</option>`).join("")}</select>
     <button class="catfav-btn ${catF.fav?"on":""}" onclick="catF.fav=!catF.fav;renderCatalog()">★ Favoriten</button>
+    ${(catF.q||catF.mus||catF.fav)?`<button class="catreset" onclick="catReset()" title="Suche &amp; Filter zurücksetzen">✕ Zurücksetzen</button>`:""}
   </div></div>`;
  const q=catF.q.toLowerCase();
  const list=EX.filter(e=>(!catF.mus||e.pri.includes(catF.mus)||e.sec.includes(catF.mus))&&(!catF.eq||e.eq===catF.eq)&&(!catF.fav||isFav(e.n))&&(!q||e.n.toLowerCase().includes(q)));
@@ -1470,6 +1480,7 @@ function renderCatalog(){const out=document.getElementById("cat-out");if(!out)re
  }
  out.innerHTML=h;
 }
+function catReset(){catF={mus:"",eq:"",q:"",fav:false};renderCatalog();}
 function catCardHTML(e){const iso=e.t!==C&&e.pat!=="core";
  return `<div class="catcard" data-n="${e.n}" onclick="catSel=this.dataset.n;renderCatalog()">
    <div class="catcard-h"><span class="cc-name">${e.n}</span><span class="cc-r"><span class="fav-star ${isFav(e.n)?"on":""}" data-n="${e.n}" onclick="event.stopPropagation();toggleFav(this.dataset.n);renderCatalog()">★</span><span class="cc-arrow">›</span></span></div>
