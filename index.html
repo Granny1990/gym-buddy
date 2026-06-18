@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <!-- GymBuddy · Version 0.4 · RIR-Autoregulation + Relativkraft/DOTS; Körpermap; Top-Set/Back-off, Aufwärmsätze, Einstellungen -->
+<!-- © 2026 GymBuddy · Alle Rechte vorbehalten · nur zur privaten Nutzung -->
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -28,11 +29,21 @@
     --onbg:#ECE8DF;--onfg:#141310;--musbg:#3a2620;--selbg:#2e201c;--pillbg:#1e2a33;--body:#CFCBC0;color-scheme:dark;}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--ink);font-family:"Hanken Grotesk",sans-serif;line-height:1.55;padding:24px 16px 70px;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1060px;margin:0 auto}
+  .wrap{max-width:1060px;margin:0 auto;padding-bottom:104px}
+  .navbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:120;display:flex;gap:2px;
+    background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:6px;
+    box-shadow:0 8px 28px rgba(0,0,0,.20)}
+  .navitem{flex:1 1 0;min-width:0;background:none;border:none;cursor:pointer;color:var(--muted);font:inherit;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;padding:8px 6px;border-radius:15px;transition:background .15s,color .15s}
+  .navitem svg{width:23px;height:23px;flex-shrink:0}
+  .navitem span{font-size:10px;font-weight:700;letter-spacing:.2px;line-height:1.12;text-align:center;word-break:break-word}
+  .navitem.on{color:var(--accent);background:rgba(232,67,29,.13);border:1px solid rgba(232,67,29,.32);padding:7px 5px}
+  .navitem:not(.on):active{background:var(--bg)}
+  @media(min-width:761px){.navbar{display:none}.tabs{display:flex}.wrap{padding-bottom:0}.timer-wrap{bottom:14px}.timer-wrap.min{bottom:14px}}
   h1{font-family:"Anton",sans-serif;font-weight:400;font-size:clamp(28px,5vw,46px);line-height:.95;letter-spacing:.5px;text-transform:uppercase}
   h1 .dot{color:var(--accent)}
   .lede{color:var(--muted);max-width:64ch;margin-top:8px;font-size:14.5px}
-  .tabs{display:flex;gap:6px;margin-top:22px;border-bottom:1px solid var(--line)}
+  .tabs{display:none;gap:6px;margin-top:22px;border-bottom:1px solid var(--line)}
   .tab{font-family:"Anton",sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:14px;background:none;border:none;
     color:var(--muted);padding:12px 18px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
   .tab.on{color:var(--ink);border-bottom-color:var(--accent)}
@@ -83,20 +94,20 @@
   .note-sub{margin-top:8px;font-size:11.5px;opacity:.8;font-style:italic}
   .legend{display:flex;gap:13px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:11px} .legend span{display:flex;align-items:center;gap:5px} .sw{width:11px;height:11px;border-radius:3px;display:inline-block}
   /* training */
-  .timer-wrap{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:50;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;width:min(560px,calc(100% - 20px));box-shadow:0 8px 28px rgba(0,0,0,.16)}
-  .timer-full{display:flex;align-items:center;gap:16px;flex-wrap:wrap;width:100%}
-  .timer-min-only{display:none;align-items:center;gap:11px}
-  .timer-wrap.min{width:auto;left:auto;right:14px;transform:none;padding:9px 12px 9px 15px}
+  .timer-wrap{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom));z-index:130;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:10px 13px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;width:min(520px,calc(100% - 16px));box-shadow:0 8px 28px rgba(0,0,0,.16)}
+  .timer-full{display:flex;align-items:center;gap:12px;flex-wrap:wrap;width:100%}
+  .timer-min-only{display:none;align-items:center;gap:10px}
+  .timer-wrap.min{width:auto;left:auto;right:12px;transform:none;padding:8px 11px 8px 13px}
   .timer-wrap.min .timer-full{display:none} .timer-wrap.min .timer-min-only{display:flex}
-  .t-dot{width:13px;height:13px;border-radius:50%;background:var(--none);flex:none}
-  .timer-ring{position:relative;width:84px;height:84px;flex:none}
-  .timer-ring svg{transform:rotate(-90deg)}
-  .timer-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Anton",sans-serif;font-size:20px;line-height:1}
-  .timer-val small{font-family:"Hanken Grotesk";font-size:10px;color:var(--muted);font-weight:600}
-  .timer-info{flex:1;min-width:140px} .timer-state{font-family:"Anton",sans-serif;font-size:17px;text-transform:uppercase;letter-spacing:.5px}
-  .timer-sub{font-size:12.5px;color:var(--muted)} .timer-btns{display:flex;gap:7px;flex-wrap:wrap}
-  .tbtn{border:1.5px solid var(--line);background:var(--paper);border-radius:9px;padding:8px 12px;font:inherit;font-weight:600;font-size:13px;cursor:pointer} .tbtn:hover{border-color:var(--ink)}
-  .preset{font-size:12px;padding:6px 10px}
+  .t-dot{width:12px;height:12px;border-radius:50%;background:var(--none);flex:none}
+  .timer-ring{position:relative;width:60px;height:60px;flex:none}
+  .timer-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .timer-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Anton",sans-serif;font-size:16px;line-height:1}
+  .timer-val small{font-family:"Hanken Grotesk";font-size:8.5px;color:var(--muted);font-weight:600}
+  .timer-info{flex:1;min-width:110px} .timer-state{font-family:"Anton",sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+  .timer-sub{font-size:11.5px;color:var(--muted)} .timer-btns{display:flex;gap:6px;flex-wrap:wrap}
+  .tbtn{border:1.5px solid var(--line);background:var(--paper);border-radius:8px;padding:6px 10px;font:inherit;font-weight:600;font-size:12.5px;cursor:pointer} .tbtn:hover{border-color:var(--ink)}
+  .preset{font-size:11.5px;padding:5px 9px}
   .logex{padding:13px 0;border-bottom:1px solid var(--line)} .logex:last-child{border-bottom:none}
   .logex-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
   .logex-h .nm{font-weight:600;font-size:15px} .logex-h .tg{font-size:11.5px;color:var(--muted);white-space:nowrap}
@@ -155,6 +166,14 @@
   .catfilters input,.catfilters select{border:1.5px solid var(--line);border-radius:8px;padding:9px;font:inherit;font-size:14px;background:var(--bg);color:var(--ink)}
   .catfilters input{flex:1;min-width:150px} .catfilters input:focus,.catfilters select:focus{outline:none;border-color:var(--accent)}
   .catlist{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+  .catgroup{border:1px solid var(--line);border-radius:var(--r);margin-bottom:9px;overflow:hidden;background:var(--bg)}
+  .catgroup>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 15px}
+  .catgroup>summary::-webkit-details-marker{display:none}
+  .catgroup .cg-t{font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.3px;flex:1}
+  .catgroup .cg-c{font-size:12px;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .catgroup[open] .cfg-chev{transform:rotate(180deg)}
+  .catgroup[open]>summary{border-bottom:1px solid var(--line)}
+  .catgroup .catlist{margin:0;padding:12px}
   .catcard{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:13px 16px;cursor:pointer;transition:.12s}
   .catcard:hover{border-color:var(--accent);transform:translateX(2px)}
   .catcard-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
@@ -297,11 +316,21 @@
       Trainingslog und Pausentimer. Belastungssteuerung nach NSCA/ACSM.</p>
   </header>
   <div class="tabs">
-    <button class="tab on" data-v="plan" onclick="showView('plan')">Plan</button>
-    <button class="tab" data-v="train" onclick="showView('train')">Training</button>
+    <button class="tab on" data-v="plan" onclick="showView('plan')">Home</button>
+    <button class="tab" data-v="train" onclick="showView('train')">Workout</button>
     <button class="tab" data-v="hist" onclick="showView('hist')">Fortschritt</button>
-    <button class="tab" data-v="cat" onclick="showView('cat')">Katalog</button>
+    <button class="tab" data-v="cat" onclick="showView('cat')">Übungen</button>
   </div>
+  <nav class="navbar" id="navbar">
+    <button class="navitem on" data-v="plan" onclick="showView('plan')" aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5V14h4v5.5"/></svg><span>Home</span></button>
+    <button class="navitem" data-v="train" onclick="showView('train')" aria-label="Workout">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6M6 7.5v9M18 7.5v9M21 9v6M6.5 12h11"/></svg><span>Workout</span></button>
+    <button class="navitem" data-v="hist" onclick="showView('hist')" aria-label="Fortschritt">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M7 15l4-4 3 2 5-6"/><path d="M16 6h3v3"/></svg><span>Fortschritt</span></button>
+    <button class="navitem" data-v="cat" onclick="showView('cat')" aria-label="Übungen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="3.4" height="14" rx="1"/><rect x="8.3" y="5" width="3.4" height="14" rx="1"/><path d="M13.8 6.2l3.3.9-3 11.6-3.3-.9z"/></svg><span>Übungen</span></button>
+  </nav>
 
   <!-- ===== PLAN ===== -->
   <section class="view on" id="v-plan">
@@ -1042,7 +1071,7 @@ const HELP={
    <li>Oben rechts schaltest du zwischen hellem und dunklem Design um.</li>
    <li>Deine Daten liegen lokal auf dem Gerät – sichere sie ab und zu über „Exportieren" in den Einstellungen (Zahnrad oben rechts).</li>
    <li>Für ein App-Gefühl die Seite zum Home-Bildschirm hinzufügen.</li></ul>
-   <p class="hint" style="margin-top:14px;text-align:center;opacity:.7">GymBuddy · Version 0.4</p>`},
+   <p class="hint" style="margin-top:14px;text-align:center;opacity:.7">GymBuddy · Version 0.4<br>© 2026 GymBuddy · Alle Rechte vorbehalten · nur zur privaten Nutzung</p>`},
  level:{title:"Erfahrungsstufe",html:`<p class="cat-desc">Die Stufe steuert, welche Übungen in den Plan kommen – sortiert nach technischem Anspruch:</p>
    <div class="sec-h" style="margin-top:10px">Einsteiger</div><p class="cat-desc">Nur technisch einfache, gut kontrollierbare Übungen – oft an Maschinen oder als saubere Grundbewegung.</p>
    <div class="sec-h" style="margin-top:12px">Geübt</div><p class="cat-desc">Zusätzlich mittelschwere Übungen mit freien Gewichten und anspruchsvolleren Varianten.</p>
@@ -1424,14 +1453,24 @@ function renderCatalog(){const out=document.getElementById("cat-out");if(!out)re
   </div></div>`;
  const q=catF.q.toLowerCase();
  const list=EX.filter(e=>(!catF.mus||e.pri.includes(catF.mus)||e.sec.includes(catF.mus))&&(!catF.eq||e.eq===catF.eq)&&(!catF.fav||isFav(e.n))&&(!q||e.n.toLowerCase().includes(q)));
- h+=`<div class="catlist">`;
- list.forEach(e=>{const iso=e.t!==C&&e.pat!=="core";
-  h+=`<div class="catcard" data-n="${e.n}" onclick="catSel=this.dataset.n;renderCatalog()">
-   <div class="catcard-h"><span class="cc-name">${e.n}</span><span class="cc-r"><span class="fav-star ${isFav(e.n)?"on":""}" data-n="${e.n}" onclick="event.stopPropagation();toggleFav(this.dataset.n);renderCatalog()">★</span><span class="cc-arrow">›</span></span></div>
-   <div class="ex-meta"><span class="tag">${EQL[e.eq]}</span>${e.pri.map(m=>`<span class="tag mus">${MUS[m]}</span>`).join("")}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${iso?"Isolation":"Grundübung"}</span></div></div>`;});
- h+=`</div>`;
- if(!list.length)h+=`<p class="empty">Keine Übung gefunden.</p>`;
+ const byName=(a,b)=>a.n.localeCompare(b.n,"de");
+ const grouped=!q&&!catF.eq;
+ if(!list.length){h+=`<p class="empty">Keine Übung gefunden.</p>`;}
+ else if(grouped){
+   h+=`<div style="margin-top:14px">`;
+   ["bb","db","kb","ma","bw"].forEach(eq=>{const items=list.filter(e=>e.eq===eq).sort(byName);if(!items.length)return;
+     h+=`<details class="catgroup"><summary><span class="cg-t">${EQL[eq]}</span><span class="cg-c">${items.length}</span><span class="cfg-chev">▾</span></summary>
+       <div class="catlist">${items.map(catCardHTML).join("")}</div></details>`;});
+   h+=`</div>`;
+ } else {
+   h+=`<div class="catlist">${list.slice().sort(byName).map(catCardHTML).join("")}</div>`;
+ }
  out.innerHTML=h;
+}
+function catCardHTML(e){const iso=e.t!==C&&e.pat!=="core";
+ return `<div class="catcard" data-n="${e.n}" onclick="catSel=this.dataset.n;renderCatalog()">
+   <div class="catcard-h"><span class="cc-name">${e.n}</span><span class="cc-r"><span class="fav-star ${isFav(e.n)?"on":""}" data-n="${e.n}" onclick="event.stopPropagation();toggleFav(this.dataset.n);renderCatalog()">★</span><span class="cc-arrow">›</span></span></div>
+   <div class="ex-meta"><span class="tag">${EQL[e.eq]}</span>${e.pri.map(m=>`<span class="tag mus">${MUS[m]}</span>`).join("")}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${iso?"Isolation":"Grundübung"}</span></div></div>`;
 }
 function renderCatDetail(out){const e=EX.find(x=>x.n===catSel);if(!e){catSel=null;return renderCatalog();}
  const info=catInfo(e);const iso=e.t!==C&&e.pat!=="core";
@@ -1450,7 +1489,7 @@ function renderCatDetail(out){const e=EX.find(x=>x.n===catSel);if(!e){catSel=nul
 }
 
 // ============ CONTROLS / VIEWS ============
-function showView(v){stopImgCycle();document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.v===v));
+function showView(v){stopImgCycle();document.querySelectorAll(".navitem,.tab").forEach(t=>t.classList.toggle("on",t.dataset.v===v));
  document.querySelectorAll(".view").forEach(s=>s.classList.remove("on"));document.getElementById("v-"+v).classList.add("on");
  if(v==="hist")renderHist();if(v==="train"){renderE1Mgr();if(!logState&&PLAN)buildLog();else renderTrain();}if(v==="cat")renderCatalog();}
 function chip(parent,label,active,on){const b=document.createElement("button");b.className="chip"+(active?" on":"");b.textContent=label;b.onclick=on;parent.appendChild(b);return b;}
