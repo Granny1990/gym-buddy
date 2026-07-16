@@ -155,6 +155,13 @@
   .donex .logex-h,.donex .last-perf,.donex .prog-tip,.donex .warmlabel,.donex .warmrow,.donex .setrow,.donex .setops{margin-left:14px;margin-right:14px}
   .donex .setops{padding-bottom:12px}
   .logex-h .nm{cursor:pointer}
+  .addlist{margin-top:10px;max-height:52vh;overflow:auto;display:flex;flex-direction:column;gap:5px;padding-right:2px}
+  .add-gh{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--accent);margin:10px 0 2px;position:sticky;top:0;background:var(--paper);padding:3px 0}
+  .add-item{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;border:1.5px solid var(--line);background:var(--bg);border-radius:10px;padding:9px 12px;font:inherit;cursor:pointer;width:100%}
+  .add-item:hover{border-color:var(--accent)}
+  .add-item .ai-n{font-weight:700;font-size:13.5px}
+  .add-item .ai-m{font-size:11.5px;color:var(--muted)}
+  .add-item.used{opacity:.45;cursor:default}
   .sop{border:1.5px dashed var(--line);background:none;border-radius:8px;padding:5px 12px;font:inherit;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer}
   .sop:hover{border-color:var(--accent);color:var(--accent)}
   .hint{font-size:12px;color:var(--muted);margin:8px 0}
@@ -463,9 +470,9 @@
 <div id="addmodal" class="modal-bg" style="display:none">
   <div class="modal">
     <div class="modal-h"><span>Übung hinzufügen</span><button class="tbtn" onclick="closeAdd()">✕</button></div>
-    <p class="hint" style="margin-top:0">Ergänzt eine Übung nur für diese Trainingseinheit.</p>
-    <select id="add-sel" style="width:100%"></select>
-    <div style="display:flex;gap:8px;margin-top:16px"><button class="btn accent" onclick="confirmAdd()">Hinzufügen</button><button class="btn" onclick="closeAdd()">Abbrechen</button></div>
+    <p class="hint" style="margin-top:0">Antippen ergänzt die Übung nur für diese Trainingseinheit.</p>
+    <input id="add-q" type="text" placeholder="Übung suchen…" autocomplete="off" oninput="renderAddList()" style="width:100%;border:1.5px solid var(--line);border-radius:8px;padding:10px;font:inherit;font-size:14px;background:var(--bg);color:var(--ink)">
+    <div id="add-list" class="addlist"></div>
   </div>
 </div>
 
@@ -1041,14 +1048,30 @@ function swMove(e,xi){if(sw.xi!==xi||!sw.el)return;const t=e.touches[0];const dx
 function swEnd(e,xi){if(!sw.el)return;const el=sw.el;if(sw.dx<-95){el.style.transform="translateX(-100%)";setTimeout(()=>removeLogEx(xi),120);}else{el.style.transform="";}sw.el=null;sw.xi=-1;}
 function removeLogEx(xi){if(!logState)return;logState.ex.splice(xi,1);renderTrain();}
 // add exercise to current session
-function openAdd(){const sel=document.getElementById("add-sel");
- sel.innerHTML=MORDER.map(m=>{const o=EX.filter(e=>e.pri.includes(m)).map(e=>`<option value="${e.n}">${e.n}</option>`).join("");return o?`<optgroup label="${MUS[m]}">${o}</optgroup>`:"";}).join("");
- document.getElementById("addmodal").style.display="flex";}
+function openAdd(){const q=document.getElementById("add-q");if(q)q.value="";renderAddList();
+ document.getElementById("addmodal").style.display="flex";
+ setTimeout(()=>{const i=document.getElementById("add-q");if(i)i.focus();},80);}
+function renderAddList(){
+ const box=document.getElementById("add-list");if(!box)return;
+ const q=(document.getElementById("add-q")?.value||"").toLowerCase();
+ const inLog=new Set(logState?logState.ex.map(e=>e.name):[]);
+ const item=e=>{const used=inLog.has(e.n);
+   return `<button class="add-item ${used?'used':''}" data-n="${e.n}" ${used?'disabled':`onclick="confirmAdd(this.dataset.n)"`}>
+     <span class="ai-n">${e.n}</span><span class="ai-m">${EQL[e.eq]} · ${e.pri.map(m=>MUS[m]).join(", ")}${used?' · schon dabei ✓':''}</span></button>`;};
+ const byName=(a,b)=>a.n.localeCompare(b.n,"de");
+ if(q){
+   const hits=EX.filter(e=>e.n.toLowerCase().includes(q)).sort(byName);
+   box.innerHTML=hits.length?hits.map(item).join(""):'<p class="empty" style="padding:14px 4px">Keine Übung gefunden.</p>';
+ } else {
+   box.innerHTML=MORDER.map(m=>{const pool=EX.filter(e=>e.pri.includes(m)).sort(byName);
+     return pool.length?`<div class="add-gh">${MUS[m]}</div>`+pool.map(item).join(""):"";}).join("");
+ }
+}
 function closeAdd(){document.getElementById("addmodal").style.display="none";}
-function confirmAdd(){const name=document.getElementById("add-sel").value;const ex=EX.find(e=>e.n===name);if(!ex||!logState){closeAdd();return;}
+function confirmAdd(name){const ex=EX.find(e=>e.n===name);if(!ex||!logState){closeAdd();return;}
  const pr=periodize(catOf(ex),logState.week,PLAN.config.block);
  logState.ex.push({name:ex.n,pat:ex.pat,target:pr,last:lastPerf(ex.n),sets:makeSets(ex.n,pr)});
- closeAdd();renderTrain();}
+ saveDraft();closeAdd();renderTrain();toast("„"+ex.n+"“ hinzugefügt ✓");}
 function finishWorkout(){
  const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(e=>e.sets.length);
  if(!entries.length){toast("Noch keine Sätze eingetragen.");return;}
