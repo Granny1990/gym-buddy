@@ -328,6 +328,8 @@
   .dsum-meta{font-size:12px;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;line-height:1.3}
   .dsum-mus{font-size:12px;color:var(--muted);font-weight:400;line-height:1.3;overflow-wrap:anywhere}
   .dsum-start{flex-shrink:0;padding:8px 12px;font-size:12.5px}
+  .day-num.dn-done{color:var(--ok)}
+  .daycard.dcdone{opacity:.82} .daycard.dcdone .day-title{text-decoration:none}
   .daycard[open] .cfg-chev{transform:rotate(180deg)}
   .daybody{padding:0 18px 16px}
 </style>
@@ -784,12 +786,54 @@ function saveCfg(){S.equip=[...S.equipSet];jset("tpe.cfg",{goal:S.goal,days:S.da
 function swap(di,ei){const it=PLAN.days[di].items[ei];const used=new Set();PLAN.days.forEach(p=>p.items.forEach(x=>used.add(x.ex.n)));used.delete(it.ex.n);let cand=it.slot.type==="comp"?pickComp(it.slot.pat,maxLvl(),used):pickIso(it.slot.mus,maxLvl(),used);if(cand){PLAN.days[di].items[ei]={ex:cand,slot:it.slot};jset("tpe.plan",PLAN);renderPlan();}}
 
 // ============ ANALYSIS ============
-function analyze(){const vol={},freq={};MORDER.forEach(m=>{vol[m]=0;freq[m]=0;});let push=0,pull=0;
- PLAN.days.forEach(p=>{const dp=new Set();p.items.forEach(it=>{const pr=periodize(catOf(it.ex),curWeek,PLAN.config.block);
-   it.ex.pri.forEach(m=>{vol[m]+=pr.sets;dp.add(m);});it.ex.sec.forEach(m=>{vol[m]+=pr.sets*0.5;});
-   if(["hpush","vpush"].includes(it.ex.pat))push+=pr.sets;if(["hpull","vpull"].includes(it.ex.pat))pull+=pr.sets;});
+function weekDoneSet(){const s=new Set();if(!PLAN)return s;const cur=startOfWeek(new Date()).getTime();
+ jget("tpe.log",[]).forEach(x=>{if(startOfWeek(x.date).getTime()!==cur)return;
+   if(typeof x.di==="number"&&PLAN.days[x.di])s.add(x.di);
+   else if(x.dayLabel){const i=PLAN.days.findIndex(d=>d.label===x.dayLabel);if(i>=0)s.add(i);}});
+ return s;}
+function analyze(useActual){const vol={},freq={};MORDER.forEach(m=>{vol[m]=0;freq[m]=0;});let push=0,pull=0;
+ const done=useActual?weekDoneSet():new Set();const curKey=startOfWeek(new Date()).getTime();
+ const sessions=useActual?jget("tpe.log",[]).filter(x=>startOfWeek(x.date).getTime()===curKey):[];
+ PLAN.days.forEach((p,di)=>{const dp=new Set();
+  if(done.has(di)){
+    sessions.filter(x=>x.di===di||(x.di==null&&x.dayLabel===p.label)).forEach(sess=>{
+      (sess.entries||[]).forEach(en=>{const ex=EX.find(e=>e.n===en.name);if(!ex)return;const n=en.sets.length;
+        ex.pri.forEach(m=>{vol[m]+=n;dp.add(m);});ex.sec.forEach(m=>{vol[m]+=n*0.5;});
+        if(["hpush","vpush"].includes(ex.pat))push+=n;if(["hpull","vpull"].includes(ex.pat))pull+=n;});});
+  } else {
+    p.items.forEach(it=>{const pr=periodize(catOf(it.ex),curWeek,PLAN.config.block);
+     it.ex.pri.forEach(m=>{vol[m]+=pr.sets;dp.add(m);});it.ex.sec.forEach(m=>{vol[m]+=pr.sets*0.5;});
+     if(["hpush","vpush"].includes(it.ex.pat))push+=pr.sets;if(["hpull","vpull"].includes(it.ex.pat))pull+=pr.sets;});
+  }
   dp.forEach(m=>freq[m]++);});
- return{vol,freq,push,pull};}
+ return{vol,freq,push,pull,doneCount:done.size};}
+function rebalanceWeek(){
+ if(!PLAN)return[];
+ const curKey=startOfWeek(new Date()).getTime();
+ let cleaned=false;
+ PLAN.days.forEach(d=>{const n=d.items.length;d.items=d.items.filter(it=>!it.comp||it.wk===curKey);if(d.items.length!==n)cleaned=true;});
+ const done=weekDoneSet();
+ const remaining=PLAN.days.map((p,i)=>i).filter(i=>!done.has(i));
+ const changes=[];
+ if(remaining.length){
+   const {vol}=analyze(true);
+   const used=new Set();PLAN.days.forEach(p=>p.items.forEach(x=>used.add(x.ex.n)));
+   for(const m of MORDER){
+     if(changes.length>=3)break;
+     const mev=LM[m][0];if(mev<=0)continue;
+     if(vol[m]<mev){
+       const di=remaining.slice().sort((a,b)=>PLAN.days[a].items.length-PLAN.days[b].items.length)[0];
+       const cand=pickIso(m,maxLvl(),used);
+       if(cand&&!PLAN.days[di].items.some(x=>x.ex.n===cand.n)){
+         PLAN.days[di].items.push({ex:cand,slot:{type:"iso",mus:m},comp:true,wk:curKey});
+         used.add(cand.n);changes.push({day:di+1,name:cand.n,mus:MUS[m]});
+       }
+     }
+   }
+ }
+ if(changes.length||cleaned)jset("tpe.plan",PLAN);
+ return changes;
+}
 function dayMin(p){let s=360;p.items.forEach(it=>{const pr=periodize(catOf(it.ex),curWeek,PLAN.config.block);s+=pr.sets*(40+pr.restSec);});return Math.round(s/60);}
 function heat(r){if(r<=0.05)return"var(--none)";if(r<0.34)return"var(--lo)";if(r<0.67)return"var(--mid)";return"var(--hi)";}
 function volColor(m,v){const[mev,mrv]=LM[m];if(v<mev*0.6)return"var(--hi)";if(v<mev)return"var(--lo)";if(v>mrv)return"var(--over)";return"var(--ok)";}
@@ -835,12 +879,14 @@ function renderPlan(){
  for(let w=1;w<=total;w++){const dl=(total>=3&&w===total);
    h+=`<button class="wbtn ${w===curWeek?'on':''} ${dl?'deload':''}" onclick="setWeek(${w})">W${w}<small>${dl?'Deload':'Aufbau'}</small></button>`;}
  h+=`</div></div>`;
+ const doneDays=weekDoneSet();
  PLAN.days.forEach((p,di)=>{
   const musList=[...new Set(p.items.flatMap(it=>it.ex.pri))].map(m=>MUS[m]).join(", ");
-  h+=`<details class="card daycard"><summary class="day-head daysum"><span class="day-num">${p.idx}</span>
-    <span class="dsum-txt"><span class="day-title">${p.label}</span><span class="dsum-meta">${p.items.length} Übungen · ≈ ${dayMin(p)} min</span>${musList?`<span class="dsum-mus">${musList}</span>`:""}</span>
+  const isDone=doneDays.has(di);
+  h+=`<details class="card daycard ${isDone?'dcdone':''}"><summary class="day-head daysum"><span class="day-num ${isDone?'dn-done':''}">${isDone?'✓':p.idx}</span>
+    <span class="dsum-txt"><span class="day-title">${p.label}</span><span class="dsum-meta">${isDone?'Diese Woche erledigt ✓ · ':''}${p.items.length} Übungen · ≈ ${dayMin(p)} min</span>${musList?`<span class="dsum-mus">${musList}</span>`:""}</span>
     <span class="pill ${weekIsDeload()?'dl':''}">W${curWeek}</span>
-    <button class="btn accent dsum-start" type="button" onclick="event.stopPropagation();startWorkout(${di})">Start</button>
+    ${isDone?'':`<button class="btn accent dsum-start" type="button" onclick="event.stopPropagation();startWorkout(${di})">Start</button>`}
     <span class="cfg-chev">▾</span></summary>
     <div class="daybody">`;
   p.items.forEach((it,ei)=>{const pr=periodize(catOf(it.ex),curWeek,total);
@@ -853,12 +899,13 @@ function renderPlan(){
    const ps=presetSummary(pr);
    const presStr=tm?`${pr.sets} × ${TMSEC[S.goal]} · P ${secStr(pr.restSec)}`:`${raw?`<span class="kg">≈ ${workLoad(raw)} ${unitLbl()}</span><br>`:""}${ps||`${pr.sets} × ${pr.reps}${load}`} · P ${secStr(pr.restSec)} · RIR ${pr.rir}`;
    h+=`<div class="ex"><div class="ex-main"><div class="ex-name">${it.ex.n}${iso} <span class="info-i" data-n="${it.ex.n}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span></div>
-     <div class="ex-meta"><span class="tag">${EQL[it.ex.eq]}</span>${mus}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${pr.phase}</span>${e1tag}</div></div>
+     <div class="ex-meta"><span class="tag">${EQL[it.ex.eq]}</span>${mus}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${pr.phase}</span>${it.comp?'<span class="tag" style="background:var(--accent);color:#fff">Ausgleich</span>':''}${e1tag}</div></div>
      <div class="pres">${presStr}</div>
      <button class="swap" title="tauschen" onclick="swap(${di},${ei})">↻</button></div>`;});
   h+=`</div></details>`;});
  // analysis
- const a=analyze(),maxV=Math.max(...MORDER.map(m=>a.vol[m]),24),scaleMax=Math.max(28,Math.ceil(maxV));
+ const a=analyze(true),maxV=Math.max(...MORDER.map(m=>a.vol[m]),24),scaleMax=Math.max(28,Math.ceil(maxV));
+ if(a.doneCount)h+=`<p class="hint" style="margin:0 0 6px">Für ${a.doneCount} bereits absolvierte${a.doneCount===1?"n Tag":" Tage"} dieser Woche fließen die tatsächlich geloggten Sätze ein – offene Tage nach Plan.</p>`;
  h+=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Wochenanalyse · W${curWeek}</span></div>
    <div class="a-grid"><div><p class="hint">Sätze/Muskel · grünes Band = MEV–MRV-Korridor · Frequenz: <b style="color:var(--ok)">●</b>≥2× <b style="color:var(--accent-dark)">●</b>&lt;2×</p>`;
  MORDER.forEach(m=>{const v=a.vol[m],[mev,mrv]=LM[m];const w=Math.min(v/scaleMax*100,100);
@@ -1007,7 +1054,7 @@ function finishWorkout(){
  if(!entries.length){toast("Noch keine Sätze eingetragen.");return;}
  const totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
  const log=jget("tpe.log",[]);
- log.unshift({id:Date.now(),date:new Date().toISOString(),week:logState.week,dayLabel:logState.label,entries,totalSets});
+ log.unshift({id:Date.now(),date:new Date().toISOString(),week:logState.week,di:logState.di,dayLabel:logState.label,entries,totalSets});
  jset("tpe.log",log);
  const e1=jget("tpe.e1rm",{}),tb=jget("tpe.tmbest",{});const prs=[];
  entries.forEach(e=>{
@@ -1018,6 +1065,8 @@ function finishWorkout(){
  jset("tpe.e1rm",e1);jset("tpe.tmbest",tb);stopTimer();logState=null;try{localStorage.removeItem("tpe.draft");}catch(e){}
  if(prs.length)toast("🏆 Neue Bestleistung: "+prs.join(", "));
  else toast("Einheit gespeichert ✓ ("+totalSets+" Sätze)");
+ const chg=rebalanceWeek();
+ if(chg.length)setTimeout(()=>toast("Wochenplan angepasst: "+chg.map(c=>`+ ${c.name} (Tag ${c.day}, ${c.mus})`).join(" · ")),1600);
  showView("hist");
 }
 
@@ -1555,7 +1604,7 @@ function renderCatDetail(out){const e=EX.find(x=>x.n===catSel);if(!e){catSel=nul
 // ============ CONTROLS / VIEWS ============
 function showView(v){stopImgCycle();document.querySelectorAll(".navitem,.tab").forEach(t=>t.classList.toggle("on",t.dataset.v===v));
  document.querySelectorAll(".view").forEach(s=>s.classList.remove("on"));document.getElementById("v-"+v).classList.add("on");
- if(v==="hist")renderHist();if(v==="train"){renderE1Mgr();if(!logState&&PLAN)buildLog();else renderTrain();reqWake();}else{relWake();}if(v==="cat")renderCatalog();}
+ if(v==="plan"&&PLAN)renderPlan();if(v==="hist")renderHist();if(v==="train"){renderE1Mgr();if(!logState&&PLAN)buildLog();else renderTrain();reqWake();}else{relWake();}if(v==="cat")renderCatalog();}
 function chip(parent,label,active,on){const b=document.createElement("button");b.className="chip"+(active?" on":"");b.textContent=label;b.onclick=on;parent.appendChild(b);return b;}
 function buildControls(){
  const g=document.getElementById("goals");Object.entries(GOALS).forEach(([k,v])=>{const d=document.createElement("div");d.className="goal"+(k===S.goal?" on":"");d.dataset.g=k;
@@ -1581,6 +1630,7 @@ function relWake(){try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){
 applyTheme();buildControls();applyUnitUI();
 if(PLAN)renderPlan();
 updateCfgPanel(!!PLAN);
+try{if(PLAN){const _ck=startOfWeek(new Date()).getTime();let _st=false;PLAN.days.forEach(d=>{const n=d.items.length;d.items=d.items.filter(it=>!it.comp||it.wk===_ck);if(d.items.length!==n)_st=true;});if(_st){jset("tpe.plan",PLAN);renderPlan();}}}catch(e){}
 try{const _d=jget("tpe.draft",null);if(_d&&_d.state&&PLAN&&PLAN.days[_d.state.di]){trainSel={day:_d.state.di,week:_d.state.week};}}catch(e){}
 window.addEventListener("pagehide",saveDraft);
 document.addEventListener("visibilitychange",()=>{
