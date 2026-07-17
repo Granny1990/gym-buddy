@@ -82,6 +82,11 @@
   .dbtn{flex:1 1 auto;min-width:96px;border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:8px 12px;font:inherit;cursor:pointer;text-align:center;line-height:1.2;display:flex;flex-direction:column;gap:1px}
   .dbtn b{font-size:13px;font-weight:700} .dbtn span{font-size:11px;color:var(--muted)}
   .dbtn.on{background:var(--onbg);color:var(--onfg);border-color:var(--onbg)} .dbtn.on span{color:var(--onfg);opacity:.6}
+  .dbtn.dbdone b{color:var(--ok)} .dbtn.dbdone.on b{color:var(--onfg)}
+  .perf-list{display:flex;flex-direction:column;gap:6px}
+  .perf-row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding:6px 0;font-size:13.5px}
+  .perf-row .pr-n{font-weight:700;min-width:0;overflow-wrap:anywhere}
+  .perf-row .pr-s{color:var(--muted);text-align:right;flex-shrink:0}
   .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-top:16px;overflow:hidden}
   .day-head{display:flex;align-items:center;gap:11px;border-bottom:2px solid var(--ink);padding-bottom:9px;margin-bottom:4px}
   .day-num{font-family:"Anton",sans-serif;font-size:26px;color:var(--accent);line-height:1}
@@ -798,6 +803,8 @@ function weekDoneSet(){const s=new Set();if(!PLAN)return s;const cur=startOfWeek
    if(typeof x.di==="number"&&PLAN.days[x.di])s.add(x.di);
    else if(x.dayLabel){const i=PLAN.days.findIndex(d=>d.label===x.dayLabel);if(i>=0)s.add(i);}});
  return s;}
+function sessionForDay(di){if(!PLAN)return null;const cur=startOfWeek(new Date()).getTime();
+ return jget("tpe.log",[]).find(x=>startOfWeek(x.date).getTime()===cur&&(x.di===di||(x.di==null&&x.dayLabel===PLAN.days[di].label)))||null;}
 function analyze(useActual){const vol={},freq={};MORDER.forEach(m=>{vol[m]=0;freq[m]=0;});let push=0,pull=0;
  const done=useActual?weekDoneSet():new Set();const curKey=startOfWeek(new Date()).getTime();
  const sessions=useActual?jget("tpe.log",[]).filter(x=>startOfWeek(x.date).getTime()===curKey):[];
@@ -888,14 +895,30 @@ function renderPlan(){
  h+=`</div></div>`;
  const doneDays=weekDoneSet();
  PLAN.days.forEach((p,di)=>{
-  const musList=[...new Set(p.items.flatMap(it=>it.ex.pri))].map(m=>MUS[m]).join(", ");
   const isDone=doneDays.has(di);
+  const sess=isDone?sessionForDay(di):null;
+  let musList,metaLine;
+  if(sess){
+    musList=[...new Set(sess.entries.flatMap(en=>{const ex=EX.find(e=>e.n===en.name);return ex?ex.pri:[];}))].map(m=>MUS[m]).join(", ");
+    metaLine=`Diese Woche erledigt ✓ · ${sess.entries.length} Übungen · ${sess.totalSets} Sätze`;
+  } else {
+    musList=[...new Set(p.items.flatMap(it=>it.ex.pri))].map(m=>MUS[m]).join(", ");
+    metaLine=`${isDone?'Diese Woche erledigt ✓ · ':''}${p.items.length} Übungen · ≈ ${dayMin(p)} min`;
+  }
   h+=`<details class="card daycard ${isDone?'dcdone':''}"><summary class="day-head daysum"><span class="day-num ${isDone?'dn-done':''}">${isDone?'✓':p.idx}</span>
-    <span class="dsum-txt"><span class="day-title">${p.label}</span><span class="dsum-meta">${isDone?'Diese Woche erledigt ✓ · ':''}${p.items.length} Übungen · ≈ ${dayMin(p)} min</span>${musList?`<span class="dsum-mus">${musList}</span>`:""}</span>
+    <span class="dsum-txt"><span class="day-title">${p.label}</span><span class="dsum-meta">${metaLine}</span>${musList?`<span class="dsum-mus">${musList}</span>`:""}</span>
     <span class="pill ${weekIsDeload()?'dl':''}">W${curWeek}</span>
     ${isDone?'':`<button class="btn accent dsum-start" type="button" onclick="event.stopPropagation();startWorkout(${di})">Start</button>`}
     <span class="cfg-chev">▾</span></summary>
     <div class="daybody">`;
+  if(sess){
+    h+=`<div class="perf-list"><div class="warmlabel" style="margin-top:8px">Durchgeführt</div>`;
+    sess.entries.forEach(en=>{const tmx=isTm(en.name);
+      const setsStr=en.sets.map(s=>tmx?`${s.r}s`:`${showW(s.w)}×${s.r}`).join(", ");
+      h+=`<div class="perf-row"><span class="pr-n">${en.name}</span><span class="pr-s">${setsStr}${tmx?"":" "+unitLbl()}</span></div>`;});
+    h+=`<p class="hint" style="margin:10px 0 4px">Korrekturen (Gewicht/Wdh): Workout-Tab → Tag wählen → „Bearbeiten".</p></div></div></details>`;
+    return;
+  }
   p.items.forEach((it,ei)=>{const pr=periodize(catOf(it.ex),curWeek,total);
    const iso=catOf(it.ex)==="iso"?'<span class="iso">Iso</span>':"";
    const mus=it.ex.pri.map(m=>`<span class="tag mus">${MUS[m]}</span>`).join("");
@@ -945,11 +968,12 @@ function secStr(s){return s>=60?(s%60?Math.floor(s/60)+":"+String(s%60).padStart
 // ============ TRAINING ============
 let logState=null; // {di, week, ex:[{name, sets:[{w,r,done}], target}]}
 function startWorkout(di){trainSel={day:di,week:curWeek};showView("train");buildLog();}
-function saveDraft(){try{if(logState)jset("tpe.draft",{ts:Date.now(),state:logState});}catch(e){}}
+function saveDraft(){try{if(logState&&!logState.doneView)jset("tpe.draft",{ts:Date.now(),state:logState});}catch(e){}}
 let draftRestoredOnce=false;
 function buildLog(){
  if(!PLAN){document.getElementById("train-out").innerHTML='<p class="empty">Erstelle zuerst einen Plan.</p>';return;}
  const di=trainSel.day,wk=trainSel.week,day=PLAN.days[di];
+ if(weekDoneSet().has(di)){logState={di,week:wk,label:day.label,doneView:true};editState=null;renderTrain();return;}
  const draft=jget("tpe.draft",null);
  if(draft&&draft.state&&draft.state.di===di&&draft.state.week===wk&&draft.state.label===day.label){
    logState=draft.state;
@@ -962,12 +986,14 @@ function buildLog(){
 }
 function renderTrain(){
  const out=document.getElementById("train-out");if(!logState){out.innerHTML='<p class="empty">Erstelle zuerst einen Plan, wähle dann Trainingstag und Woche.</p>';return;}
- let dayBtns="";PLAN.days.forEach((d,i)=>dayBtns+=`<button class="dbtn ${i===logState.di?'on':''}" onclick="trainSel.day=${i};buildLog()"><b>Tag ${i+1}</b><span>${d.label}</span></button>`);
+ const doneT=weekDoneSet();
+ let dayBtns="";PLAN.days.forEach((d,i)=>{const dn=doneT.has(i);dayBtns+=`<button class="dbtn ${i===logState.di?'on':''} ${dn?'dbdone':''}" onclick="trainSel.day=${i};buildLog()"><b>${dn?'✓ ':''}Tag ${i+1}</b><span>${d.label}</span></button>`;});
  let wkBtns="";for(let w=1;w<=PLAN.config.block;w++){const dl=(PLAN.config.block>=3&&w===PLAN.config.block);wkBtns+=`<button class="wbtn ${w===logState.week?'on':''} ${dl?'deload':''}" onclick="trainSel.week=${w};buildLog()">W${w}<small>${dl?'Deload':'Aufbau'}</small></button>`;}
  let h=`<div class="panel">
    <div class="selh">Woche</div><div class="weeks">${wkBtns}</div>
    <div class="selh">Trainingstag</div><div class="daysel">${dayBtns}</div>
-   <p class="hint" style="margin:12px 0 0">Gewicht &amp; Wdh eintragen, Satz mit ✓ abschließen – startet die Pause.</p></div>`;
+   ${logState.doneView?"":`<p class="hint" style="margin:12px 0 0">Gewicht &amp; Wdh eintragen, Satz mit ✓ abschließen – startet die Pause.</p>`}</div>`;
+ if(logState.doneView){h+=doneViewHTML();out.innerHTML=h;return;}
  // timer
  h+=`<div class="timer-wrap ${timerMin?'min':''}" id="timerWrap">
    <div class="timer-full">
@@ -1072,6 +1098,53 @@ function confirmAdd(name){const ex=EX.find(e=>e.n===name);if(!ex||!logState){clo
  const pr=periodize(catOf(ex),logState.week,PLAN.config.block);
  logState.ex.push({name:ex.n,pat:ex.pat,target:pr,last:lastPerf(ex.n),sets:makeSets(ex.n,pr)});
  saveDraft();closeAdd();renderTrain();toast("„"+ex.n+"“ hinzugefügt ✓");}
+let editState=null;
+function doneViewHTML(){
+ const sess=sessionForDay(logState.di);
+ if(!sess)return `<div class="panel"><p class="empty">Einheit nicht gefunden.</p></div>`;
+ const when=new Date(sess.date).toLocaleString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+ if(editState&&editState.id===sess.id){
+   let h=`<div class="card"><div class="day-head"><span class="day-num dn-done">✎</span><span class="day-title">${logState.label} bearbeiten</span></div>
+     <p class="hint" style="margin:0 0 10px">Gewichte, Wiederholungen und RIR nachträglich korrigieren. Leere Wiederholungen entfernen den Satz.</p>`;
+   editState.entries.forEach((en,i)=>{const tmx=isTm(en.name);
+     h+=`<div class="logex"><div class="logex-h"><span class="nm">${en.name}</span></div>`;
+     en.sets.forEach((s,j)=>{h+=`<div class="setrow">
+       <span class="sn">${j+1}</span>
+       <input type="number" inputmode="decimal" placeholder="${unitLbl()}" value="${s.w}" oninput="editState.entries[${i}].sets[${j}].w=this.value">
+       <input type="number" inputmode="numeric" placeholder="${tmx?'Sek':'Wdh'}" value="${s.r}" oninput="editState.entries[${i}].sets[${j}].r=this.value">
+       ${tmx?'<span></span>':`<select class="rir" onchange="editState.entries[${i}].sets[${j}].rir=this.value"><option value="">RIR</option>${[0,1,2,3,4,5].map(n=>`<option value="${n}" ${String(s.rir)===String(n)?'selected':''}>${n}${n===5?'+':''}</option>`).join('')}</select>`}
+       <span></span></div>`;});
+     h+=`</div>`;});
+   h+=`<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn accent" onclick="saveEditSession()">Änderungen speichern</button><button class="btn" onclick="editState=null;renderTrain()">Abbrechen</button></div></div>`;
+   return h;
+ }
+ let h=`<div class="card"><div class="day-head"><span class="day-num dn-done">✓</span><span class="day-title">${logState.label}</span><span class="pill">erledigt</span></div>
+   <p class="hint" style="margin:0 0 8px">Abgeschlossen am ${when} · ${sess.entries.length} Übungen · ${sess.totalSets} Sätze</p><div class="perf-list">`;
+ sess.entries.forEach(en=>{const tmx=isTm(en.name);
+   const setsStr=en.sets.map(s=>tmx?`${s.r}s`:`${showW(s.w)}×${s.r}`).join(", ");
+   h+=`<div class="perf-row"><span class="pr-n">${en.name}</span><span class="pr-s">${setsStr}${tmx?"":" "+unitLbl()}</span></div>`;});
+ h+=`</div><div style="margin-top:14px"><button class="btn" onclick="startEditSession()">✎ Bearbeiten</button></div></div>`;
+ return h;
+}
+function startEditSession(){const sess=sessionForDay(logState.di);if(!sess)return;
+ editState={id:sess.id,entries:sess.entries.map(en=>({name:en.name,sets:en.sets.map(s=>({w:isTm(en.name)?"":(s.w>0?Math.round(fromKg(s.w)*10)/10:""),r:s.r,rir:(s.rir!=null?s.rir:"")}))}))};
+ renderTrain();}
+function saveEditSession(){
+ const log=jget("tpe.log",[]);const idx=log.findIndex(x=>x.id===editState.id);if(idx<0){editState=null;renderTrain();return;}
+ const entries=editState.entries.map(en=>({name:en.name,sets:en.sets.filter(s=>+s.r>0&&(+s.w>0||isTm(en.name)||isBW(en.name))).map(s=>{const o={w:isTm(en.name)?0:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(en=>en.sets.length);
+ if(!entries.length){toast("Mindestens ein Satz mit Wiederholungen nötig.");return;}
+ log[idx].entries=entries;log[idx].totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
+ jset("tpe.log",log);
+ const e1=jget("tpe.e1rm",{}),tb=jget("tpe.tmbest",{});
+ entries.forEach(e=>{
+   if(isTm(e.name)){let best=0;e.sets.forEach(s=>{if(s.r>0)best=Math.max(best,s.r);});if(best>(tb[e.name]||0))tb[e.name]=best;}
+   else{let best=0;e.sets.forEach(s=>{if(s.w>0&&s.r>0)best=Math.max(best,e1RM(s.w,s.r));});if(best>(e1[e.name]||0))e1[e.name]=Math.round(best*10)/10;}});
+ jset("tpe.e1rm",e1);jset("tpe.tmbest",tb);
+ editState=null;
+ const chg=rebalanceWeek();
+ toast("Einheit aktualisiert ✓");
+ if(chg.length)setTimeout(()=>toast("Wochenplan angepasst: "+chg.map(c=>`+ ${c.name} (Tag ${c.day})`).join(" · ")),1500);
+ afterDataChange();renderTrain();}
 function finishWorkout(){
  const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(e=>e.sets.length);
  if(!entries.length){toast("Noch keine Sätze eingetragen.");return;}
