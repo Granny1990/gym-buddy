@@ -87,6 +87,11 @@
   .perf-row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding:6px 0;font-size:13.5px}
   .perf-row .pr-n{font-weight:700;min-width:0;overflow-wrap:anywhere}
   .perf-row .pr-s{color:var(--muted);text-align:right;flex-shrink:0}
+  #undobar{position:fixed;left:8px;right:8px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:150;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:14px;padding:11px 14px;box-shadow:0 10px 30px rgba(0,0,0,.35);font-size:13.5px;font-weight:600}
+  #undobar span{flex:1}
+  #undobar button{background:none;border:none;color:var(--accent);font:inherit;font-weight:800;cursor:pointer;padding:4px 6px}
+  #undobar .ub-x{color:var(--paper);opacity:.55;font-weight:600}
+  @media(min-width:761px){#undobar{left:50%;right:auto;transform:translateX(-50%);width:min(440px,calc(100% - 20px));bottom:14px}}
   .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-top:16px;overflow:hidden}
   .day-head{display:flex;align-items:center;gap:11px;border-bottom:2px solid var(--ink);padding-bottom:9px;margin-bottom:4px}
   .day-num{font-family:"Anton",sans-serif;font-size:26px;color:var(--accent);line-height:1}
@@ -472,6 +477,11 @@
   </div>
 </div>
 
+<div id="undobar" style="display:none">
+  <span>Einheit gespeichert ✓</span>
+  <button type="button" onclick="undoFinish()">↩ Rückgängig</button>
+  <button type="button" class="ub-x" onclick="hideUndoBar()">✕</button>
+</div>
 <div id="addmodal" class="modal-bg" style="display:none">
   <div class="modal">
     <div class="modal-h"><span>Übung hinzufügen</span><button class="tbtn" onclick="closeAdd()">✕</button></div>
@@ -1148,6 +1158,7 @@ function saveEditSession(){
 function finishWorkout(){
  const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(e=>e.sets.length);
  if(!entries.length){toast("Noch keine Sätze eingetragen.");return;}
+ const _snap={log:localStorage.getItem("tpe.log"),e1:localStorage.getItem("tpe.e1rm"),tb:localStorage.getItem("tpe.tmbest"),plan:localStorage.getItem("tpe.plan"),state:JSON.parse(JSON.stringify(logState)),di:logState.di,week:logState.week};
  const totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
  const log=jget("tpe.log",[]);
  log.unshift({id:Date.now(),date:new Date().toISOString(),week:logState.week,di:logState.di,dayLabel:logState.label,entries,totalSets});
@@ -1163,7 +1174,29 @@ function finishWorkout(){
  else toast("Einheit gespeichert ✓ ("+totalSets+" Sätze)");
  const chg=rebalanceWeek();
  if(chg.length)setTimeout(()=>toast("Wochenplan angepasst: "+chg.map(c=>`+ ${c.name} (Tag ${c.day}, ${c.mus})`).join(" · ")),1600);
+ showUndoBar(_snap);
  showView("hist");
+}
+let undoFin=null,undoTO=null;
+function showUndoBar(snap){
+ undoFin=snap;clearTimeout(undoTO);
+ const b=document.getElementById("undobar");if(!b)return;
+ b.style.display="flex";
+ undoTO=setTimeout(hideUndoBar,10000);
+}
+function hideUndoBar(){undoFin=null;clearTimeout(undoTO);const b=document.getElementById("undobar");if(b)b.style.display="none";}
+function undoFinish(){
+ if(!undoFin)return;
+ const s=undoFin;hideUndoBar();
+ try{
+   const put=(k,v)=>{if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,v);};
+   put("tpe.log",s.log);put("tpe.e1rm",s.e1);put("tpe.tmbest",s.tb);put("tpe.plan",s.plan);
+   PLAN=jget("tpe.plan",null);
+   logState=s.state;trainSel={day:s.di,week:s.week};editState=null;saveDraft();
+   renderPlan();updateCfgPanel(!!PLAN);renderE1Mgr();
+   showView("train");
+   toast("Abschluss rückgängig gemacht – Einheit läuft weiter.");
+ }catch(e){toast("Rückgängig fehlgeschlagen.");}
 }
 
 // ============ TIMER ============
