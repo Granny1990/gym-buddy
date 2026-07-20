@@ -76,6 +76,8 @@
   .wbtn small{display:block;font-size:9px;color:var(--muted);font-weight:600}
   .wbtn.on{background:var(--onbg);color:var(--onfg);border-color:var(--onbg)} .wbtn.on small{color:var(--onfg);opacity:.55}
   .wbtn.deload{border-style:dashed} .wbtn.on.deload{background:var(--blue);border-color:var(--blue)}
+  .wbtn.cur{border-color:var(--accent);border-width:2px}
+  .wbtn.past{opacity:.45}
   .selh{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-top:14px}
   .selh:first-child{margin-top:0}
   .daysel{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
@@ -291,6 +293,7 @@
   .cal2 .cd{height:27px;display:flex;align-items:center;justify-content:center;border-radius:7px;border:1px solid var(--line);color:var(--muted);font-size:11.5px;font-variant-numeric:tabular-nums}
   .cal2 .cd.train{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
   .cal2 .cd.future{opacity:.3}
+  .cal2 .cd.train{cursor:pointer}
   .cal2 .cd.today{box-shadow:0 0 0 2px var(--accent)}
   .cal2 .cd.out{opacity:.18;border-style:dashed}
   .calnav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
@@ -688,6 +691,18 @@ S.unit="kg"; // kg fest; Umschalter aus UI entfernt, Logik bleibt für späteres
 S.equipSet=new Set(S.equip);
 let PLAN=jget("tpe.plan",null);      // {config, days:[{label,idx,items:[{ex,slot}]}]}
 let curWeek=1, trainSel={day:0,week:1};
+function blockWeekInfo(){
+ if(!PLAN)return{cur:1,raw:1};
+ const total=PLAN.config.block;
+ const created=PLAN.created||0;
+ const rel=jget("tpe.log",[]).filter(s=>new Date(s.date).getTime()>=created-864e5);
+ if(!rel.length)return{cur:1,raw:1};
+ let first=Infinity;rel.forEach(s=>{const t=startOfWeek(s.date).getTime();if(t<first)first=t;});
+ const now=startOfWeek(new Date()).getTime();
+ const raw=1+Math.round((now-first)/(7*864e5));
+ return{cur:Math.min(total,Math.max(1,raw)),raw:Math.max(1,raw)};
+}
+function currentBlockWeek(){return blockWeekInfo().cur;}
 
 // ============ HELPERS ============
 function maxLvl(){return S.level==="beg"?1:(S.level==="adv"?3:2);}
@@ -801,7 +816,7 @@ function makePlan(){
   tpl.iso.slice(0,k).forEach(mus=>{const ex=pickIso(mus,mx,used);if(ex){used.add(ex.n);items.push({ex,slot:{type:"iso",mus}});}});
   if(!items.some(it=>it.ex.pat==="core")){const ex=pickIso("core",mx,used);if(ex){used.add(ex.n);items.push({ex,slot:{type:"iso",mus:"core"}});}}
   return{label:tpl.label,idx:i+1,items:orderItems(items)};});
- PLAN={config:{goal:S.goal,level:S.level,block:S.block,split:S.split,days:S.days},days};
+ PLAN={config:{goal:S.goal,level:S.level,block:S.block,split:S.split,days:S.days},days,created:Date.now()};
  curWeek=1;balancePlan();jset("tpe.plan",PLAN);saveCfg();renderPlan();updateCfgPanel(true);
 }
 function saveCfg(){S.equip=[...S.equipSet];jset("tpe.cfg",{goal:S.goal,days:S.days,level:S.level,split:S.split,block:S.block,unit:S.unit,sex:S.sex,bw:S.bw,equip:S.equip});}
@@ -897,12 +912,14 @@ function balancePlan(){
 function renderPlan(){
  const out=document.getElementById("plan-out");if(!PLAN){out.innerHTML='<p class="empty">Ziel und Parameter wählen, dann Trainingsblock erstellen.</p>';return;}
  const total=PLAN.config.block;const E1=jget("tpe.e1rm",{});
+ const bw=blockWeekInfo();
  let h=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Trainingsblock · ${total} Wochen</span></div>
    <div class="goal-badge">Ziel: ${GOALS[PLAN.config.goal].label}</div>
-   <p class="hint">Woche wählen – Vorgaben passen sich an (Progression + Deload).</p><div class="weeks">`;
+   <p class="hint">Du bist in <b>Woche ${bw.cur}</b> deines Blocks (automatisch anhand deiner Einheiten). Andere Wochen nur zur Vorschau.</p><div class="weeks">`;
  for(let w=1;w<=total;w++){const dl=(total>=3&&w===total);
-   h+=`<button class="wbtn ${w===curWeek?'on':''} ${dl?'deload':''}" onclick="setWeek(${w})">W${w}<small>${dl?'Deload':'Aufbau'}</small></button>`;}
- h+=`</div></div>`;
+   const isCur=w===bw.cur,isPast=w<bw.cur;
+   h+=`<button class="wbtn ${w===curWeek?'on':''} ${dl?'deload':''} ${isCur?'cur':''} ${isPast?'past':''}" onclick="setWeek(${w})">${isPast?'✓ ':''}W${w}<small>${isCur?'aktuell':(dl?'Deload':'Aufbau')}</small></button>`;}
+ h+=`</div>${bw.raw>total?`<p class="hint" style="margin-top:9px">🏁 Blockende erreicht – Zeit für einen neuen Trainingsblock („Plan aktualisieren" oben).</p>`:""}</div>`;
  const doneDays=weekDoneSet();
  PLAN.days.forEach((p,di)=>{
   const isDone=doneDays.has(di);
@@ -982,7 +999,7 @@ function saveDraft(){try{if(logState&&!logState.doneView)jset("tpe.draft",{ts:Da
 let draftRestoredOnce=false;
 function buildLog(){
  if(!PLAN){document.getElementById("train-out").innerHTML='<p class="empty">Erstelle zuerst einen Plan.</p>';return;}
- const di=trainSel.day,wk=trainSel.week,day=PLAN.days[di];
+ const di=trainSel.day,wk=currentBlockWeek();trainSel.week=wk;const day=PLAN.days[di];
  if(weekDoneSet().has(di)){logState={di,week:wk,label:day.label,doneView:true};editState=null;renderTrain();return;}
  const draft=jget("tpe.draft",null);
  if(draft&&draft.state&&draft.state.di===di&&draft.state.week===wk&&draft.state.label===day.label){
@@ -998,10 +1015,10 @@ function renderTrain(){
  const out=document.getElementById("train-out");if(!logState){out.innerHTML='<p class="empty">Erstelle zuerst einen Plan, wähle dann Trainingstag und Woche.</p>';return;}
  const doneT=weekDoneSet();
  let dayBtns="";PLAN.days.forEach((d,i)=>{const dn=doneT.has(i);dayBtns+=`<button class="dbtn ${i===logState.di?'on':''} ${dn?'dbdone':''}" onclick="trainSel.day=${i};buildLog()"><b>${dn?'✓ ':''}Tag ${i+1}</b><span>${d.label}</span></button>`;});
- let wkBtns="";for(let w=1;w<=PLAN.config.block;w++){const dl=(PLAN.config.block>=3&&w===PLAN.config.block);wkBtns+=`<button class="wbtn ${w===logState.week?'on':''} ${dl?'deload':''}" onclick="trainSel.week=${w};buildLog()">W${w}<small>${dl?'Deload':'Aufbau'}</small></button>`;}
+ const dlNow=(PLAN.config.block>=3&&logState.week===PLAN.config.block);
  let h=`<div class="panel">
-   <div class="selh">Woche</div><div class="weeks">${wkBtns}</div>
    <div class="selh">Trainingstag</div><div class="daysel">${dayBtns}</div>
+   <div class="row" style="margin-top:12px;align-items:center;gap:8px"><span class="pill ${dlNow?'dl':''}">W${logState.week} · ${dlNow?'Deload':'Aufbau'}</span><span class="hint" style="margin:0">Blockwoche automatisch anhand deines Fortschritts.</span></div>
    ${logState.doneView?"":`<p class="hint" style="margin:12px 0 0">Gewicht &amp; Wdh eintragen, Satz mit ✓ abschließen – startet die Pause.</p>`}</div>`;
  if(logState.doneView){h+=doneViewHTML();out.innerHTML=h;return;}
  // timer
@@ -1090,7 +1107,7 @@ function openAdd(){const q=document.getElementById("add-q");if(q)q.value="";rend
 function renderAddList(){
  const box=document.getElementById("add-list");if(!box)return;
  const q=(document.getElementById("add-q")?.value||"").toLowerCase();
- const inLog=new Set(logState?logState.ex.map(e=>e.name):[]);
+ const inLog=new Set(editState?editState.entries.map(e=>e.name):(logState&&logState.ex?logState.ex.map(e=>e.name):[]));
  const item=e=>{const used=inLog.has(e.n);
    return `<button class="add-item ${used?'used':''}" data-n="${e.n}" ${used?'disabled':`onclick="confirmAdd(this.dataset.n)"`}>
      <span class="ai-n">${e.n}</span><span class="ai-m">${EQL[e.eq]} · ${e.pri.map(m=>MUS[m]).join(", ")}${used?' · schon dabei ✓':''}</span></button>`;};
@@ -1104,7 +1121,9 @@ function renderAddList(){
  }
 }
 function closeAdd(){document.getElementById("addmodal").style.display="none";}
-function confirmAdd(name){const ex=EX.find(e=>e.n===name);if(!ex||!logState){closeAdd();return;}
+function confirmAdd(name){const ex=EX.find(e=>e.n===name);if(!ex){closeAdd();return;}
+ if(editState){editState.entries.push({name:ex.n,sets:[{w:"",r:"",rir:""}]});closeAdd();renderTrain();toast("„"+ex.n+"“ ergänzt – Sätze eintragen und speichern.");return;}
+ if(!logState){closeAdd();return;}
  const pr=periodize(catOf(ex),logState.week,PLAN.config.block);
  logState.ex.push({name:ex.n,pat:ex.pat,target:pr,last:lastPerf(ex.n),sets:makeSets(ex.n,pr)});
  saveDraft();closeAdd();renderTrain();toast("„"+ex.n+"“ hinzugefügt ✓");}
@@ -1115,16 +1134,18 @@ function doneViewHTML(){
  const when=new Date(sess.date).toLocaleString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
  if(editState&&editState.id===sess.id){
    let h=`<div class="card"><div class="day-head"><span class="day-num dn-done">✎</span><span class="day-title">${logState.label} bearbeiten</span></div>
-     <p class="hint" style="margin:0 0 10px">Gewichte, Wiederholungen und RIR nachträglich korrigieren. Leere Wiederholungen entfernen den Satz.</p>`;
+     <p class="hint" style="margin:0 0 10px">Gewichte, Wiederholungen, RIR, Sätze und Übungen nachträglich korrigieren. Leere Wiederholungen entfernen den Satz.</p>`;
    editState.entries.forEach((en,i)=>{const tmx=isTm(en.name);
-     h+=`<div class="logex"><div class="logex-h"><span class="nm">${en.name}</span></div>`;
+     h+=`<div class="logex"><div class="logex-h"><span class="nm">${en.name}</span><span class="tg"><button class="rm" title="Übung entfernen" onclick="editRemoveEx(${i})">✕</button></span></div>`;
      en.sets.forEach((s,j)=>{h+=`<div class="setrow">
        <span class="sn">${j+1}</span>
        <input type="number" inputmode="decimal" placeholder="${unitLbl()}" value="${s.w}" oninput="editState.entries[${i}].sets[${j}].w=this.value">
        <input type="number" inputmode="numeric" placeholder="${tmx?'Sek':'Wdh'}" value="${s.r}" oninput="editState.entries[${i}].sets[${j}].r=this.value">
        ${tmx?'<span></span>':`<select class="rir" onchange="editState.entries[${i}].sets[${j}].rir=this.value"><option value="">RIR</option>${[0,1,2,3,4,5].map(n=>`<option value="${n}" ${String(s.rir)===String(n)?'selected':''}>${n}${n===5?'+':''}</option>`).join('')}</select>`}
        <span></span></div>`;});
+     h+=`<div class="setops"><button class="sop" onclick="editAddSet(${i})">+ Satz</button>${en.sets.length>1?`<button class="sop" onclick="editDelSet(${i})">− Satz</button>`:""}</div>`;
      h+=`</div>`;});
+   h+=`<button class="addex" onclick="openAdd()">+ Übung hinzufügen</button>`;
    h+=`<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn accent" onclick="saveEditSession()">Änderungen speichern</button><button class="btn" onclick="editState=null;renderTrain()">Abbrechen</button></div></div>`;
    return h;
  }
@@ -1133,12 +1154,17 @@ function doneViewHTML(){
  sess.entries.forEach(en=>{const tmx=isTm(en.name);
    const setsStr=en.sets.map(s=>tmx?`${s.r}s`:`${showW(s.w)}×${s.r}`).join(", ");
    h+=`<div class="perf-row"><span class="pr-n">${en.name}</span><span class="pr-s">${setsStr}${tmx?"":" "+unitLbl()}</span></div>`;});
- h+=`</div><div style="margin-top:14px"><button class="btn" onclick="startEditSession()">✎ Bearbeiten</button></div></div>`;
+ h+=`</div><div style="margin-top:14px"><button class="btn" onclick="startEditSession()">✎ Bearbeiten</button></div>
+ <p class="hint" style="margin:12px 0 0">Der Tag ist für diese <b>Kalenderwoche</b> abgeschlossen und öffnet sich nächste Woche automatisch – die Blockwochen-Auswahl (W1–W${PLAN.config.block}) ändert daran nichts.</p></div>`;
  return h;
 }
 function startEditSession(){const sess=sessionForDay(logState.di);if(!sess)return;
  editState={id:sess.id,entries:sess.entries.map(en=>({name:en.name,sets:en.sets.map(s=>({w:isTm(en.name)?"":(s.w>0?Math.round(fromKg(s.w)*10)/10:""),r:s.r,rir:(s.rir!=null?s.rir:"")}))}))};
  renderTrain();}
+function editRemoveEx(i){if(!editState)return;editState.entries.splice(i,1);renderTrain();}
+function editAddSet(i){if(!editState)return;const en=editState.entries[i];const last=en.sets[en.sets.length-1];
+ en.sets.push({w:last?last.w:"",r:"",rir:""});renderTrain();}
+function editDelSet(i){if(!editState)return;const en=editState.entries[i];if(en.sets.length>1){en.sets.pop();renderTrain();}}
 function saveEditSession(){
  const log=jget("tpe.log",[]);const idx=log.findIndex(x=>x.id===editState.id);if(idx<0){editState=null;renderTrain();return;}
  const entries=editState.entries.map(en=>({name:en.name,sets:en.sets.filter(s=>+s.r>0&&(+s.w>0||isTm(en.name)||isBW(en.name))).map(s=>{const o={w:isTm(en.name)?0:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(en=>en.sets.length);
@@ -1362,7 +1388,7 @@ function calGrid(log,startMon,weeks,allMonths){
    for(let dow=0;dow<7;dow++){const dt=new Date(mon);dt.setDate(mon.getDate()+dow);
      const k=dayKey(dt),c=cnt[k]||0,future=dt>today,isToday=dt.getTime()===today.getTime();
      const cls=["cd",c>0?"train":"",future?"future":"",isToday?"today":""].filter(Boolean).join(" ");
-     g+=`<div class="${cls}" title="${k}${c?": "+c+" Einheit"+(c>1?"en":""):""}">${dt.getDate()}</div>`;}
+     g+=`<div class="${cls}" ${c>0?`onclick="openDaySessions('${k}')"`:""} title="${k}${c?": "+c+" Einheit"+(c>1?"en":"")+" · antippen":""}">${dt.getDate()}</div>`;}
  }
  return g+'</div>';
 }
@@ -1380,9 +1406,27 @@ function monthGrid(log,y,m){
      if(dt.getMonth()!==m){g+=`<div class="cd out">${dt.getDate()}</div>`;continue;}
      const k=dayKey(dt),c=cnt[k]||0,future=dt>today,isToday=dt.getTime()===today.getTime();
      const cls=["cd",c>0?"train":"",future?"future":"",isToday?"today":""].filter(Boolean).join(" ");
-     g+=`<div class="${cls}" title="${k}${c?": "+c+" Einheit"+(c>1?"en":""):""}">${dt.getDate()}</div>`;}
+     g+=`<div class="${cls}" ${c>0?`onclick="openDaySessions('${k}')"`:""} title="${k}${c?": "+c+" Einheit"+(c>1?"en":"")+" · antippen":""}">${dt.getDate()}</div>`;}
  }
  return g+'</div>';
+}
+function openDaySessions(k){
+ const log=jget("tpe.log",[]).filter(s=>dayKey(s.date)===k);
+ if(!log.length)return;
+ const d0=new Date(k+"T12:00:00");
+ const dateStr=d0.toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});
+ let h=`<button class="btn" onclick="renderCalModal()" style="margin-bottom:12px">‹ Kalender</button>`;
+ log.forEach(sess=>{
+   const time=new Date(sess.date).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+   const ton=sessionTon(sess);
+   h+=`<div class="sec-h">${sess.dayLabel||"Einheit"} · ${time} Uhr</div><div class="perf-list" style="margin-bottom:6px">`;
+   sess.entries.forEach(en=>{const tmx=isTm(en.name);
+     const setsStr=en.sets.map(s=>tmx?`${s.r}s`:`${showW(s.w)}×${s.r}`).join(", ");
+     h+=`<div class="perf-row"><span class="pr-n">${en.name}</span><span class="pr-s">${setsStr}${tmx?"":" "+unitLbl()}</span></div>`;});
+   h+=`</div><p class="hint" style="margin:4px 0 14px">${sess.entries.length} Übungen · ${sess.totalSets} Sätze${ton>0?" · "+fmtTon(ton)+" bewegt":""}${sess.week?" · Blockwoche W"+sess.week:""}</p>`;});
+ document.getElementById("info-title").textContent=dateStr;
+ document.getElementById("info-body").innerHTML=h;
+ document.getElementById("infomodal").style.display="flex";
 }
 function renderCalModal(){
  const log=jget("tpe.log",[]);
@@ -1759,6 +1803,12 @@ function relWake(){try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){
 applyTheme();buildControls();applyUnitUI();
 if(PLAN)renderPlan();
 updateCfgPanel(!!PLAN);
+try{if(PLAN&&!PLAN.created){
+ const withDi=jget("tpe.log",[]).filter(s=>typeof s.di==="number");
+ PLAN.created=withDi.length?Math.min(...withDi.map(s=>new Date(s.date).getTime())):Date.now();
+ jset("tpe.plan",PLAN);
+}}catch(e){}
+if(PLAN){curWeek=currentBlockWeek();trainSel.week=curWeek;renderPlan();}
 try{if(PLAN){const _ck=startOfWeek(new Date()).getTime();let _st=false;PLAN.days.forEach(d=>{const n=d.items.length;d.items=d.items.filter(it=>!it.comp||it.wk===_ck);if(d.items.length!==n)_st=true;});if(_st){jset("tpe.plan",PLAN);renderPlan();}}}catch(e){}
 try{const _d=jget("tpe.draft",null);if(_d&&_d.state&&PLAN&&PLAN.days[_d.state.di]){trainSel={day:_d.state.di,week:_d.state.week};}}catch(e){}
 window.addEventListener("pagehide",saveDraft);
