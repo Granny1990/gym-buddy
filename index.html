@@ -125,14 +125,18 @@
   .timer-wrap.min{width:auto;left:auto;right:8px;transform:none;padding:8px 11px 8px 13px}
   .timer-wrap.min .timer-full{display:none} .timer-wrap.min .timer-min-only{display:flex}
   .t-dot{width:12px;height:12px;border-radius:50%;background:var(--none);flex:none}
-  .timer-ring{position:relative;width:60px;height:60px;flex:none}
+  .timer-ring{position:relative;width:96px;height:96px;flex:none}
   .timer-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
-  .timer-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Anton",sans-serif;font-size:16px;line-height:1}
-  .timer-val small{font-family:"Hanken Grotesk";font-size:8.5px;color:var(--muted);font-weight:600}
-  .timer-info{flex:1;min-width:110px} .timer-state{font-family:"Anton",sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
-  .timer-sub{font-size:11.5px;color:var(--muted)} .timer-btns{display:flex;gap:6px;flex-wrap:wrap}
+  #tring{transition:stroke-dashoffset .45s linear,stroke .3s}
+  .timer-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Anton",sans-serif;font-size:25px;line-height:1;gap:2px}
+  .timer-val small{font-family:"Hanken Grotesk";font-size:9.5px;color:var(--muted);font-weight:600;letter-spacing:.2px}
+  .timer-info{flex:1;min-width:100px} .timer-state{font-family:"Anton",sans-serif;font-size:16px;text-transform:uppercase;letter-spacing:.5px}
+  .timer-sub{font-size:12px;color:var(--muted);line-height:1.3}
+  .timer-ctl{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+  .ticon{border:1.5px solid var(--line);background:var(--paper);border-radius:9px;width:34px;height:30px;font:inherit;font-size:13px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;padding:0}
+  .ticon:hover{border-color:var(--accent);color:var(--accent)}
+  .timer-min-only .ticon{width:30px}
   .tbtn{border:1.5px solid var(--line);background:var(--paper);border-radius:8px;padding:6px 10px;font:inherit;font-weight:600;font-size:12.5px;cursor:pointer} .tbtn:hover{border-color:var(--ink)}
-  .preset{font-size:11.5px;padding:5px 9px}
   .logex{padding:13px 0;border-bottom:1px solid var(--line)} .logex:last-child{border-bottom:none}
   .logex-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
   .logex-h .nm{font-weight:600;font-size:15px} .logex-h .tg{font-size:11.5px;color:var(--muted);white-space:nowrap}
@@ -1082,21 +1086,21 @@ function renderTrain(){
  // timer
  h+=`<div class="timer-wrap ${timerMin?'min':''}" id="timerWrap">
    <div class="timer-full">
-     <div class="timer-ring"><svg width="84" height="84" viewBox="0 0 84 84">
-       <circle cx="42" cy="42" r="36" fill="none" stroke="var(--bg)" stroke-width="8"/>
-       <circle id="tring" cx="42" cy="42" r="36" fill="none" stroke="var(--none)" stroke-width="8" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="226"/></svg>
+     <div class="timer-ring">
+       <svg viewBox="0 0 108 108">
+         <circle cx="54" cy="54" r="47" fill="none" stroke="var(--bg)" stroke-width="9"/>
+         <circle id="tring" cx="54" cy="54" r="47" fill="none" stroke="var(--none)" stroke-width="9" stroke-linecap="round" stroke-dasharray="295.3" stroke-dashoffset="295.3"/></svg>
        <div class="timer-val"><span class="t-time">0:00</span><small id="ttgt">Ziel –</small></div></div>
-     <div class="timer-info"><div class="timer-state t-state">Pausentimer</div><div class="timer-sub t-sub">Satz abschließen oder Zeit wählen</div></div>
-     <div class="timer-btns">
-       <button class="tbtn preset" onclick="startTimer(45)">45s</button><button class="tbtn preset" onclick="startTimer(90)">90s</button>
-       <button class="tbtn preset" onclick="startTimer(120)">2min</button><button class="tbtn preset" onclick="startTimer(180)">3min</button>
-       <button class="tbtn" onclick="pauseTimer()" id="tpause">⏸</button><button class="tbtn" onclick="stopTimer()">⏹</button>
-       <button class="tbtn" onclick="toggleTimerMin()" title="Timer minimieren">▾</button></div>
+     <div class="timer-info"><div class="timer-state t-state">Pausentimer</div><div class="timer-sub t-sub">Satz mit ✓ abschließen startet die Pause</div></div>
+     <div class="timer-ctl">
+       <button class="ticon" onclick="pauseTimer()" id="tpause" title="Anhalten / Weiter">⏸</button>
+       <button class="ticon" onclick="stopTimer()" title="Zurücksetzen">✕</button>
+       <button class="ticon" onclick="toggleTimerMin()" title="Timer minimieren">▾</button></div>
    </div>
    <div class="timer-min-only">
-     <span class="t-dot"></span><span class="t-time" style="font-family:'Anton',sans-serif;font-size:19px;letter-spacing:.5px">0:00</span>
+     <span class="t-dot"></span><span class="t-time" style="font-family:'Anton',sans-serif;font-size:21px;letter-spacing:.5px">0:00</span>
      <span class="t-state" style="font-size:12.5px;font-weight:600;color:var(--muted)">Pause</span>
-     <button class="tbtn" onclick="toggleTimerMin()" title="Timer aufklappen">▴</button></div>
+     <button class="ticon" onclick="toggleTimerMin()" title="Timer aufklappen">▴</button></div>
    </div>`;
  // exercises
  h+=`<div class="card"><div class="day-head"><span class="day-num">${logState.di+1}</span><span class="day-title">${logState.label}</span><span class="pill ${(PLAN.config.block>=3&&logState.week===PLAN.config.block)?'dl':''}">W${logState.week}</span><button class="btn" style="margin-left:auto;padding:7px 11px;font-size:12.5px" onclick="finishWorkout()">Abschließen ✓</button></div>`;
@@ -1289,22 +1293,25 @@ function curEl(){return timer.run?Math.max(0,Math.floor((Date.now()-timer.start)
 function toggleTimerMin(){timerMin=!timerMin;const w=document.getElementById("timerWrap");if(w)w.classList.toggle("min",timerMin);}
 function startTimer(tgt){clearInterval(timer.iv);timer.tgt=tgt;timer.el=0;timer.start=Date.now();timer.run=true;timer.vibrated=false;tick();timer.iv=setInterval(tick,500);}
 function pauseTimer(){if(timer.run){timer.el=curEl();timer.run=false;}else{timer.start=Date.now()-timer.el*1000;timer.run=true;}const b=document.getElementById("tpause");if(b)b.textContent=timer.run?"⏸":"▶";}
-function stopTimer(){clearInterval(timer.iv);timer.run=false;timer.el=0;tick();const b=document.getElementById("tpause");if(b)b.textContent="⏸";}
+function stopTimer(){clearInterval(timer.iv);timer.run=false;timer.el=0;timer.tgt=0;timer.vibrated=false;tick();const b=document.getElementById("tpause");if(b)b.textContent="⏸";}
+const CIRC=295.3;
 function tick(){
  const times=document.querySelectorAll(".t-time");if(!times.length)return;
- const e=curEl(),t=timer.tgt,tstr=Math.floor(e/60)+":"+String(e%60).padStart(2,"0");
+ const e=curEl(),t=timer.tgt;
+ const secs=t?Math.abs(t-e):e,over=t&&e>t;
+ const tstr=(over?"+":"")+Math.floor(secs/60)+":"+String(secs%60).padStart(2,"0");
  times.forEach(el=>el.textContent=tstr);
- const tgtEl=document.getElementById("ttgt");if(tgtEl)tgtEl.textContent=t?("Ziel "+secStr(t)):"Ziel –";
+ const tgtEl=document.getElementById("ttgt");if(tgtEl)tgtEl.textContent=t?(over?"Ziel "+secStr(t)+" ✓":"von "+secStr(t)):"Ziel –";
  const ring=document.getElementById("tring");
- let col="var(--none)",label="Pause",msg="Satz abschließen oder Zeit wählen";
- if(t){const r=e/t;if(ring)ring.setAttribute("stroke-dashoffset",226-226*Math.min(r,1));
+ let col="var(--none)",label="Pausentimer",msg="Satz mit ✓ abschließen startet die Pause";
+ if(t){const r=e/t;if(ring)ring.setAttribute("stroke-dashoffset",(CIRC*Math.min(r,1)).toFixed(1));
    if(r<0.6){col="var(--hi)";label="Noch erholen";msg="Muskel noch nicht regeneriert";}
    else if(r<0.95){col="var(--mid)";label="Fast bereit";msg="Gleich optimal";}
    else if(r<=1.5){col="var(--ok)";label="Optimales Fenster";msg="Jetzt nächsten Satz starten";}
    else{col="var(--blue)";label="Pause überzogen";msg="Länger als nötig – Satzleistung kann sinken";}
    if(ring)ring.setAttribute("stroke",col);
    if(!timer.vibrated&&e>=t){timer.vibrated=true;if(navigator.vibrate)navigator.vibrate([180,90,180]);}}
- else if(ring){ring.setAttribute("stroke","var(--none)");ring.setAttribute("stroke-dashoffset",226);}
+ else if(ring){ring.setAttribute("stroke","var(--none)");ring.setAttribute("stroke-dashoffset",CIRC);}
  document.querySelectorAll(".t-state").forEach(el=>{el.textContent=label;el.style.color=col;});
  document.querySelectorAll(".t-dot").forEach(el=>el.style.background=col);
  const sub=document.querySelector(".t-sub");if(sub)sub.textContent=msg;
