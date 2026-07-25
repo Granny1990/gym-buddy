@@ -1056,7 +1056,8 @@ function renderPlan(){
     sess.entries.forEach(en=>{const tmx=isTm(en.name);
       const setsStr=en.sets.map(s=>tmx?`${s.r}s`:`${showW(s.w)}×${s.r}`).join(", ");
       h+=`<div class="perf-row"><span class="pr-n">${en.name}</span><span class="pr-s">${setsStr}${tmx?"":" "+unitLbl()}</span></div>`;});
-    h+=`<p class="hint" style="margin:10px 0 4px">Korrekturen (Gewicht/Wdh): Workout-Tab → Tag wählen → „Bearbeiten".</p></div></div></details>`;
+    h+=`<p class="hint" style="margin:10px 0 4px">Korrekturen (Gewicht/Wdh): Workout-Tab → Tag wählen → „Bearbeiten".</p>
+    <button class="btn" style="margin-top:2px" onclick="event.stopPropagation();openDaySessions('${dayKey(sess.date)}')">📋 Zusammenfassung ansehen</button></div></div></details>`;
     return;
   }
   p.items.forEach((it,ei)=>{const pr=periodize(catOf(it.ex),curWeek,total);
@@ -1264,12 +1265,11 @@ function doneViewHTML(){
    return h;
  }
  let h=`<div class="card"><div class="day-head"><span class="day-num dn-done">✓</span><span class="day-title">${logState.label}</span><span class="pill">erledigt</span></div>
-   <p class="hint" style="margin:0 0 8px">Abgeschlossen am ${when} · ${sess.entries.length} Übungen · ${sess.totalSets} Sätze</p><div class="perf-list">`;
- sess.entries.forEach(en=>{const tmx=isTm(en.name);
-   const setsStr=en.sets.map(s=>tmx?`${s.r}s`:`${showW(s.w)}×${s.r}`).join(", ");
-   h+=`<div class="perf-row"><span class="pr-n">${en.name}</span><span class="pr-s">${setsStr}${tmx?"":" "+unitLbl()}</span></div>`;});
- h+=`</div><div style="margin-top:14px"><button class="btn" onclick="startEditSession()">✎ Bearbeiten</button></div>
+   <p class="hint" style="margin:0 0 4px">Abgeschlossen am ${when}</p>
+   ${sessionSummaryHTML(sess,"trainmap-"+sess.id)}
+   <div style="margin-top:14px"><button class="btn" onclick="startEditSession()">✎ Bearbeiten</button></div>
  <p class="hint" style="margin:12px 0 0">Der Tag ist für diese <b>Kalenderwoche</b> abgeschlossen und öffnet sich nächste Woche automatisch – die Blockwochen-Auswahl (W1–W${PLAN.config.block}) ändert daran nichts.</p></div>`;
+ setTimeout(()=>paintMuscleMap("trainmap-"+sess.id,sess.entries),0);
  return h;
 }
 function startEditSession(){const sess=sessionForDay(logState.di);if(!sess)return;
@@ -1295,6 +1295,35 @@ function saveEditSession(){
  toast("Einheit aktualisiert ✓");
  if(chg.length)setTimeout(()=>toast("Wochenplan angepasst: "+chg.map(c=>`+ ${c.name} (Tag ${c.day})`).join(" · ")),1500);
  afterDataChange();renderTrain();}
+function muscleSetsFromEntries(entries){
+ const pri=new Set(),sec=new Set();
+ entries.forEach(en=>{const ex=EX.find(x=>x.n===en.name);if(!ex)return;ex.pri.forEach(m=>pri.add(m));ex.sec.forEach(m=>sec.add(m));});
+ sec.forEach(m=>{if(pri.has(m))sec.delete(m);});
+ return{pri,sec};
+}
+function paintMuscleMap(mapId,entries){
+ const{pri,sec}=muscleSetsFromEntries(entries);
+ MORDER.forEach(m=>{document.querySelectorAll(`#${mapId} [data-m="${m}"]`).forEach(el=>{
+   if(pri.has(m))el.style.fill="var(--accent)";else if(sec.has(m))el.style.fill="var(--mid)";});});
+}
+function sessionSummaryHTML(sess,mapId){
+ const ton=sessionTon(sess);
+ const{pri}=muscleSetsFromEntries(sess.entries);
+ const muscleList=MORDER.filter(m=>pri.has(m)).map(m=>MUS[m]);
+ let h=`<div class="finish-stats">
+   <div class="fstat"><div class="fsv">${sess.entries.length}</div><div class="fsl">Übungen</div></div>
+   <div class="fstat"><div class="fsv">${sess.totalSets}</div><div class="fsl">Sätze</div></div>
+   <div class="fstat"><div class="fsv">${fmtTon(ton)}</div><div class="fsl">Volumen</div></div>
+ </div>
+ <div class="finish-map" id="${mapId}">${bodySVG()}</div>
+ <p class="hint" style="text-align:center;margin:8px 0 16px">Trainiert: <b style="color:var(--ink)">${muscleList.join(", ")||"–"}</b></p>
+ <div class="perf-list">`;
+ sess.entries.forEach(en=>{const tmx=isTm(en.name);
+   const setsStr=en.sets.map(s=>tmx?`${s.r}s`:`${showW(s.w)}×${s.r}`).join(", ");
+   h+=`<div class="perf-row"><span class="pr-n">${en.name}</span><span class="pr-s">${setsStr}${tmx?"":" "+unitLbl()}</span></div>`;});
+ h+=`</div>`;
+ return h;
+}
 function finishWorkout(){
  const dayLabel=logState.label;
  const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(e=>e.sets.length);
@@ -1318,27 +1347,16 @@ function finishWorkout(){
  celebrateFinish(dayLabel,entries,totalSets,prs);
 }
 function celebrateFinish(dayLabel,entries,totalSets,prs){
- let tonnage=0;entries.forEach(e=>{if(isTm(e.name))return;e.sets.forEach(s=>tonnage+=(s.w||0)*(s.r||0));});
- const pri=new Set(),sec=new Set();
- entries.forEach(e=>{const ex=EX.find(x=>x.n===e.name);if(!ex)return;ex.pri.forEach(m=>pri.add(m));ex.sec.forEach(m=>sec.add(m));});
- sec.forEach(m=>{if(pri.has(m))sec.delete(m);});
- const muscleList=MORDER.filter(m=>pri.has(m)).map(m=>MUS[m]);
+ const pseudoSess={entries,totalSets};
  const body=document.getElementById("finish-body");
  body.innerHTML=`<div class="finish-hero">
    <div class="finish-kicker">${prs.length?"Neue Bestleistung 🏆":"Einheit geschafft"}</div>
    <div class="finish-title">${dayLabel} ✅</div>
    <p class="hint" style="margin:0">${prs.length?("Neuer Rekord bei: "+prs.join(", ")):"Stark durchgezogen 💪"}</p>
  </div>
- <div class="finish-stats">
-   <div class="fstat"><div class="fsv">${entries.length}</div><div class="fsl">Übungen</div></div>
-   <div class="fstat"><div class="fsv">${totalSets}</div><div class="fsl">Sätze</div></div>
-   <div class="fstat"><div class="fsv">${fmtTon(tonnage)}</div><div class="fsl">Volumen</div></div>
- </div>
- <div class="finish-map">${bodySVG()}</div>
- <p class="hint" style="text-align:center;margin:8px 0 16px">Trainiert: <b style="color:var(--ink)">${muscleList.join(", ")||"–"}</b></p>
- <button class="btn accent" style="width:100%" onclick="closeFinish()">Weiter</button>`;
- MORDER.forEach(m=>{document.querySelectorAll(`#finish-body [data-m="${m}"]`).forEach(el=>{
-   if(pri.has(m))el.style.fill="var(--accent)";else if(sec.has(m))el.style.fill="var(--mid)";});});
+ ${sessionSummaryHTML(pseudoSess,"finish-map-live")}
+ <button class="btn accent" style="width:100%;margin-top:14px" onclick="closeFinish()">Weiter</button>`;
+ paintMuscleMap("finish-map-live",entries);
  document.getElementById("finishmodal").style.display="flex";
  spawnConfetti();
  try{if(navigator.vibrate)navigator.vibrate([40,30,40,30,90]);}catch(e){}
@@ -1575,18 +1593,15 @@ function openDaySessions(k){
  if(!log.length)return;
  const d0=new Date(k+"T12:00:00");
  const dateStr=d0.toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});
- let h=`<button class="btn" onclick="renderCalModal()" style="margin-bottom:12px">‹ Kalender</button>`;
+ let h=`<button class="btn" onclick="renderCalModal()" style="margin-bottom:14px">‹ Kalender</button>`;
  log.forEach(sess=>{
    const time=new Date(sess.date).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
-   const ton=sessionTon(sess);
-   h+=`<div class="sec-h">${sess.dayLabel||"Einheit"} · ${time} Uhr</div><div class="perf-list" style="margin-bottom:6px">`;
-   sess.entries.forEach(en=>{const tmx=isTm(en.name);
-     const setsStr=en.sets.map(s=>tmx?`${s.r}s`:`${showW(s.w)}×${s.r}`).join(", ");
-     h+=`<div class="perf-row"><span class="pr-n">${en.name}</span><span class="pr-s">${setsStr}${tmx?"":" "+unitLbl()}</span></div>`;});
-   h+=`</div><p class="hint" style="margin:4px 0 14px">${sess.entries.length} Übungen · ${sess.totalSets} Sätze${ton>0?" · "+fmtTon(ton)+" bewegt":""}${sess.week?" · Blockwoche W"+sess.week:""}</p>`;});
+   const mapId="daymap-"+sess.id;
+   h+=`<div class="sec-h">${sess.dayLabel||"Einheit"} · ${time} Uhr${sess.week?" · Blockwoche W"+sess.week:""}</div>${sessionSummaryHTML(sess,mapId)}`;});
  document.getElementById("info-title").textContent=dateStr;
  document.getElementById("info-body").innerHTML=h;
  document.getElementById("infomodal").style.display="flex";
+ log.forEach(sess=>paintMuscleMap("daymap-"+sess.id,sess.entries));
 }
 function renderCalModal(){
  const log=jget("tpe.log",[]);
