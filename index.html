@@ -90,6 +90,17 @@
   .perf-row .pr-n{font-weight:700;min-width:0;overflow-wrap:anywhere}
   .perf-row .pr-s{color:var(--muted);text-align:right;flex-shrink:0}
   #undobar{position:fixed;left:8px;right:8px;bottom:calc(78px + env(safe-area-inset-bottom));z-index:150;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:14px;padding:11px 14px;box-shadow:0 10px 30px rgba(0,0,0,.35);font-size:13.5px;font-weight:600}
+  .finish-hero{text-align:center}
+  .finish-kicker{font-family:"Anton",sans-serif;font-size:14px;letter-spacing:1.2px;color:var(--accent);text-transform:uppercase}
+  .finish-title{font-family:"Anton",sans-serif;font-size:27px;margin:3px 0 4px;line-height:1.05}
+  .finish-stats{display:flex;gap:9px;margin:14px 0 16px}
+  .fstat{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 6px;text-align:center}
+  .fstat .fsv{font-family:"Anton",sans-serif;font-size:21px;color:var(--accent);line-height:1}
+  .fstat .fsl{font-size:10.5px;color:var(--muted);margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+  .finish-map{max-width:250px;margin:4px auto 2px}
+  .confetti-layer{position:fixed;inset:0;z-index:260;pointer-events:none;overflow:hidden}
+  .confetti-piece{position:absolute;top:-8vh;will-change:transform,opacity;animation-name:confetti-fall;animation-timing-function:cubic-bezier(.35,0,.65,1);animation-fill-mode:forwards}
+  @keyframes confetti-fall{to{transform:translateY(118vh) rotate(var(--rot));opacity:.92}}
   #undobar span{flex:1}
   #undobar button{background:none;border:none;color:var(--accent);font:inherit;font-weight:800;cursor:pointer;padding:4px 6px}
   #undobar .ub-x{color:var(--paper);opacity:.55;font-weight:600}
@@ -216,26 +227,37 @@
   .logex .rm{border:none;background:none;color:var(--muted);cursor:pointer;font-size:16px;padding:0 2px;line-height:1} .logex .rm:hover{color:var(--hi)}
   .setrow.pr .sn{color:var(--mid);font-weight:700}
   .last-perf{font-size:12px;color:var(--muted);margin:1px 0 8px;display:flex;align-items:center;gap:5px;flex-wrap:wrap} .last-perf b{color:var(--ink);font-weight:600}
-  .catfilters{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-  .catfilters input,.catfilters select{border:1.5px solid var(--line);border-radius:8px;padding:9px;font:inherit;font-size:14px;background:var(--bg);color:var(--ink)}
-  .catfilters input{flex:1;min-width:150px} .catfilters input:focus,.catfilters select:focus{outline:none;border-color:var(--accent)}
-  .catreset{border:1.5px solid var(--line);background:var(--bg);border-radius:8px;padding:9px 13px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)} .catreset:hover{border-color:var(--accent);color:var(--accent)}
-  .catlist{display:flex;flex-direction:column;gap:10px;margin-top:14px}
-  .catgroup{border:1px solid var(--line);border-radius:var(--r);margin-bottom:9px;overflow:hidden;background:var(--bg)}
-  .catgroup>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:14px 15px}
-  .catgroup>summary::-webkit-details-marker{display:none}
-  .catgroup .cg-t{font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.3px;flex:1}
-  .catgroup .cg-c{font-size:12px;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
-  .catgroup[open] .cfg-chev{transform:rotate(180deg)}
-  .catgroup[open]>summary{border-bottom:1px solid var(--line)}
-  .catgroup .catlist{margin:0;padding:12px}
-  .catcard.exdim{opacity:.55}
-  .catcard.exdim .cc-name{text-decoration:line-through;text-decoration-color:var(--hi)}
+  .cat-search{display:flex;align-items:center;gap:9px;margin-top:12px;background:var(--bg);border:1.5px solid var(--line);border-radius:999px;padding:11px 16px}
+  .cat-search .cs-ic{color:var(--muted);font-size:15px;flex-shrink:0}
+  .cat-search input{flex:1;border:none;background:none;font:inherit;font-size:14.5px;color:var(--ink);padding:0;min-width:0}
+  .cat-search input:focus{outline:none}
+  .cat-chiprow{display:flex;gap:8px;overflow-x:auto;margin-top:12px;padding-bottom:2px;scrollbar-width:none}
+  .cat-chiprow::-webkit-scrollbar{display:none}
+  .mchip{flex-shrink:0;border:1.5px solid var(--line);background:var(--bg);color:var(--muted);border-radius:999px;padding:9px 16px;font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .mchip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .mchip.util{border-style:dashed}
+  .mchip.util.on{background:var(--mid);border-color:var(--mid)}
+  .mchip.util.on.excl{background:var(--hi);border-color:var(--hi)}
+  .catreset{border:1.5px solid var(--line);background:var(--bg);border-radius:999px;padding:9px 16px;font:inherit;font-size:13.5px;font-weight:700;cursor:pointer;color:var(--muted);flex-shrink:0} .catreset:hover{border-color:var(--accent);color:var(--accent)}
+  .cat-sech{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:20px 2px 8px}
+  .cat-sech:first-of-type{margin-top:18px}
+  .exrow-list{display:flex;flex-direction:column}
+  .exrow{display:flex;gap:12px;padding:13px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+  .exrow:last-child{border-bottom:none}
+  .exrow-bar{width:3px;border-radius:3px;background:var(--accent);flex-shrink:0;align-self:stretch}
+  .exrow.exdim .exrow-bar{background:var(--hi)}
+  .exrow-main{flex:1;min-width:0}
+  .exrow-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .exrow-name{font-weight:700;font-size:15px;line-height:1.25}
+  .exrow.exdim .exrow-name{text-decoration:line-through;text-decoration-color:var(--hi)}
+  .exrow-eq{color:var(--muted);font-size:13px;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:2px}
+  .exrow-eq .exrow-chev{color:var(--muted);font-size:17px;line-height:1}
+  .exrow-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:3px}
+  .exrow-mus{color:var(--accent);font-weight:700;font-size:12.5px}
+  .exrow-more{color:var(--muted);font-weight:400;font-size:12.5px}
+  .exrow-icons{display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .exrow-icons .fav-star,.exrow-icons .ex-min{font-size:15px;width:19px;height:19px}
   .btn.exon{background:var(--hi);border-color:var(--hi);color:#fff}
-  .catcard{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:13px 16px;cursor:pointer;transition:.12s}
-  .catcard:hover{border-color:var(--accent);transform:translateX(2px)}
-  .catcard-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-  .cc-name{font-weight:700;font-size:15px} .cc-arrow{color:var(--muted);font-size:20px;line-height:1}
   .cat-title{font-family:"Anton",sans-serif;font-size:23px;text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;line-height:1.1}
   .cat-desc{font-size:14.5px;color:var(--body);line-height:1.6;margin-bottom:4px}
   .cat-cues{margin:2px 0 8px;padding-left:20px} .cat-cues li{font-size:14px;color:var(--body);line-height:1.5;margin-bottom:6px}
@@ -255,12 +277,10 @@
   .prcard{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
   .prv{font-family:"Anton",sans-serif;font-size:25px;color:var(--accent);line-height:1} .prv span{font-size:13px;color:var(--muted);margin-left:3px;font-family:"Hanken Grotesk",sans-serif;font-weight:600}
   .prn{font-size:12.5px;color:var(--ink);margin-top:5px;font-weight:600;line-height:1.25}
-  .cc-r{display:flex;align-items:center;gap:10px}
   .fav-star{cursor:pointer;color:var(--muted);font-size:18px;line-height:1;user-select:none;-webkit-user-select:none} .fav-star.on{color:var(--mid)} .fav-star:hover{color:var(--mid)}
   .ex-min{cursor:pointer;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--muted);color:var(--muted);font-size:15px;font-weight:800;line-height:1;display:inline-flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none;flex-shrink:0}
   .ex-min:hover{border-color:var(--hi);color:var(--hi)}
   .ex-min.on{background:var(--hi);border-color:var(--hi);color:#fff}
-  .catfav-btn{border:1.5px solid var(--line);border-radius:8px;padding:9px 12px;font:inherit;font-size:14px;background:var(--bg);color:var(--muted);cursor:pointer;white-space:nowrap} .catfav-btn.on{border-color:var(--mid);color:var(--mid)}
   #v-train{padding-bottom:120px}
   @media(max-width:560px){
     .ex{flex-wrap:wrap} .ex-main{flex:1 1 0;min-width:0} .swap{order:2;margin-left:auto;align-self:center}
@@ -496,6 +516,9 @@
   <span>Einheit gespeichert ✓</span>
   <button type="button" onclick="undoFinish()">↩ Rückgängig</button>
   <button type="button" class="ub-x" onclick="hideUndoBar()">✕</button>
+</div>
+<div id="finishmodal" class="modal-bg" style="display:none" onclick="if(event.target===this)closeFinish()">
+  <div class="modal"><div id="finish-body"></div></div>
 </div>
 <div id="addmodal" class="modal-bg" style="display:none">
   <div class="modal">
@@ -764,8 +787,23 @@ function dayList(){const d=S.days,sp=S.split,lv=S.level;
   if(d===3)return lv==="beg"?["full_a","full_b","full_c"]:["push","pull","legs"];
   if(d===4)return["upper","lower","upper","lower"];if(d===5)return["push","pull","legs","upper","lower"];
   return["push","pull","legs","push","pull","legs"];}
-function pickComp(pat,mx,used){const XC=EXCL();for(const p of[pat,...(FB[pat]||[])]){let pool=EX.filter(e=>e.pat===p&&e.t===C&&S.equipSet.has(e.eq)&&e.lvl<=mx&&!XC.has(e.n));if(!pool.length)continue;let f=pool.filter(e=>!used.has(e.n));let a=f.length?f:pool;const fv=a.filter(e=>FAVS().has(e.n));if(fv.length)a=fv;return a[Math.floor(Math.random()*a.length)];}let any=EX.filter(e=>e.pat===pat&&S.equipSet.has(e.eq)&&!XC.has(e.n));if(!any.length)any=EX.filter(e=>e.pat===pat&&S.equipSet.has(e.eq));return any.length?any[Math.floor(Math.random()*any.length)]:null;}
-function pickIso(mus,mx,used){const XC=EXCL();let pool=EX.filter(e=>(e.t===I||e.pat==="calf"||e.pat==="core")&&e.pri.includes(mus)&&S.equipSet.has(e.eq)&&e.lvl<=mx&&!XC.has(e.n));if(!pool.length)pool=EX.filter(e=>e.pri.includes(mus)&&S.equipSet.has(e.eq)&&e.lvl<=mx&&!XC.has(e.n));if(!pool.length)return null;let f=pool.filter(e=>!used.has(e.n));let a=f.length?f:pool;const fv=a.filter(e=>FAVS().has(e.n));if(fv.length)a=fv;return a[Math.floor(Math.random()*a.length)];}
+function pickComp(pat,mx,used){
+ const XC=EXCL();const chain=[pat,...(FB[pat]||[])];
+ for(const p of chain){const pool=EX.filter(e=>e.pat===p&&e.t===C&&S.equipSet.has(e.eq)&&e.lvl<=mx&&!XC.has(e.n));
+   const f=pool.filter(e=>!used.has(e.n));if(f.length){const fv=f.filter(e=>FAVS().has(e.n));const a=fv.length?fv:f;return a[Math.floor(Math.random()*a.length)];}}
+ for(const p of chain){const pool=EX.filter(e=>e.pat===p&&e.t===C&&S.equipSet.has(e.eq)&&e.lvl<=mx&&!XC.has(e.n));
+   if(pool.length){const fv=pool.filter(e=>FAVS().has(e.n));const a=fv.length?fv:pool;return a[Math.floor(Math.random()*a.length)];}}
+ let any=EX.filter(e=>e.pat===pat&&S.equipSet.has(e.eq)&&!XC.has(e.n));if(!any.length)any=EX.filter(e=>e.pat===pat&&S.equipSet.has(e.eq));
+ return any.length?any[Math.floor(Math.random()*any.length)]:null;
+}
+function pickIso(mus,mx,used){
+ const XC=EXCL();
+ const tiers=[()=>EX.filter(e=>(e.t===I||e.pat==="calf"||e.pat==="core")&&e.pri.includes(mus)&&S.equipSet.has(e.eq)&&e.lvl<=mx&&!XC.has(e.n)),
+              ()=>EX.filter(e=>e.pri.includes(mus)&&S.equipSet.has(e.eq)&&e.lvl<=mx&&!XC.has(e.n))];
+ for(const t of tiers){const pool=t();const f=pool.filter(e=>!used.has(e.n));if(f.length){const fv=f.filter(e=>FAVS().has(e.n));const a=fv.length?fv:f;return a[Math.floor(Math.random()*a.length)];}}
+ for(const t of tiers){const pool=t();if(pool.length){const fv=pool.filter(e=>FAVS().has(e.n));const a=fv.length?fv:pool;return a[Math.floor(Math.random()*a.length)];}}
+ return null;
+}
 
 // periodization
 function periodize(cat,week,total){
@@ -861,15 +899,18 @@ function updateCfgPanel(collapse){const p=document.getElementById("cfgPanel");if
 function makePlan(){
  const mx=maxLvl(),used=new Set(),k=isoCount();
  const days=dayList().map((dt,i)=>{const tpl=TPL[dt],items=[];
-  tpl.comp.forEach(pat=>{const ex=pickComp(pat,mx,used);if(ex){used.add(ex.n);items.push({ex,slot:{type:"comp",pat}});}});
-  tpl.iso.slice(0,k).forEach(mus=>{const ex=pickIso(mus,mx,used);if(ex){used.add(ex.n);items.push({ex,slot:{type:"iso",mus}});}});
-  if(!items.some(it=>it.ex.pat==="core")){const ex=pickIso("core",mx,used);if(ex){used.add(ex.n);items.push({ex,slot:{type:"iso",mus:"core"}});}}
+  const already=n=>items.some(it=>it.ex.n===n);
+  tpl.comp.forEach(pat=>{const ex=pickComp(pat,mx,used);if(ex&&!already(ex.n)){used.add(ex.n);items.push({ex,slot:{type:"comp",pat}});}});
+  tpl.iso.slice(0,k).forEach(mus=>{const ex=pickIso(mus,mx,used);if(ex&&!already(ex.n)){used.add(ex.n);items.push({ex,slot:{type:"iso",mus}});}});
+  if(!items.some(it=>it.ex.pat==="core")){const ex=pickIso("core",mx,used);if(ex&&!already(ex.n)){used.add(ex.n);items.push({ex,slot:{type:"iso",mus:"core"}});}}
   return{label:tpl.label,idx:i+1,items:orderItems(items)};});
  PLAN={config:{goal:S.goal,level:S.level,block:S.block,split:S.split,days:S.days},days,created:Date.now()};
  curWeek=1;balancePlan();jset("tpe.plan",PLAN);saveCfg();renderPlan();updateCfgPanel(true);
 }
 function saveCfg(){S.equip=[...S.equipSet];jset("tpe.cfg",{goal:S.goal,days:S.days,level:S.level,split:S.split,block:S.block,unit:S.unit,sex:S.sex,bw:S.bw,equip:S.equip});}
-function swap(di,ei){const it=PLAN.days[di].items[ei];const used=new Set();PLAN.days.forEach(p=>p.items.forEach(x=>used.add(x.ex.n)));used.delete(it.ex.n);let cand=it.slot.type==="comp"?pickComp(it.slot.pat,maxLvl(),used):pickIso(it.slot.mus,maxLvl(),used);if(cand){PLAN.days[di].items[ei]={ex:cand,slot:it.slot};jset("tpe.plan",PLAN);renderPlan();}}
+function swap(di,ei){const it=PLAN.days[di].items[ei];const used=new Set();PLAN.days.forEach(p=>p.items.forEach(x=>used.add(x.ex.n)));used.delete(it.ex.n);let cand=it.slot.type==="comp"?pickComp(it.slot.pat,maxLvl(),used):pickIso(it.slot.mus,maxLvl(),used);
+ if(cand&&PLAN.days[di].items.some((x,xi)=>xi!==ei&&x.ex.n===cand.n)){toast("Keine andere passende Übung verfügbar – Tag enthält sie schon.");return;}
+ if(cand){PLAN.days[di].items[ei]={ex:cand,slot:it.slot};jset("tpe.plan",PLAN);renderPlan();}}
 
 // ============ ANALYSIS ============
 function weekDoneSet(){const s=new Set();if(!PLAN)return s;const cur=startOfWeek(new Date()).getTime();
@@ -947,6 +988,7 @@ function replaceExcludedInPlan(){
    if(!ex.has(it.ex.n))return;
    used.delete(it.ex.n);
    const cand=it.slot.type==="comp"?pickComp(it.slot.pat,maxLvl(),used):pickIso(it.slot.mus,maxLvl(),used);
+   if(cand&&p.items.some((x,xi)=>xi!==ei&&x.ex.n===cand.n))return;
    if(cand){p.items[ei]={ex:cand,slot:it.slot,comp:it.comp,wk:it.wk};used.add(cand.n);changed=true;if(!first)first=cand.n;}
  }));
  if(changed){jset("tpe.plan",PLAN);renderPlan();}
@@ -967,6 +1009,7 @@ function balancePlan(){
  MORDER.forEach(m=>{let added=0,a=analyze();
    while(a.vol[m]<LM[m][0]&&added<3){const ex=pickIso(m,mx,allUsedSet());if(!ex)break;
      const day=PLAN.days.find(p=>!p.items.some(it=>it.ex.pri.includes(m)))||fewestDay();
+     if(day.items.some(it=>it.ex.n===ex.n))break;
      day.items.push({ex,slot:{type:"iso",mus:m}});day.items=orderItems(day.items);
      added++;a=analyze();}});
  // 3) Hohes Volumen, aber nur 1x/Woche: auf weitere Tage verteilen (unt. Rücken ausgenommen – dort ist 1x normal)
@@ -974,6 +1017,7 @@ function balancePlan(){
    while(a.vol[m]>=LM[m][0]*1.4&&a.freq[m]<2&&PLAN.days.length>=2&&guard++<3){
      const ex=pickIso(m,mx,allUsedSet());if(!ex)break;
      const day=PLAN.days.find(p=>!p.items.some(it=>it.ex.pri.includes(m)));if(!day)break;
+     if(day.items.some(it=>it.ex.n===ex.n))break;
      day.items.push({ex,slot:{type:"iso",mus:m}});day.items=orderItems(day.items);a=analyze();}});
 }
 
@@ -1024,7 +1068,7 @@ function renderPlan(){
    const e1tag=tm?"":`<span class="tag e1tag" data-n="${it.ex.n}" onclick="openE1Modal(this.dataset.n)">1RM ${e1cur?showW(e1cur)+" "+unitLbl()+" ✎":"+"}</span>`;
    const ps=presetSummary(pr);
    const presStr=tm?`${pr.sets} × ${TMSEC[S.goal]} · P ${secStr(pr.restSec)}`:`${raw?`<span class="kg">≈ ${workLoad(raw)} ${unitLbl()}</span><br>`:""}${ps||`${pr.sets} × ${pr.reps}${load}`} · P ${secStr(pr.restSec)} · RIR ${pr.rir}`;
-   h+=`<div class="ex"><div class="ex-main"><div class="ex-name">${it.ex.n}${iso} <span class="info-i" data-n="${it.ex.n}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span></div>
+   h+=`<div class="ex"><div class="ex-main"><div class="ex-name"><span data-n="${it.ex.n}" onclick="openInfo(this.dataset.n)" style="cursor:pointer">${it.ex.n}${iso}</span> <span class="info-i" data-n="${it.ex.n}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span></div>
      <div class="ex-meta"><span class="tag">${EQL[it.ex.eq]}</span>${mus}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${pr.phase}</span>${it.comp?'<span class="tag" style="background:var(--accent);color:#fff">Ausgleich</span>':''}${e1tag}</div></div>
      <div class="pres">${presStr}</div>
      <button class="swap" title="tauschen" onclick="swap(${di},${ei})">↻</button></div>`;});
@@ -1252,6 +1296,7 @@ function saveEditSession(){
  if(chg.length)setTimeout(()=>toast("Wochenplan angepasst: "+chg.map(c=>`+ ${c.name} (Tag ${c.day})`).join(" · ")),1500);
  afterDataChange();renderTrain();}
 function finishWorkout(){
+ const dayLabel=logState.label;
  const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(e=>e.sets.length);
  if(!entries.length){toast("Noch keine Sätze eingetragen.");return;}
  const _snap={log:localStorage.getItem("tpe.log"),e1:localStorage.getItem("tpe.e1rm"),tb:localStorage.getItem("tpe.tmbest"),plan:localStorage.getItem("tpe.plan"),state:JSON.parse(JSON.stringify(logState)),di:logState.di,week:logState.week};
@@ -1266,12 +1311,53 @@ function finishWorkout(){
    else{let best=0;e.sets.forEach(s=>{if(s.w>0&&s.r>0)best=Math.max(best,e1RM(s.w,s.r));});
      if(best>0){const old=e1[e.name]||0;if(old>0&&best>old)prs.push(e.name);if(best>old)e1[e.name]=Math.round(best*10)/10;}}});
  jset("tpe.e1rm",e1);jset("tpe.tmbest",tb);stopTimer();logState=null;try{localStorage.removeItem("tpe.draft");}catch(e){}
- if(prs.length)toast("🏆 Neue Bestleistung: "+prs.join(", "));
- else toast("Einheit gespeichert ✓ ("+totalSets+" Sätze)");
  const chg=rebalanceWeek();
  if(chg.length)setTimeout(()=>toast("Wochenplan angepasst: "+chg.map(c=>`+ ${c.name} (Tag ${c.day}, ${c.mus})`).join(" · ")),1600);
  showUndoBar(_snap);
  showView("hist");
+ celebrateFinish(dayLabel,entries,totalSets,prs);
+}
+function celebrateFinish(dayLabel,entries,totalSets,prs){
+ let tonnage=0;entries.forEach(e=>{if(isTm(e.name))return;e.sets.forEach(s=>tonnage+=(s.w||0)*(s.r||0));});
+ const pri=new Set(),sec=new Set();
+ entries.forEach(e=>{const ex=EX.find(x=>x.n===e.name);if(!ex)return;ex.pri.forEach(m=>pri.add(m));ex.sec.forEach(m=>sec.add(m));});
+ sec.forEach(m=>{if(pri.has(m))sec.delete(m);});
+ const muscleList=MORDER.filter(m=>pri.has(m)).map(m=>MUS[m]);
+ const body=document.getElementById("finish-body");
+ body.innerHTML=`<div class="finish-hero">
+   <div class="finish-kicker">${prs.length?"Neue Bestleistung 🏆":"Einheit geschafft"}</div>
+   <div class="finish-title">${dayLabel} ✅</div>
+   <p class="hint" style="margin:0">${prs.length?("Neuer Rekord bei: "+prs.join(", ")):"Stark durchgezogen 💪"}</p>
+ </div>
+ <div class="finish-stats">
+   <div class="fstat"><div class="fsv">${entries.length}</div><div class="fsl">Übungen</div></div>
+   <div class="fstat"><div class="fsv">${totalSets}</div><div class="fsl">Sätze</div></div>
+   <div class="fstat"><div class="fsv">${fmtTon(tonnage)}</div><div class="fsl">Volumen</div></div>
+ </div>
+ <div class="finish-map">${bodySVG()}</div>
+ <p class="hint" style="text-align:center;margin:8px 0 16px">Trainiert: <b style="color:var(--ink)">${muscleList.join(", ")||"–"}</b></p>
+ <button class="btn accent" style="width:100%" onclick="closeFinish()">Weiter</button>`;
+ MORDER.forEach(m=>{document.querySelectorAll(`#finish-body [data-m="${m}"]`).forEach(el=>{
+   if(pri.has(m))el.style.fill="var(--accent)";else if(sec.has(m))el.style.fill="var(--mid)";});});
+ document.getElementById("finishmodal").style.display="flex";
+ spawnConfetti();
+ try{if(navigator.vibrate)navigator.vibrate([40,30,40,30,90]);}catch(e){}
+}
+function closeFinish(){document.getElementById("finishmodal").style.display="none";}
+function spawnConfetti(){
+ const layer=document.createElement("div");layer.className="confetti-layer";document.body.appendChild(layer);
+ const colors=["#E8431D","#3F8F5B","#EFA63A","#7A5CCC","#F2D06B"];
+ for(let i=0;i<30;i++){
+   const p=document.createElement("div");p.className="confetti-piece";
+   const left=Math.random()*100,dur=(2.2+Math.random()*1.3).toFixed(2),delay=(Math.random()*.5).toFixed(2),rot=Math.round(360+Math.random()*360);
+   p.style.left=left+"vw";p.style.animationDuration=dur+"s";p.style.animationDelay=delay+"s";p.style.setProperty("--rot",rot+"deg");
+   if(i%4===0){p.textContent="🏋️";p.style.fontSize=(15+Math.random()*10)+"px";}
+   else if(i%9===0){p.textContent="💪";p.style.fontSize=(14+Math.random()*8)+"px";}
+   else{const c=colors[Math.floor(Math.random()*colors.length)];const w=5+Math.random()*4,h=w*(0.4+Math.random()*0.6);
+     p.style.width=w+"px";p.style.height=h+"px";p.style.background=c;p.style.borderRadius=Math.random()<.3?"50%":"2px";}
+   layer.appendChild(p);
+ }
+ setTimeout(()=>layer.remove(),3800);
 }
 let undoFin=null,undoTO=null;
 function showUndoBar(snap){
@@ -1283,7 +1369,7 @@ function showUndoBar(snap){
 function hideUndoBar(){undoFin=null;clearTimeout(undoTO);const b=document.getElementById("undobar");if(b)b.style.display="none";}
 function undoFinish(){
  if(!undoFin)return;
- const s=undoFin;hideUndoBar();
+ const s=undoFin;hideUndoBar();closeFinish();
  try{
    const put=(k,v)=>{if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,v);};
    put("tpe.log",s.log);put("tpe.e1rm",s.e1);put("tpe.tmbest",s.tb);put("tpe.plan",s.plan);
@@ -1799,8 +1885,7 @@ const ISOINFO={
 function catInfo(e){if(PATINFO[e.pat])return PATINFO[e.pat];return ISOINFO[e.pri[0]]||{desc:"Kräftigungsübung für die angegebene Muskulatur.",cues:["Kontrolliert ausführen.","Vollen Bewegungsumfang nutzen.","Saubere Technik vor mehr Gewicht."]};}
 const LVL=["","Einsteiger","Geübt","Fortgeschritten"];
 let catSel=null, catF={mus:"",eq:"",q:"",fav:false,excl:false};
-let catOpen=new Set(), catScroll=0;
-function catGroupToggle(eq,open){if(open)catOpen.add(eq);else catOpen.delete(eq);}
+let catScroll=0;
 function catKeepScroll(fn){const y=window.scrollY||0;fn();requestAnimationFrame(()=>window.scrollTo(0,y));}
 function catFav(n){catKeepScroll(()=>{toggleFav(n);renderCatalog();});}
 function catExcl(n){catKeepScroll(()=>{toggleExcl(n);renderCatalog();});}
@@ -1809,35 +1894,40 @@ function renderCatalog(){const out=document.getElementById("cat-out");if(!out)re
  stopImgCycle();
  let h=`<div class="panel"><div class="sec-h">Übungskatalog</div>
   <p class="hint">Technik, Ausführungshinweise und beanspruchte Muskulatur für alle ${EX.length} Übungen.</p>
-  <div class="catfilters">
-    <input id="catq" type="text" placeholder="Übung suchen…" value="${catF.q}" oninput="catF.q=this.value;renderCatalog();const i=document.getElementById('catq');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}">
-    <select onchange="catF.mus=this.value;renderCatalog()"><option value="">Alle Muskeln</option>${MORDER.map(m=>`<option value="${m}" ${catF.mus===m?"selected":""}>${MUS[m]}</option>`).join("")}</select>
-    <button class="catfav-btn ${catF.fav?"on":""}" onclick="catF.fav=!catF.fav;renderCatalog()">★ Favoriten</button>
-    <button class="catfav-btn ${catF.excl?"on":""}" onclick="catF.excl=!catF.excl;renderCatalog()">⛔ Gesperrt${EXCL().size?" ("+EXCL().size+")":""}</button>
-    ${(catF.q||catF.mus||catF.fav||catF.excl)?`<button class="catreset" onclick="catReset()" title="Suche &amp; Filter zurücksetzen">✕ Zurücksetzen</button>`:""}
+  <div class="cat-search"><span class="cs-ic">🔍</span><input id="catq" type="text" placeholder="Übungen suchen" value="${catF.q}" oninput="catF.q=this.value;renderCatalog();const i=document.getElementById('catq');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length);}"></div>
+  <div class="cat-chiprow">
+    <button class="mchip ${!catF.mus?"on":""}" onclick="catF.mus='';renderCatalog()">Alle</button>
+    ${MORDER.map(m=>`<button class="mchip ${catF.mus===m?"on":""}" onclick="catF.mus='${m}';renderCatalog()">${MUS[m]}</button>`).join("")}
+    <button class="mchip util ${catF.fav?"on":""}" onclick="catF.fav=!catF.fav;renderCatalog()">★ Favoriten</button>
+    <button class="mchip util excl ${catF.excl?"on":""}" onclick="catF.excl=!catF.excl;renderCatalog()">⛔ Gesperrt${EXCL().size?" ("+EXCL().size+")":""}</button>
+    ${(catF.q||catF.mus||catF.fav||catF.excl)?`<button class="catreset" onclick="catReset()" title="Suche &amp; Filter zurücksetzen">✕ Reset</button>`:""}
   </div></div>`;
  const q=catF.q.toLowerCase();
  const _xc=EXCL();
- const list=EX.filter(e=>(!catF.mus||e.pri.includes(catF.mus)||e.sec.includes(catF.mus))&&(!catF.eq||e.eq===catF.eq)&&(!catF.fav||isFav(e.n))&&(!catF.excl||_xc.has(e.n))&&(!q||e.n.toLowerCase().includes(q)));
+ const list=EX.filter(e=>(!catF.mus||e.pri.includes(catF.mus)||e.sec.includes(catF.mus))&&(!catF.fav||isFav(e.n))&&(!catF.excl||_xc.has(e.n))&&(!q||e.n.toLowerCase().includes(q)));
  const byName=(a,b)=>a.n.localeCompare(b.n,"de");
- const grouped=!q&&!catF.eq&&!catF.excl;
+ const grouped=!q&&!catF.fav&&!catF.excl;
  if(!list.length){h+=`<p class="empty">Keine Übung gefunden.</p>`;}
  else if(grouped){
-   h+=`<div style="margin-top:14px">`;
-   ["bb","db","kb","ma","bw"].forEach(eq=>{const items=list.filter(e=>e.eq===eq).sort(byName);if(!items.length)return;
-     h+=`<details class="catgroup" data-eq="${eq}" ${catOpen.has(eq)?"open":""} ontoggle="catGroupToggle('${eq}',this.open)"><summary><span class="cg-t">${EQL[eq]}</span><span class="cg-c">${items.length}</span><span class="cfg-chev">▾</span></summary>
-       <div class="catlist">${items.map(catCardHTML).join("")}</div></details>`;});
+   h+=`<div style="margin-top:4px">`;
+   const order=catF.mus?[catF.mus]:MORDER;
+   order.forEach(m=>{const items=list.filter(e=>catF.mus?true:e.pri[0]===m).sort(byName);if(!items.length)return;
+     h+=`<div class="cat-sech">${MUS[m]}</div><div class="exrow-list">${items.map(catCardHTML).join("")}</div>`;});
    h+=`</div>`;
  } else {
-   h+=`<div class="catlist">${list.slice().sort(byName).map(catCardHTML).join("")}</div>`;
+   h+=`<div class="exrow-list">${list.slice().sort(byName).map(catCardHTML).join("")}</div>`;
  }
  out.innerHTML=h;
 }
 function catReset(){catF={mus:"",eq:"",q:"",fav:false,excl:false};renderCatalog();}
-function catCardHTML(e){const iso=e.t!==C&&e.pat!=="core";const xc=isExcl(e.n);
- return `<div class="catcard ${xc?'exdim':''}" data-n="${e.n}" onclick="openCatDetail(this.dataset.n)">
-   <div class="catcard-h"><span class="cc-name">${e.n}</span><span class="cc-r"><span class="fav-star ${isFav(e.n)?"on":""}" data-n="${e.n}" title="Favorit" onclick="event.stopPropagation();catFav(this.dataset.n)">★</span><span class="ex-min ${xc?"on":""}" data-n="${e.n}" title="${xc?"Gesperrt – wieder freigeben":"Nicht einplanen"}" onclick="event.stopPropagation();catExcl(this.dataset.n)">−</span><span class="cc-arrow">›</span></span></div>
-   <div class="ex-meta"><span class="tag">${EQL[e.eq]}</span>${e.pri.map(m=>`<span class="tag mus">${MUS[m]}</span>`).join("")}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${iso?"Isolation":"Grundübung"}</span>${xc?'<span class="tag" style="background:var(--hi);color:#fff">⛔ gesperrt</span>':''}</div></div>`;
+function catCardHTML(e){const xc=isExcl(e.n);const extra=(e.pri.length-1)+e.sec.length;
+ return `<div class="exrow ${xc?"exdim":""}" data-n="${e.n}">
+   <div class="exrow-bar"></div>
+   <div class="exrow-main" onclick="openCatDetail(this.parentElement.dataset.n)">
+     <div class="exrow-top"><span class="exrow-name">${e.n}</span><span class="exrow-eq">${EQL[e.eq]}<span class="exrow-chev">›</span></span></div>
+     <div class="exrow-bottom"><span><span class="exrow-mus">${MUS[e.pri[0]]}</span>${extra?`<span class="exrow-more"> · +${extra} weitere</span>`:""}</span>
+       <span class="exrow-icons"><span class="fav-star ${isFav(e.n)?"on":""}" data-n="${e.n}" title="Favorit" onclick="event.stopPropagation();catFav(this.dataset.n)">★</span><span class="ex-min ${xc?"on":""}" data-n="${e.n}" title="${xc?"Gesperrt – wieder freigeben":"Nicht einplanen"}" onclick="event.stopPropagation();catExcl(this.dataset.n)">−</span></span></div>
+   </div></div>`;
 }
 function renderCatDetail(out){const e=EX.find(x=>x.n===catSel);if(!e){catSel=null;return renderCatalog();}
  const info=catInfo(e);const iso=e.t!==C&&e.pat!=="core";
