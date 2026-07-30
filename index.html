@@ -1146,6 +1146,7 @@ function renderTrain(){
        <div class="timer-val"><span class="t-time">0:00</span><small id="ttgt">Ziel –</small></div></div>
      <div class="timer-info"><div class="timer-state t-state">Pausentimer</div><div class="timer-sub t-sub">Satz mit ✓ abschließen startet die Pause</div></div>
      <div class="timer-ctl">
+       <button class="ticon" onclick="toggleAudioCue()" id="taudio" title="Audioansage an/aus">${audioPref()?"🔊":"🔇"}</button>
        <button class="ticon" onclick="pauseTimer()" id="tpause" title="Anhalten / Weiter">⏸</button>
        <button class="ticon" onclick="stopTimer()" title="Zurücksetzen">✕</button>
        <button class="ticon" onclick="toggleTimerMin()" title="Timer minimieren">▾</button></div>
@@ -1400,12 +1401,22 @@ function undoFinish(){
 }
 
 // ============ TIMER ============
-let timer={iv:null,el:0,tgt:0,run:false,start:0}, timerMin=true;
+let timer={iv:null,el:0,tgt:0,run:false,start:0}, timerMin=true, cueDone=new Set();
 function curEl(){return timer.run?Math.max(0,Math.floor((Date.now()-timer.start)/1000)):timer.el;}
 function toggleTimerMin(){timerMin=!timerMin;const w=document.getElementById("timerWrap");if(w)w.classList.toggle("min",timerMin);}
-function startTimer(tgt){clearInterval(timer.iv);timer.tgt=tgt;timer.el=0;timer.start=Date.now();timer.run=true;timer.vibrated=false;tick();timer.iv=setInterval(tick,500);}
+function audioPref(){return jget("tpe.audiocue",true);}
+function toggleAudioCue(){const v=!audioPref();jset("tpe.audiocue",v);const b=document.getElementById("taudio");if(b)b.textContent=v?"🔊":"🔇";if(v)speakCue("Ton an");}
+function speakCue(text){
+ if(!audioPref())return;
+ try{if(!("speechSynthesis" in window))return;
+   speechSynthesis.cancel();
+   const u=new SpeechSynthesisUtterance(text);u.lang="de-DE";u.rate=1.05;u.pitch=1;u.volume=0.85;
+   speechSynthesis.speak(u);
+ }catch(e){}
+}
+function startTimer(tgt){clearInterval(timer.iv);timer.tgt=tgt;timer.el=0;timer.start=Date.now();timer.run=true;timer.vibrated=false;cueDone=new Set();tick();timer.iv=setInterval(tick,500);}
 function pauseTimer(){if(timer.run){timer.el=curEl();timer.run=false;}else{timer.start=Date.now()-timer.el*1000;timer.run=true;}const b=document.getElementById("tpause");if(b)b.textContent=timer.run?"⏸":"▶";}
-function stopTimer(){clearInterval(timer.iv);timer.run=false;timer.el=0;timer.tgt=0;timer.vibrated=false;tick();const b=document.getElementById("tpause");if(b)b.textContent="⏸";}
+function stopTimer(){clearInterval(timer.iv);timer.run=false;timer.el=0;timer.tgt=0;timer.vibrated=false;cueDone=new Set();tick();const b=document.getElementById("tpause");if(b)b.textContent="⏸";}
 const CIRC=295.3;
 function tick(){
  const times=document.querySelectorAll(".t-time");if(!times.length)return;
@@ -1422,7 +1433,9 @@ function tick(){
    else if(r<=1.5){col="var(--ok)";label="Optimales Fenster";msg="Jetzt nächsten Satz starten";}
    else{col="var(--blue)";label="Pause überzogen";msg="Länger als nötig – Satzleistung kann sinken";}
    if(ring)ring.setAttribute("stroke",col);
-   if(!timer.vibrated&&e>=t){timer.vibrated=true;if(navigator.vibrate)navigator.vibrate([180,90,180]);}}
+   if(!over){const rem=t-e;
+     if((rem===30||rem===15)&&!cueDone.has(rem)){cueDone.add(rem);speakCue(String(rem));}}
+   if(!timer.vibrated&&e>=t){timer.vibrated=true;if(navigator.vibrate)navigator.vibrate([180,90,180]);speakCue("Go");}}
  else if(ring){ring.setAttribute("stroke","var(--none)");ring.setAttribute("stroke-dashoffset",CIRC);}
  document.querySelectorAll(".t-state").forEach(el=>{el.textContent=label;el.style.color=col;});
  document.querySelectorAll(".t-dot").forEach(el=>el.style.background=col);
