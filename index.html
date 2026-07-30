@@ -93,7 +93,7 @@
   .finish-hero{text-align:center}
   .finish-kicker{font-family:"Anton",sans-serif;font-size:14px;letter-spacing:1.2px;color:var(--accent);text-transform:uppercase}
   .finish-title{font-family:"Anton",sans-serif;font-size:27px;margin:3px 0 4px;line-height:1.05}
-  .finish-stats{display:flex;gap:9px;margin:14px 0 16px}
+  .finish-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(76px,1fr));gap:9px;margin:14px 0 16px}
   .fstat{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 6px;text-align:center}
   .fstat .fsv{font-family:"Anton",sans-serif;font-size:21px;color:var(--accent);line-height:1}
   .fstat .fsl{font-size:10.5px;color:var(--muted);margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
@@ -1122,7 +1122,7 @@ function buildLog(){
    if(!draftRestoredOnce){draftRestoredOnce=true;const hasData=logState.ex.some(e=>e.sets.some(s=>s.done||+s.w>0||+s.r>0));if(hasData)toast("Workout-Entwurf wiederhergestellt ✓");}
    renderTrain();return;
  }
- logState={di,week:wk,label:day.label,ex:day.items.map(it=>{const pr=periodize(catOf(it.ex),wk,PLAN.config.block);
+ logState={di,week:wk,label:day.label,startedAt:Date.now(),ex:day.items.map(it=>{const pr=periodize(catOf(it.ex),wk,PLAN.config.block);
    return{name:it.ex.n,pat:it.ex.pat,target:pr,last:lastPerf(it.ex.n),sets:makeSets(it.ex.n,pr)};})};
  renderTrain();
 }
@@ -1311,10 +1311,12 @@ function sessionSummaryHTML(sess,mapId){
  const ton=sessionTon(sess);
  const{pri}=muscleSetsFromEntries(sess.entries);
  const muscleList=MORDER.filter(m=>pri.has(m)).map(m=>MUS[m]);
+ const durTile=sess.durationSec!=null?`<div class="fstat"><div class="fsv">${fmtDur(sess.durationSec)}</div><div class="fsl">Dauer</div></div>`:"";
  let h=`<div class="finish-stats">
    <div class="fstat"><div class="fsv">${sess.entries.length}</div><div class="fsl">Übungen</div></div>
    <div class="fstat"><div class="fsv">${sess.totalSets}</div><div class="fsl">Sätze</div></div>
    <div class="fstat"><div class="fsv">${fmtTon(ton)}</div><div class="fsl">Volumen</div></div>
+   ${durTile}
  </div>
  <div class="finish-map" id="${mapId}">${bodySVG()}</div>
  <p class="hint" style="text-align:center;margin:8px 0 16px">Trainiert: <b style="color:var(--ink)">${muscleList.join(", ")||"–"}</b></p>
@@ -1327,12 +1329,14 @@ function sessionSummaryHTML(sess,mapId){
 }
 function finishWorkout(){
  const dayLabel=logState.label;
+ const startedAt=logState.startedAt||Date.now();
  const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(e=>e.sets.length);
  if(!entries.length){toast("Noch keine Sätze eingetragen.");return;}
  const _snap={log:localStorage.getItem("tpe.log"),e1:localStorage.getItem("tpe.e1rm"),tb:localStorage.getItem("tpe.tmbest"),plan:localStorage.getItem("tpe.plan"),state:JSON.parse(JSON.stringify(logState)),di:logState.di,week:logState.week};
  const totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
+ const durationSec=Math.max(0,Math.round((Date.now()-startedAt)/1000));
  const log=jget("tpe.log",[]);
- log.unshift({id:Date.now(),date:new Date().toISOString(),week:logState.week,di:logState.di,dayLabel:logState.label,entries,totalSets});
+ log.unshift({id:Date.now(),date:new Date().toISOString(),week:logState.week,di:logState.di,dayLabel:logState.label,entries,totalSets,durationSec});
  jset("tpe.log",log);
  const e1=jget("tpe.e1rm",{}),tb=jget("tpe.tmbest",{});const prs=[];
  entries.forEach(e=>{
@@ -1345,10 +1349,11 @@ function finishWorkout(){
  if(chg.length)setTimeout(()=>toast("Wochenplan angepasst: "+chg.map(c=>`+ ${c.name} (Tag ${c.day}, ${c.mus})`).join(" · ")),1600);
  showUndoBar(_snap);
  showView("hist");
- celebrateFinish(dayLabel,entries,totalSets,prs);
+ celebrateFinish(dayLabel,entries,totalSets,prs,durationSec);
 }
-function celebrateFinish(dayLabel,entries,totalSets,prs){
- const pseudoSess={entries,totalSets};
+function fmtDur(sec){const totalMin=Math.round(sec/60);if(totalMin<1)return"<1 min";const h=Math.floor(totalMin/60),m=totalMin%60;return h>0?`${h}h ${m}min`:`${m} min`;}
+function celebrateFinish(dayLabel,entries,totalSets,prs,durationSec){
+ const pseudoSess={entries,totalSets,durationSec};
  const body=document.getElementById("finish-body");
  body.innerHTML=`<div class="finish-hero">
    <div class="finish-kicker">${prs.length?"Neue Bestleistung 🏆":"Einheit geschafft"}</div>
@@ -1650,7 +1655,8 @@ function prBoardHTML(e1){
  const entries=Object.entries(e1).sort((a,b)=>b[1]-a[1]);
  if(!entries.length)return"";
  const cards=entries.map(([n,v])=>`<div class="prcard"><div class="prv">${showW(v)}<span>${unitLbl()}</span></div><div class="prn">${n}</div></div>`).join("");
- return `<div class="panel"><div class="sec-h">Bestleistungen · geschätztes 1RM</div><div class="prgrid">${cards}</div></div>`;
+ return `<div class="panel"><details class="acc"><summary><span class="sec-h" style="margin:0;flex:1">Bestleistungen · geschätztes 1RM</span><span class="acc-meta">${entries.length} Übung${entries.length===1?"":"en"}</span></summary>
+   <div class="prgrid" style="margin-top:12px">${cards}</div></details></div>`;
 }
 function tmBoardHTML(tb){
  const entries=Object.entries(tb).sort((a,b)=>b[1]-a[1]);
@@ -1809,20 +1815,24 @@ function renderHist(){
  log.forEach(s=>{s.entries.forEach(e=>{if(!isTm(e.name))e.sets.forEach(st=>{tonnage+=(+st.w||0)*(+st.r||0);});});});
  let h=weekRingHTML(log);
  h+=trendHTML(log);
- h+=prBoardHTML(e1);
- const exNames=[...new Set(log.flatMap(s=>s.entries.map(e=>e.name)))];
+ const exCount={};log.forEach(s=>s.entries.forEach(e=>{exCount[e.name]=(exCount[e.name]||0)+1;}));
+ const exNames=Object.keys(exCount).sort((a,b)=>a.localeCompare(b,"de"));
+ const bigLifts=["Kniebeuge (LH)","Bankdrücken (LH)","Kreuzheben (LH)"];
+ const defaultEx=bigLifts.find(n=>exCount[n])||Object.entries(exCount).sort((a,b)=>b[1]-a[1])[0]?.[0]||exNames[0];
  h+=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Kraftentwicklung</span></div>
-   <p class="hint" style="margin:0 0 10px">Geschätztes 1RM je Einheit für die gewählte Übung – eine steigende Kurve bedeutet Fortschritt.</p>
-   <div class="row" style="margin-bottom:10px"><select id="exsel" onchange="drawE1()">${exNames.map(n=>`<option>${n}</option>`).join("")}</select></div>
+   <p class="hint" style="margin:0 0 10px">Geschätztes 1RM je Einheit für die gewählte Übung – eine steigende Kurve bedeutet Fortschritt. Volle Punkte = nah am Muskelversagen (RIR 0–2, verlässliche Schätzung); helle Punkte = mit Reserve trainiert, Schätzung unsicherer. Die gestrichelte Linie zeigt den geglätteten Trend.</p>
+   <div class="row" style="margin-bottom:10px"><select id="exsel" onchange="drawE1()">${exNames.map(n=>`<option ${n===defaultEx?"selected":""}>${n}</option>`).join("")}</select></div>
    <div id="e1chart"></div><div id="rrout"></div></div>`;
+ h+=prBoardHTML(e1);
  h+=sessionsHTML(log);
  h+=relStrengthHTML(e1,log);
  h+=badgesHTML(log,tonnage);
  out.innerHTML=h;drawE1();
 }
 function drawE1(){const log=jget("tpe.log",[]);const sel=document.getElementById("exsel");if(!sel)return;const name=sel.value;const tm=isTm(name);
- const pts=[];log.slice().reverse().forEach(s=>{s.entries.filter(e=>e.name===name).forEach(e=>{let mx=0;e.sets.forEach(st=>{if(tm){if(st.r>0)mx=Math.max(mx,st.r);}else{if(st.w>0&&st.r>0)mx=Math.max(mx,e1RM(st.w,st.r));}});if(mx)pts.push({x:new Date(s.date).getTime(),y:tm?mx:Math.round(fromKg(mx)*10)/10});});});
- document.getElementById("e1chart").innerHTML=pts.length>1?lineChart(pts,tm?"s":unitLbl()):'<p class="hint">Mindestens zwei Einträge nötig, um einen Verlauf zu zeichnen.</p>';
+ const pts=[];log.slice().reverse().forEach(s=>{s.entries.filter(e=>e.name===name).forEach(e=>{let mx=0,bestRir=null;e.sets.forEach(st=>{if(tm){if(st.r>0)mx=Math.max(mx,st.r);}else{if(st.w>0&&st.r>0){const v=e1RM(st.w,st.r);if(v>mx){mx=v;bestRir=(st.rir!=null&&st.rir!=="")?+st.rir:null;}}}});if(mx)pts.push({x:new Date(s.date).getTime(),y:tm?mx:Math.round(fromKg(mx)*10)/10,rir:bestRir});});});
+ const lowConf=pts.map(p=>!tm&&(p.rir==null||p.rir>=3));
+ document.getElementById("e1chart").innerHTML=pts.length>1?lineChart(pts,tm?"s":unitLbl(),null,{trend:pts.length>=5,lowConf}):'<p class="hint">Mindestens zwei Einträge nötig, um einen Verlauf zu zeichnen.</p>';
  const rr=document.getElementById("rrout");if(rr)rr.innerHTML=repRecordsHTML(log,name);}
 function repRecordsHTML(log,name){
  if(isTm(name))return"";
@@ -1833,7 +1843,8 @@ function repRecordsHTML(log,name){
  return `<div class="sec-h" style="margin-top:16px">Rep-Rekorde</div><p class="hint" style="margin:2px 0 0">Schwerstes Gewicht je Wiederholungszahl – ein neuer Rekord ist auch ohne neues 1RM ein Fortschritt.</p><div class="rr-grid">${chips}</div>`;}
 function drawVol(){const log=jget("tpe.log",[]);const pts=log.slice().reverse().map(s=>({x:new Date(s.date).getTime(),y:s.totalSets}));
  document.getElementById("volchart").innerHTML=pts.length?barChart(pts):'<p class="hint">Noch keine Daten.</p>';}
-function lineChart(pts,unit,ytitle){const W=620,H=215,pl=46,pr=16,pt=16,pb=44;
+function movingAvg(vals,w){return vals.map((_,i)=>{const s=Math.max(0,i-Math.floor(w/2)),e=Math.min(vals.length,i+Math.ceil(w/2));const sl=vals.slice(s,e);return sl.reduce((a,b)=>a+b,0)/sl.length;});}
+function lineChart(pts,unit,ytitle,opts){opts=opts||{};const W=620,H=215,pl=46,pr=16,pt=16,pb=44;
  const xs=pts.map(o=>o.x),ys=pts.map(o=>o.y);
  const xmin=Math.min(...xs),xmax=Math.max(...xs);
  let ymin=Math.min(...ys),ymax=Math.max(...ys);
@@ -1847,15 +1858,19 @@ function lineChart(pts,unit,ytitle){const W=620,H=215,pl=46,pr=16,pt=16,pb=44;
  const xlab=[xmin,(xmin+xmax)/2,xmax].map((xv,i)=>{const xx=X(xv),anc=i===0?"start":i===2?"end":"middle";
    return `<text x="${xx.toFixed(1)}" y="${H-pb+18}" font-size="11" fill="var(--muted)" text-anchor="${anc}">${new Date(xv).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}</text>`;}).join("");
  const path=pts.map((o,i)=>(i?"L":"M")+X(o.x).toFixed(1)+" "+Y(o.y).toFixed(1)).join(" ");
- const dots=pts.map(o=>{const cx=X(o.x).toFixed(1),cy=Y(o.y).toFixed(1),ds=new Date(o.x).toLocaleDateString("de-DE");
-   return `<circle cx="${cx}" cy="${cy}" r="3.6" fill="var(--accent)"/><circle cx="${cx}" cy="${cy}" r="14" fill="transparent" style="cursor:pointer" onmousemove="chartTip(event,'${ds}','${o.y} ${unit}')" onmouseleave="chartTipHide()" ontouchstart="chartTip(event,'${ds}','${o.y} ${unit}')" ontouchend="chartTipHide()"/>`;}).join("");
+ let trendPath="";
+ if(opts.trend){const avg=movingAvg(ys,3);trendPath=`<path d="${avg.map((v,i)=>(i?"L":"M")+X(pts[i].x).toFixed(1)+" "+Y(v).toFixed(1)).join(" ")}" fill="none" stroke="var(--ok)" stroke-width="2" stroke-dasharray="5,4" opacity=".8"/>`;}
+ const dots=pts.map((o,i)=>{const cx=X(o.x).toFixed(1),cy=Y(o.y).toFixed(1),ds=new Date(o.x).toLocaleDateString("de-DE");
+   const low=opts.lowConf&&opts.lowConf[i];
+   const dot=low?`<circle cx="${cx}" cy="${cy}" r="3.6" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>`:`<circle cx="${cx}" cy="${cy}" r="3.6" fill="var(--accent)"/>`;
+   return `${dot}<circle cx="${cx}" cy="${cy}" r="14" fill="transparent" style="cursor:pointer" onmousemove="chartTip(event,'${ds}','${o.y} ${unit}')" onmouseleave="chartTipHide()" ontouchstart="chartTip(event,'${ds}','${o.y} ${unit}')" ontouchend="chartTipHide()"/>`;}).join("");
  const ycy=pt+(H-pt-pb)/2,yt=ytitle||(unit==="s"?"Haltezeit (s)":"1RM ("+unit+")");
  const yTitle=`<text x="13" y="${ycy}" font-size="11" fill="var(--muted)" text-anchor="middle" transform="rotate(-90 13 ${ycy})">${yt}</text>`;
  const xTitle=`<text x="${pl+(W-pl-pr)/2}" y="${H-4}" font-size="11" fill="var(--muted)" text-anchor="middle">Datum</text>`;
  return `<svg width="100%" viewBox="0 0 ${W} ${H}" style="overflow:visible">${grid}
    <line x1="${pl}" y1="${pt}" x2="${pl}" y2="${H-pb}" stroke="var(--line)"/>
    <line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line)"/>
-   <path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2"/>${dots}${ylab}${xlab}${yTitle}${xTitle}</svg>`;}
+   <path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2"/>${trendPath}${dots}${ylab}${xlab}${yTitle}${xTitle}</svg>`;}
 let chartTipT=null;
 function chartTip(ev,dateStr,valStr){let t=document.getElementById("charttip");
  if(!t){t=document.createElement("div");t.id="charttip";t.className="charttip";document.body.appendChild(t);}
