@@ -28,6 +28,16 @@
     --accent:#F2592F;--accent-dark:#F2592F;--hi:#E0524B;--mid:#EFA63A;--lo:#E7C25E;--none:#403D36;
     --ok:#5BB07B;--ok-dark:#86CFA0;--okbg:#22332a;--warnbg:#3a2620;--blue:#5b9bd0;--tagbg:#2b3040;--tagfg:#a6b8da;--over:#9B86E6;
     --onbg:#ECE8DF;--onfg:#141310;--musbg:#3a2620;--selbg:#2e201c;--pillbg:#1e2a33;--body:#CFCBC0;color-scheme:dark;}
+  html[data-theme="teal"]{--accent:#0E7C86;--accent-dark:#0B5E66;--musbg:#e2f2f2;--selbg:#eefaf9;--pillbg:#e5f2ee;}
+  html[data-theme="teal"].dark{--accent:#2FB8C4;--accent-dark:#2FB8C4;--musbg:#16302f;--selbg:#122726;--pillbg:#16302a;}
+  html[data-theme="pink"]{--accent:#D6336C;--accent-dark:#A32355;--musbg:#fbe4ec;--selbg:#fdeef3;--pillbg:#f3e7ee;}
+  html[data-theme="pink"].dark{--accent:#F0568A;--accent-dark:#F0568A;--musbg:#3a1f28;--selbg:#2e1a21;--pillbg:#2a1e24;}
+  html[data-theme="kobalt"]{--accent:#3852D0;--accent-dark:#28399E;--musbg:#e6e9fb;--selbg:#eef0fd;--pillbg:#e8ebf7;}
+  html[data-theme="kobalt"].dark{--accent:#6B84F5;--accent-dark:#6B84F5;--musbg:#1c2140;--selbg:#181c34;--pillbg:#1a1f3a;}
+  .theme-swatches{display:flex;gap:12px;margin-top:8px}
+  .tswatch{width:38px;height:38px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;padding:0;position:relative;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+  .tswatch.on{border-color:var(--ink)}
+  .tswatch.on::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,.35)}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   button,select,input,summary,a,label{touch-action:manipulation}
@@ -539,6 +549,11 @@
 <div id="setmodal" class="modal-bg" style="display:none" onclick="if(event.target===this)closeSettings()">
   <div class="modal">
     <div class="modal-h"><span>Einstellungen</span><button class="tbtn" onclick="closeSettings()">✕</button></div>
+    <div class="set-sec" style="margin-top:0;border-top:none">
+      <div class="sec-h">Farbschema</div>
+      <div class="theme-swatches" id="themeSwatches"></div>
+      <p class="hint" style="margin-top:8px">Wirkt sofort auf Buttons, Diagramme und Markierungen – Hell/Dunkel bleibt unabhängig davon über den ☾-Knopf oben einstellbar.</p>
+    </div>
     <div class="setrow-opt">
       <div><div class="opt-t">Aufwärmsätze anzeigen</div><div class="opt-d">Aufwärmrampe vor Grundübungen mit freiem Gewicht/Maschine. Reine Anzeige – zählt nicht ins Volumen und wird nicht protokolliert.</div></div>
       <button id="sw-warmup" class="toggle" onclick="toggleWarmup()" role="switch" aria-label="Aufwärmsätze"><span class="knob"></span></button>
@@ -592,8 +607,18 @@ function toggleUnit(){const old=S.unit;S.unit=old==="kg"?"lbs":"kg";saveCfg();
  if(typeof logState!=="undefined"&&logState){const f=old==="kg"?UNIT.lbPerKg:UNIT.kgPerLb;logState.ex.forEach(e=>e.sets.forEach(s=>{if(s.w!==""&&!isNaN(+s.w))s.w=Math.round(+s.w*f*10)/10;}));}
  applyUnitUI();renderActive();}
 // ---- theme ----
-function applyTheme(){const dark=Store.get("tpe.theme")==="dark";document.documentElement.classList.toggle("dark",dark);const b=document.getElementById("themeBtn");if(b)b.textContent=dark?"☀":"☾";const tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.setAttribute("content",dark?"#141310":"#E8431D");}
+const COLOR_THEMES={orange:{name:"Orange",hex:"#E8431D"},teal:{name:"Petrol",hex:"#0E7C86"},pink:{name:"Rosé",hex:"#D6336C"},kobalt:{name:"Kobalt",hex:"#3852D0"}};
+function applyTheme(){const dark=Store.get("tpe.theme")==="dark";document.documentElement.classList.toggle("dark",dark);const b=document.getElementById("themeBtn");if(b)b.textContent=dark?"☀":"☾";
+ const ct=Store.get("tpe.colortheme")||"orange";
+ if(ct==="orange")document.documentElement.removeAttribute("data-theme");else document.documentElement.setAttribute("data-theme",ct);
+ const tc=document.querySelector('meta[name="theme-color"]');if(tc)tc.setAttribute("content",dark?"#141310":(COLOR_THEMES[ct]?.hex||"#E8431D"));
+}
 function toggleTheme(){const dark=Store.get("tpe.theme")==="dark";Store.set("tpe.theme",dark?"light":"dark");applyTheme();}
+function setColorTheme(t){Store.set("tpe.colortheme",t);applyTheme();renderThemeSwatches();}
+function renderThemeSwatches(){const box=document.getElementById("themeSwatches");if(!box)return;
+ const cur=Store.get("tpe.colortheme")||"orange";
+ box.innerHTML=Object.entries(COLOR_THEMES).map(([k,v])=>`<button class="tswatch ${k===cur?"on":""}" style="background:${v.hex}" title="${v.name}" onclick="setColorTheme('${k}')"></button>`).join("");
+}
 // ---- toast ----
 let toastT=null;
 function toast(msg){let el=document.getElementById("toast");if(!el){el=document.createElement("div");el.id="toast";el.className="toast";document.body.appendChild(el);}el.textContent=msg;requestAnimationFrame(()=>el.classList.add("show"));clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),3800);}
@@ -1307,19 +1332,29 @@ function paintMuscleMap(mapId,entries){
  MORDER.forEach(m=>{document.querySelectorAll(`#${mapId} [data-m="${m}"]`).forEach(el=>{
    if(pri.has(m))el.style.fill="var(--accent)";else if(sec.has(m))el.style.fill="var(--mid)";});});
 }
+function estKcal(sess){
+ const bw=+S.bw||0;
+ if(bw<=0||sess.durationSec==null)return null;
+ const met=sess.goal==="endurance"?6.5:sess.goal==="strength"?4:5;
+ const kcal=met*3.5*bw/200*(sess.durationSec/60);
+ return Math.round(kcal/10)*10;
+}
 function sessionSummaryHTML(sess,mapId){
  const ton=sessionTon(sess);
  const{pri}=muscleSetsFromEntries(sess.entries);
  const muscleList=MORDER.filter(m=>pri.has(m)).map(m=>MUS[m]);
  const durTile=sess.durationSec!=null?`<div class="fstat"><div class="fsv">${fmtDur(sess.durationSec)}</div><div class="fsl">Dauer</div></div>`:"";
+ const kcal=estKcal(sess);
+ const kcalTile=kcal!=null?`<div class="fstat" title="Grobschätzung nach MET-Tabelle (Compendium of Physical Activities), abhängig von Körpergewicht, Dauer und Trainingsziel – kann ±20–30% abweichen.">
+   <div class="fsv">≈${kcal}</div><div class="fsl">kcal</div></div>`:"";
  let h=`<div class="finish-stats">
    <div class="fstat"><div class="fsv">${sess.entries.length}</div><div class="fsl">Übungen</div></div>
    <div class="fstat"><div class="fsv">${sess.totalSets}</div><div class="fsl">Sätze</div></div>
    <div class="fstat"><div class="fsv">${fmtTon(ton)}</div><div class="fsl">Volumen</div></div>
-   ${durTile}
+   ${durTile}${kcalTile}
  </div>
  <div class="finish-map" id="${mapId}">${bodySVG()}</div>
- <p class="hint" style="text-align:center;margin:8px 0 16px">Trainiert: <b style="color:var(--ink)">${muscleList.join(", ")||"–"}</b></p>
+ <p class="hint" style="text-align:center;margin:8px 0 16px">Trainiert: <b style="color:var(--ink)">${muscleList.join(", ")||"–"}</b>${(kcal==null&&sess.durationSec!=null&&!(+S.bw>0))?'<br>Körpergewicht in den Einstellungen hinterlegen, um Kalorien zu schätzen.':""}</p>
  <div class="perf-list">`;
  sess.entries.forEach(en=>{const tmx=isTm(en.name);
    const setsStr=en.sets.map(s=>tmx?`${s.r}s`:`${showW(s.w)}×${s.r}`).join(", ");
@@ -1336,7 +1371,7 @@ function finishWorkout(){
  const totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
  const durationSec=Math.max(0,Math.round((Date.now()-startedAt)/1000));
  const log=jget("tpe.log",[]);
- log.unshift({id:Date.now(),date:new Date().toISOString(),week:logState.week,di:logState.di,dayLabel:logState.label,entries,totalSets,durationSec});
+ log.unshift({id:Date.now(),date:new Date().toISOString(),week:logState.week,di:logState.di,dayLabel:logState.label,entries,totalSets,durationSec,goal:S.goal});
  jset("tpe.log",log);
  const e1=jget("tpe.e1rm",{}),tb=jget("tpe.tmbest",{});const prs=[];
  entries.forEach(e=>{
@@ -1353,7 +1388,7 @@ function finishWorkout(){
 }
 function fmtDur(sec){const totalMin=Math.round(sec/60);if(totalMin<1)return"<1 min";const h=Math.floor(totalMin/60),m=totalMin%60;return h>0?`${h}h ${m}min`:`${m} min`;}
 function celebrateFinish(dayLabel,entries,totalSets,prs,durationSec){
- const pseudoSess={entries,totalSets,durationSec};
+ const pseudoSess={entries,totalSets,durationSec,goal:S.goal};
  const body=document.getElementById("finish-body");
  body.innerHTML=`<div class="finish-hero">
    <div class="finish-kicker">${prs.length?"Neue Bestleistung 🏆":"Einheit geschafft"}</div>
@@ -1506,7 +1541,7 @@ function openInfo(name){const e=EX.find(x=>x.n===name);if(!e)return;const info=c
  document.getElementById("infomodal").style.display="flex";startImgCycle(name,"info");}
 function closeInfo(){stopImgCycle();document.getElementById("infomodal").style.display="none";}
 function syncToggles(){const a=document.getElementById("sw-warmup");if(a)a.classList.toggle("on",!!cfgUI.warmup);const b=document.getElementById("sw-topset");if(b)b.classList.toggle("on",cfgUI.topset!==false);}
-function openSettings(){syncToggles();syncBody();document.getElementById("setmodal").style.display="flex";}
+function openSettings(){syncToggles();syncBody();renderThemeSwatches();document.getElementById("setmodal").style.display="flex";}
 function syncBody(){const bw=document.getElementById("set-bw");if(bw)bw.value=S.bw>0?S.bw:"";const sm=document.getElementById("sex-m"),sf=document.getElementById("sex-f");if(sm)sm.classList.toggle("on",S.sex!=="f");if(sf)sf.classList.toggle("on",S.sex==="f");}
 function setBW(v){S.bw=Math.max(0,+v||0);saveCfg();renderHist();}
 function setSex(s){S.sex=s==="f"?"f":"m";saveCfg();syncBody();renderHist();}
