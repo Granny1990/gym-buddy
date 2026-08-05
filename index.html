@@ -860,9 +860,11 @@ function workKg(name,loadStr){const e=jget("tpe.e1rm",{})[name];const p=pctMid(l
 function setWeight(name,pct){const e=jget("tpe.e1rm",{})[name];return e?workLoad(e*pct/100):"";}
 function makeSets(name,pr){
  const lp=lastPerf(name);
+ const tip=lp?progressTip({name,target:pr,last:lp}):null;
+ const useSchedule=!lp||(tip&&tip.cls==="up");
  const lw=i=>{if(!lp||isTm(name))return"";const s=lp.sets[Math.min(i,lp.sets.length-1)];return(s&&+s.w>0)?Math.round(fromKg(s.w)*10)/10:"";};
- if(pr.setPlan&&pr.setPlan.length)return pr.setPlan.map((sp,i)=>({w:setWeight(name,sp.loadPct)||lw(i),r:"",rir:"",done:false,tr:String(sp.reps),top:!!sp.top,pct:sp.loadPct}));
- const raw=workKg(name,pr.loadStr),w=raw?workLoad(raw):"";const tr=typeof pr.reps==="string"?pr.reps:String(pr.reps);
+ if(pr.setPlan&&pr.setPlan.length)return pr.setPlan.map((sp,i)=>({w:(useSchedule?setWeight(name,sp.loadPct):"")||lw(i),r:"",rir:"",done:false,tr:String(sp.reps),top:!!sp.top,pct:sp.loadPct}));
+ const raw=useSchedule?workKg(name,pr.loadStr):null,w=raw?workLoad(raw):"";const tr=typeof pr.reps==="string"?pr.reps:String(pr.reps);
  return Array.from({length:pr.sets},(_,i)=>({w:w||lw(i),r:"",rir:"",done:false,tr}));
 }
 function topWorkKg(name,pr){const e=jget("tpe.e1rm",{})[name];if(!e)return null;let pct=null;
@@ -933,7 +935,8 @@ function makePlan(){
  curWeek=1;balancePlan();jset("tpe.plan",PLAN);saveCfg();renderPlan();updateCfgPanel(true);
 }
 function saveCfg(){S.equip=[...S.equipSet];jset("tpe.cfg",{goal:S.goal,days:S.days,level:S.level,split:S.split,block:S.block,unit:S.unit,sex:S.sex,bw:S.bw,equip:S.equip});}
-function swap(di,ei){const it=PLAN.days[di].items[ei];const used=new Set();PLAN.days.forEach(p=>p.items.forEach(x=>used.add(x.ex.n)));used.delete(it.ex.n);let cand=it.slot.type==="comp"?pickComp(it.slot.pat,maxLvl(),used):pickIso(it.slot.mus,maxLvl(),used);
+function swap(di,ei){const it=PLAN.days[di].items[ei];const used=new Set();PLAN.days.forEach(p=>p.items.forEach(x=>used.add(x.ex.n)));let cand=it.slot.type==="comp"?pickComp(it.slot.pat,maxLvl(),used):pickIso(it.slot.mus,maxLvl(),used);
+ if(cand&&cand.n===it.ex.n){toast("Keine andere passende Übung verfügbar.");return;}
  if(cand&&PLAN.days[di].items.some((x,xi)=>xi!==ei&&x.ex.n===cand.n)){toast("Keine andere passende Übung verfügbar – Tag enthält sie schon.");return;}
  if(cand){PLAN.days[di].items[ei]={ex:cand,slot:it.slot};jset("tpe.plan",PLAN);renderPlan();}}
 
@@ -1019,7 +1022,6 @@ function replaceExcludedInPlan(){
  let first=null,changed=false;
  PLAN.days.forEach(p=>p.items.forEach((it,ei)=>{
    if(!ex.has(it.ex.n))return;
-   used.delete(it.ex.n);
    const cand=it.slot.type==="comp"?pickComp(it.slot.pat,maxLvl(),used):pickIso(it.slot.mus,maxLvl(),used);
    if(cand&&p.items.some((x,xi)=>xi!==ei&&x.ex.n===cand.n))return;
    if(cand){p.items[ei]={ex:cand,slot:it.slot,comp:it.comp,wk:it.wk};used.add(cand.n);changed=true;if(!first)first=cand.n;}
@@ -1153,10 +1155,13 @@ function buildLog(){
  const draft=jget("tpe.draft",null);
  if(draft&&draft.state&&draft.state.di===di&&draft.state.week===wk&&draft.state.label===day.label){
    logState=draft.state;
-   if(!draftRestoredOnce){draftRestoredOnce=true;const hasData=logState.ex.some(e=>e.sets.some(s=>s.done||+s.w>0||+s.r>0));if(hasData)toast("Workout-Entwurf wiederhergestellt ✓");}
+   const isStaleTimer=logState.startedAt&&draft.ts&&(dayKey(draft.ts)!==dayKey(Date.now())||Date.now()-draft.ts>5*3600*1000);
+   if(isStaleTimer){logState.startedAt=Date.now();saveDraft();}
+   if(!draftRestoredOnce){draftRestoredOnce=true;const hasData=logState.ex.some(e=>e.sets.some(s=>s.done||+s.w>0||+s.r>0));
+     if(hasData)toast(isStaleTimer?"Unterbrochene Einheit fortgesetzt – Zeittracking neu gestartet.":"Workout-Entwurf wiederhergestellt ✓");}
    renderTrain();return;
  }
- logState={di,week:wk,label:day.label,startedAt:Date.now(),ex:day.items.map(it=>{const pr=periodize(catOf(it.ex),wk,PLAN.config.block);
+ logState={di,week:wk,label:day.label,startedAt:null,ex:day.items.map(it=>{const pr=periodize(catOf(it.ex),wk,PLAN.config.block);
    return{name:it.ex.n,pat:it.ex.pat,target:pr,last:lastPerf(it.ex.n),sets:makeSets(it.ex.n,pr)};})};
  renderTrain();
 }
@@ -1230,7 +1235,13 @@ function addSet(xi){const ex=logState.ex[xi];const last=ex.sets[ex.sets.length-1
  ex.sets.push({w:last?last.w:"",r:"",rir:"",done:false,tr:last?last.tr:""});saveDraft();renderTrain();}
 function delSet(xi){const ex=logState.ex[xi];if(ex.sets.length>1){ex.sets.pop();saveDraft();renderTrain();}}
 function doneSet(xi,si){const ex=logState.ex[xi];const st=ex.sets[si];
- const allBefore=ex.sets.every(s=>s.done);st.done=!st.done;saveDraft();
+ const allBefore=ex.sets.every(s=>s.done);st.done=!st.done;
+ if(st.done&&!logState.startedAt){
+   const hasReps=+st.r>0;
+   const hasWeight=+st.w>0||isBW(ex.name)||isTm(ex.name);
+   if(hasReps&&hasWeight)logState.startedAt=Date.now();
+ }
+ saveDraft();
  const allAfter=ex.sets.every(s=>s.done);
  const row=document.getElementById(`sr-${xi}-${si}`);
  if(st.done){
@@ -1255,9 +1266,10 @@ function swapLogEx(xi){
  const item=logState.ex[xi];
  const ex=EX.find(x=>x.n===item.name);
  if(!ex){toast("Übung nicht gefunden.");return;}
- const used=new Set(logState.ex.map(e=>e.name));used.delete(item.name);
+ const used=new Set(logState.ex.map(e=>e.name));
  const cand=(ex.t===C&&ex.pat!=="core")?pickComp(ex.pat,maxLvl(),used):pickIso(ex.pri[0],maxLvl(),used);
  if(!cand){toast("Keine passende Alternative gefunden.");return;}
+ if(cand.n===item.name){toast("Keine andere passende Übung verfügbar.");return;}
  if(logState.ex.some((e,i)=>i!==xi&&e.name===cand.n)){toast("Keine andere passende Übung verfügbar – ist schon dabei.");return;}
  const pr=periodize(catOf(cand),logState.week,PLAN.config.block);
  logState.ex[xi]={name:cand.n,pat:cand.pat,target:pr,last:lastPerf(cand.n),sets:makeSets(cand.n,pr)};
@@ -1387,12 +1399,13 @@ function sessionSummaryHTML(sess,mapId){
 }
 function finishWorkout(){
  const dayLabel=logState.label;
- const startedAt=logState.startedAt||Date.now();
+ const startedAt=logState.startedAt||null;
  const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(e=>e.sets.length);
  if(!entries.length){toast("Noch keine Sätze eingetragen.");return;}
  const _snap={log:localStorage.getItem("tpe.log"),e1:localStorage.getItem("tpe.e1rm"),tb:localStorage.getItem("tpe.tmbest"),plan:localStorage.getItem("tpe.plan"),state:JSON.parse(JSON.stringify(logState)),di:logState.di,week:logState.week};
  const totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
- const durationSec=Math.max(0,Math.round((Date.now()-startedAt)/1000));
+ const rawDurationSec=startedAt?Math.max(0,Math.round((Date.now()-startedAt)/1000)):null;
+ const durationSec=(rawDurationSec!=null&&rawDurationSec<=5*3600)?rawDurationSec:null;
  const log=jget("tpe.log",[]);
  log.unshift({id:Date.now(),date:new Date().toISOString(),week:logState.week,di:logState.di,dayLabel:logState.label,entries,totalSets,durationSec,goal:S.goal});
  jset("tpe.log",log);
