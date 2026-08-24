@@ -161,10 +161,18 @@
   .timer-min-only .ticon{width:30px}
   .tbtn{border:1.5px solid var(--line);background:var(--paper);border-radius:8px;padding:6px 10px;font:inherit;font-weight:600;font-size:12.5px;cursor:pointer} .tbtn:hover{border-color:var(--ink)}
   .logex{padding:13px 0;border-bottom:1px solid var(--line)} .logex:last-child{border-bottom:none}
-  .logex-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
+  .logex-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:5px}
+  .lx-icons{display:flex;gap:8px;flex-shrink:0}
+  .lxbtn{width:32px;height:32px;border-radius:9px;border:1.5px solid var(--line);background:var(--paper);color:var(--muted);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;flex-shrink:0}
+  .lxbtn:hover,.lxbtn:active{border-color:var(--ink);color:var(--ink)}
+  .lxbtn.lxbtn-danger:hover,.lxbtn.lxbtn-danger:active{border-color:var(--hi);color:var(--hi)}
+  .logex-target{font-size:12.5px;color:var(--muted);margin-bottom:8px;line-height:1.4}
+  .chip-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
   .logex-h .nm{font-weight:600;font-size:15px} .logex-h .tg{font-size:11.5px;color:var(--muted);white-space:nowrap}
-  .setrow{display:grid;grid-template-columns:30px 1fr 1fr 50px 38px;gap:7px;align-items:center;margin-bottom:6px}
-  .setrow select.rir{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:8px 2px;font:inherit;font-size:12.5px;text-align:center;background:var(--bg);color:var(--ink)}
+  .setrow{display:grid;grid-template-columns:24px 1fr 1fr 46px 68px 34px;gap:6px;align-items:center;margin-bottom:6px}
+  .techbtn{width:70px;height:36px;border-radius:8px;border:1.5px solid var(--ok);background:var(--ok);color:#fff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 2px;white-space:nowrap}
+  .techbtn.unclean{border-color:var(--hi);background:var(--hi)}
+  .setrow select.rir{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:8px 0;font:inherit;font-size:11.5px;text-align:center;background:var(--bg);color:var(--ink);appearance:none;-webkit-appearance:none;-moz-appearance:none}
   .setrow select.rir:focus{outline:none;border-color:var(--accent)}
   .prog-tip{font-size:12px;margin:0 0 8px;padding:5px 9px;border-radius:7px;font-weight:600;display:inline-block;line-height:1.35}
   .prog-tip.up{background:rgba(91,176,123,.16);color:var(--ok)} .prog-tip.hold{background:rgba(239,166,58,.18);color:var(--mid)} .prog-tip.reps{background:var(--bg);color:var(--muted)}
@@ -295,7 +303,7 @@
   @media(max-width:560px){
     .ex{flex-wrap:wrap} .ex-main{flex:1 1 0;min-width:0} .swap{order:2;margin-left:auto;align-self:center}
     .pres{order:3;width:100%;text-align:left;margin-top:5px;white-space:normal}
-    .logex-h{flex-wrap:wrap} .logex-h .tg{white-space:normal;flex-basis:100%;margin-top:2px}
+    .logex-h{flex-wrap:wrap}
     .day-head{flex-wrap:wrap;row-gap:6px}
   }
   @media print{.tabs,.panel,.gen,.timer-wrap,details.method,.btn,footer .np{display:none}.view{display:block!important}.card{break-inside:avoid}}
@@ -530,6 +538,17 @@
 <div id="finishmodal" class="modal-bg" style="display:none" onclick="if(event.target===this)closeFinish()">
   <div class="modal"><div id="finish-body"></div></div>
 </div>
+<div id="spontanmodal" class="modal-bg" style="display:none" onclick="if(event.target===this)closeSpontanModal()">
+  <div class="modal">
+    <div class="modal-h"><span>⚡ Spontanes Training</span><button class="tbtn" onclick="closeSpontanModal()">✕</button></div>
+    <p class="hint" style="margin-top:0">Kein Plantag heute, oder nur wenig Zeit? Wähle Fokus &amp; Dauer – ich stelle dir eine passende Kurzeinheit zusammen.</p>
+    <div class="sec-h">Fokus</div>
+    <div class="chip-wrap" id="spontan-focus"></div>
+    <div class="sec-h" style="margin-top:18px">Dauer</div>
+    <div class="chip-wrap" id="spontan-dur"></div>
+    <button class="btn accent" style="width:100%;margin-top:22px" onclick="confirmSpontan()">Einheit erstellen</button>
+  </div>
+</div>
 <div id="addmodal" class="modal-bg" style="display:none">
   <div class="modal">
     <div class="modal-h"><span>Übung hinzufügen</span><button class="tbtn" onclick="closeAdd()">✕</button></div>
@@ -561,6 +580,10 @@
     <div class="setrow-opt">
       <div><div class="opt-t">Top-Set &amp; Back-off (Kraft)</div><div class="opt-d">Im Ziel „Kraft": ein schwerer Top-Satz plus leichtere Folgesätze bei Grundübungen. Aus = gleichmäßige Sätze.</div></div>
       <button id="sw-topset" class="toggle" onclick="toggleTopset()" role="switch" aria-label="Top-Set Back-off"><span class="knob"></span></button>
+    </div>
+    <div class="setrow-opt">
+      <div><div class="opt-t">Deload-Woche</div><div class="opt-d">Letzte Blockwoche mit reduziertem Volumen &amp; höherem RIR. Evidenz dafür ist dünn – standardmäßig aus, alle Wochen bleiben Aufbau.</div></div>
+      <button id="sw-deload" class="toggle" onclick="toggleDeload()" role="switch" aria-label="Deload-Woche"><span class="knob"></span></button>
     </div>
     <p class="hint" style="margin-top:10px">Änderungen wirken sofort. Eine bereits laufende Trainingseinheit übernimmt die Satzstruktur erst beim nächsten Start der Einheit.</p>
     <div class="set-sec">
@@ -780,8 +803,8 @@ const LM={chest:[8,22],back:[10,25],shoulders:[8,24],biceps:[6,20],triceps:[6,18
 
 // ============ STATE ============
 const S=jget("tpe.cfg",{goal:"hypertrophy",days:4,level:"int",split:"auto",block:4,unit:"kg",sex:"m",bw:0,equip:["bw","db","bb","kb","ma"]});
-const cfgUI=jget("tpe.ui",{warmup:false,topset:true});
-function saveUI(){jset("tpe.ui",{warmup:!!cfgUI.warmup,topset:cfgUI.topset!==false});}
+const cfgUI=jget("tpe.ui",{warmup:false,topset:true,deload:false});
+function saveUI(){jset("tpe.ui",{warmup:!!cfgUI.warmup,topset:cfgUI.topset!==false,deload:cfgUI.deload===true});}
 if(!S.unit)S.unit="kg";
 if(!S.sex)S.sex="m"; if(S.bw==null)S.bw=0;
 S.unit="kg"; // kg fest; Umschalter aus UI entfernt, Logik bleibt für späteres Einstellungsmenü
@@ -832,7 +855,7 @@ function pickIso(mus,mx,used){
 
 // periodization
 function periodize(cat,week,total){
- const hasDL=total>=3,isDL=hasDL&&week===total,buildN=hasDL?total-1:total;
+ const hasDL=total>=3&&cfgUI.deload===true,isDL=hasDL&&week===total,buildN=hasDL?total-1:total;
  const s=SCHEME[S.goal][cat];const k=Math.min(week,buildN),frac=buildN>1?(k-1)/(buildN-1):0;
  let sets=s.sets,reps=s.reps,loadStr=s.load||null,restSec=s.restSec,rir=s.rir,phase="Aufbau",setPlan=null;
  if(cat==="core")return{sets:isDL?2:s.sets,reps:s.reps,loadStr:null,restSec:s.restSec,rir:isDL?"3–4":s.rir,phase:isDL?"Deload":"Basis",isDL};
@@ -863,9 +886,9 @@ function makeSets(name,pr){
  const tip=lp?progressTip({name,target:pr,last:lp}):null;
  const useSchedule=!lp||(tip&&tip.cls==="up");
  const lw=i=>{if(!lp||isTm(name))return"";const s=lp.sets[Math.min(i,lp.sets.length-1)];return(s&&+s.w>0)?Math.round(fromKg(s.w)*10)/10:"";};
- if(pr.setPlan&&pr.setPlan.length)return pr.setPlan.map((sp,i)=>({w:(useSchedule?setWeight(name,sp.loadPct):"")||lw(i),r:"",rir:"",done:false,tr:String(sp.reps),top:!!sp.top,pct:sp.loadPct}));
+ if(pr.setPlan&&pr.setPlan.length)return pr.setPlan.map((sp,i)=>({w:(useSchedule?setWeight(name,sp.loadPct):"")||lw(i),r:"",rir:"",done:false,clean:true,tr:String(sp.reps),top:!!sp.top,pct:sp.loadPct}));
  const raw=useSchedule?workKg(name,pr.loadStr):null,w=raw?workLoad(raw):"";const tr=typeof pr.reps==="string"?pr.reps:String(pr.reps);
- return Array.from({length:pr.sets},(_,i)=>({w:w||lw(i),r:"",rir:"",done:false,tr}));
+ return Array.from({length:pr.sets},(_,i)=>({w:w||lw(i),r:"",rir:"",done:false,clean:true,tr}));
 }
 function topWorkKg(name,pr){const e=jget("tpe.e1rm",{})[name];if(!e)return null;let pct=null;
  if(pr.setPlan&&pr.setPlan.length)pct=Math.max(...pr.setPlan.map(s=>s.loadPct));else pct=pctMid(pr.loadStr);
@@ -899,6 +922,9 @@ function progressTip(e){
  const lower=def&&(["squat","hinge","lunge"].includes(def.pat)||def.pri.some(m=>["quads","hamstrings","glutes"].includes(m)));
  const incStr=S.unit==="lbs"?(lower?"+10 lbs":"+5 lbs"):(lower?"+5 kg":"+2,5 kg");
  const isRange=/[–\-]/.test(String(t.reps||""));
+ if(last.some(s=>s.clean===false)){
+   return{cls:"hold",text:`Technik zuerst festigen – letztes Mal war mind. ein Satz unsauber markiert, daher keine Laststeigerung.`};
+ }
  if(allHit&&(!hasRIR||avgRIR>=rirT)){
    if(bw)return{cls:"up",text:`Ziel erreicht – mehr Wiederholungen oder Zusatzlast wagen.`};
    return{cls:"up",text:`Last erhöhen (${incStr})${isRange?", dann wieder am unteren Spannen-Ende starten":""}.`};
@@ -953,9 +979,11 @@ function analyze(useActual){const vol={},freq={},volNow={};MORDER.forEach(m=>{vo
  const sessions=useActual?jget("tpe.log",[]).filter(x=>startOfWeek(x.date).getTime()===curKey):[];
  sessions.forEach(sess=>{(sess.entries||[]).forEach(en=>{const ex=EX.find(e=>e.n===en.name);if(!ex)return;const n=en.sets.length;
    ex.pri.forEach(m=>{volNow[m]+=n;});ex.sec.forEach(m=>{volNow[m]+=n*0.5;});});});
+ const matchedIds=new Set();
  PLAN.days.forEach((p,di)=>{const dp=new Set();
   if(done.has(di)){
     sessions.filter(x=>x.di===di||(x.di==null&&x.dayLabel===p.label)).forEach(sess=>{
+      matchedIds.add(sess.id);
       (sess.entries||[]).forEach(en=>{const ex=EX.find(e=>e.n===en.name);if(!ex)return;const n=en.sets.length;
         ex.pri.forEach(m=>{vol[m]+=n;dp.add(m);});ex.sec.forEach(m=>{vol[m]+=n*0.5;});
         if(["hpush","vpush"].includes(ex.pat))push+=n;if(["hpull","vpull"].includes(ex.pat))pull+=n;});});
@@ -965,7 +993,65 @@ function analyze(useActual){const vol={},freq={},volNow={};MORDER.forEach(m=>{vo
      if(["hpush","vpush"].includes(it.ex.pat))push+=pr.sets;if(["hpull","vpull"].includes(it.ex.pat))pull+=pr.sets;});
   }
   dp.forEach(m=>freq[m]++);});
+ if(useActual)sessions.filter(s=>!matchedIds.has(s.id)).forEach(sess=>{const dp=new Set();
+   (sess.entries||[]).forEach(en=>{const ex=EX.find(e=>e.n===en.name);if(!ex)return;const n=en.sets.length;
+     ex.pri.forEach(m=>{vol[m]+=n;dp.add(m);});ex.sec.forEach(m=>{vol[m]+=n*0.5;});
+     if(["hpush","vpush"].includes(ex.pat))push+=n;if(["hpull","vpull"].includes(ex.pat))pull+=n;});
+   dp.forEach(m=>freq[m]++);});
  return{vol,freq,push,pull,doneCount:done.size,volNow};}
+const SPONTAN_FOCUS={
+ full:{label:"Ganzkörper",comp:["squat","hpush","hpull","hinge"],iso:["shoulders","biceps","calves"]},
+ upper:{label:"Oberkörper",comp:["hpush","vpush","hpull","vpull"],iso:["shoulders","biceps","triceps"]},
+ lower:{label:"Unterkörper",comp:["squat","hinge","lunge"],iso:["quads","hamstrings","calves"]},
+ push:{label:"Push",comp:["hpush","vpush","hpush"],iso:["shoulders","triceps"]},
+ pull:{label:"Pull",comp:["vpull","hpull","hpull"],iso:["back","biceps"]},
+ arms:{label:"Arme",comp:[],iso:["biceps","triceps","biceps","triceps"]}
+};
+function spontanExerciseCount(mins){return Math.max(2,Math.min(8,Math.round((mins-6)/7)));}
+function genSpontanItems(focusKey,count){
+ const foc=SPONTAN_FOCUS[focusKey];const mx=maxLvl(),used=new Set(),items=[];
+ const already=n=>items.some(it=>it.ex.n===n);
+ const compSlots=Math.min(foc.comp.length,Math.max(0,Math.round(count*0.5)));
+ for(let i=0;i<compSlots&&items.length<count;i++){
+   const pat=foc.comp[i%foc.comp.length];const ex=pickComp(pat,mx,used);
+   if(ex&&!already(ex.n)){used.add(ex.n);items.push({ex,slot:{type:"comp",pat}});}
+ }
+ let ii=0,guard=0;
+ while(items.length<count&&foc.iso.length&&guard++<foc.iso.length*4){
+   const mus=foc.iso[ii%foc.iso.length];ii++;
+   const ex=pickIso(mus,mx,used);
+   if(ex&&!already(ex.n)){used.add(ex.n);items.push({ex,slot:{type:"iso",mus}});}
+ }
+ return orderItems(items);
+}
+let spontanSel={focus:"full",mins:30};
+function openSpontanModal(){spontanSel={focus:"full",mins:30};renderSpontanChips();document.getElementById("spontanmodal").style.display="flex";}
+function closeSpontanModal(){document.getElementById("spontanmodal").style.display="none";}
+function renderSpontanChips(){
+ const fbox=document.getElementById("spontan-focus");
+ if(fbox)fbox.innerHTML=Object.entries(SPONTAN_FOCUS).map(([k,v])=>`<button class="mchip ${spontanSel.focus===k?"on":""}" onclick="spontanSel.focus='${k}';renderSpontanChips()">${v.label}</button>`).join("");
+ const dbox=document.getElementById("spontan-dur");
+ if(dbox)dbox.innerHTML=[20,30,45,60].map(m=>`<button class="mchip ${spontanSel.mins===m?"on":""}" onclick="spontanSel.mins=${m};renderSpontanChips()">${m} min</button>`).join("");
+}
+function confirmSpontan(){closeSpontanModal();startSpontan(spontanSel.focus,spontanSel.mins);}
+function startSpontan(focusKey,mins){
+ const foc=SPONTAN_FOCUS[focusKey];if(!foc)return;
+ const count=spontanExerciseCount(mins);
+ const items=genSpontanItems(focusKey,count);
+ if(!items.length){toast("Keine passenden Übungen für diese Auswahl gefunden – Geräteauswahl prüfen.");return;}
+ const wk=PLAN?currentBlockWeek():1;const block=PLAN?PLAN.config.block:4;
+ logState={di:null,week:wk,label:"Spontan: "+foc.label,spontan:true,spontanFocus:focusKey,spontanMin:mins,startedAt:null,
+   ex:items.map(it=>{const pr=periodize(catOf(it.ex),wk,block);
+     return{name:it.ex.n,pat:it.ex.pat,target:pr,last:lastPerf(it.ex.n),sets:makeSets(it.ex.n,pr)};})};
+ editState=null;
+ showView("train");
+ toast(`Spontane Einheit „${foc.label}" · ≈ ${mins} min · ${items.length} Übungen`);
+}
+function cancelSpontan(){
+ if(!confirm("Spontane Einheit wirklich abbrechen? Eingetragene Sätze gehen verloren."))return;
+ logState=null;try{localStorage.removeItem("tpe.draft");}catch(e){}
+ stopTimer();showView("plan");
+}
 function manualRebalance(){
  if(!PLAN)return;
  const done=weekDoneSet();
@@ -1061,10 +1147,10 @@ function renderPlan(){
  const out=document.getElementById("plan-out");if(!PLAN){out.innerHTML='<p class="empty">Ziel und Parameter wählen, dann Trainingsblock erstellen.</p>';return;}
  const total=PLAN.config.block;const E1=jget("tpe.e1rm",{});
  const bw=blockWeekInfo();
- let h=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Trainingsblock · ${total} Wochen</span></div>
+ let h=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Trainingsblock · ${total} Wochen</span><button class="btn" style="margin-left:auto;padding:7px 11px;font-size:12.5px" onclick="openSpontanModal()">⚡ Spontan</button></div>
    <div class="goal-badge">Ziel: ${GOALS[PLAN.config.goal].label}</div>
    <p class="hint">Du bist in <b>Woche ${bw.cur}</b> deines Blocks (automatisch anhand deiner Einheiten). Andere Wochen nur zur Vorschau.</p><div class="weeks">`;
- for(let w=1;w<=total;w++){const dl=(total>=3&&w===total);
+ for(let w=1;w<=total;w++){const dl=(cfgUI.deload===true&&total>=3&&w===total);
    const isCur=w===bw.cur,isPast=w<bw.cur;
    h+=`<button class="wbtn ${w===curWeek?'on':''} ${dl?'deload':''} ${isCur?'cur':''} ${isPast?'past':''}" onclick="setWeek(${w})">${isPast?'✓ ':''}W${w}<small>${isCur?'aktuell':(dl?'Deload':'Aufbau')}</small></button>`;}
  h+=`</div>${bw.raw>total?`<p class="hint" style="margin-top:9px">🏁 Blockende erreicht – Zeit für einen neuen Trainingsblock („Plan aktualisieren" oben).</p>`:""}</div>`;
@@ -1139,7 +1225,7 @@ function renderPlan(){
  out.innerHTML=h;
  MORDER.forEach(m=>{document.querySelectorAll(`#plan-out [data-m="${m}"]`).forEach(el=>el.style.fill=volColor(m,a.vol[m]));});
 }
-function weekIsDeload(){return PLAN&&PLAN.config.block>=3&&curWeek===PLAN.config.block;}
+function weekIsDeload(){return PLAN&&cfgUI.deload===true&&PLAN.config.block>=3&&curWeek===PLAN.config.block;}
 function setWeek(w){curWeek=w;renderPlan();}
 function secStr(s){return s>=60?(s%60?Math.floor(s/60)+":"+String(s%60).padStart(2,"0")+" min":s/60+" min"):s+" s";}
 
@@ -1167,13 +1253,21 @@ function buildLog(){
 }
 function renderTrain(){
  const out=document.getElementById("train-out");if(!logState){out.innerHTML='<p class="empty">Erstelle zuerst einen Plan, wähle dann Trainingstag und Woche.</p>';return;}
- const doneT=weekDoneSet();
- let dayBtns="";PLAN.days.forEach((d,i)=>{const dn=doneT.has(i);dayBtns+=`<button class="dbtn ${i===logState.di?'on':''} ${dn?'dbdone':''}" onclick="trainSel.day=${i};buildLog()"><b>${dn?'✓ ':''}Tag ${i+1}</b><span>${d.label}</span></button>`;});
- const dlNow=(PLAN.config.block>=3&&logState.week===PLAN.config.block);
- let h=`<div class="panel">
-   <div class="selh">Trainingstag</div><div class="daysel">${dayBtns}</div>
+ let h;
+ if(logState.spontan){
+   h=`<div class="panel"><div class="day-head" style="margin-bottom:0"><span class="sec-h" style="margin:0;flex:1">⚡ ${logState.label}</span><button class="btn" style="padding:7px 11px;font-size:12.5px" onclick="cancelSpontan()">Abbrechen</button></div>
+     <p class="hint" style="margin-top:10px">Spontane Einheit · ≈ ${logState.spontanMin} min · zählt in der Wochenanalyse mit, ist aber kein fester Plantag.</p>
+     <p class="hint" style="margin:6px 0 0">Gewicht &amp; Wdh eintragen, Satz mit ✓ abschließen – startet die Pause.</p></div>`;
+ } else {
+   const doneT=weekDoneSet();
+   let dayBtns="";PLAN.days.forEach((d,i)=>{const dn=doneT.has(i);dayBtns+=`<button class="dbtn ${i===logState.di?'on':''} ${dn?'dbdone':''}" onclick="trainSel.day=${i};buildLog()"><b>${dn?'✓ ':''}Tag ${i+1}</b><span>${d.label}</span></button>`;});
+   const dlNow=(cfgUI.deload===true&&PLAN.config.block>=3&&logState.week===PLAN.config.block);
+   h=`<div class="panel">
+   <div class="day-head" style="margin-bottom:0"><span class="selh" style="margin:0">Trainingstag</span><button class="btn" style="margin-left:auto;padding:6px 10px;font-size:12px" onclick="openSpontanModal()">⚡ Spontan</button></div>
+   <div class="daysel">${dayBtns}</div>
    <div class="row" style="margin-top:12px;align-items:center;gap:8px"><span class="pill ${dlNow?'dl':''}">W${logState.week} · ${dlNow?'Deload':'Aufbau'}</span><span class="hint" style="margin:0">Blockwoche automatisch anhand deines Fortschritts.</span></div>
    ${logState.doneView?"":`<p class="hint" style="margin:12px 0 0">Gewicht &amp; Wdh eintragen, Satz mit ✓ abschließen – startet die Pause.</p>`}</div>`;
+ }
  if(logState.doneView){h+=doneViewHTML();out.innerHTML=h;return;}
  // timer
  h+=`<div class="timer-wrap ${timerMin?'min':''}" id="timerWrap">
@@ -1196,7 +1290,7 @@ function renderTrain(){
      <button class="ticon" onclick="toggleTimerMin()" title="Timer aufklappen">▴</button></div>
    </div>`;
  // exercises
- h+=`<div class="card"><div class="day-head"><span class="day-num">${logState.di+1}</span><span class="day-title">${logState.label}</span><span class="pill ${(PLAN.config.block>=3&&logState.week===PLAN.config.block)?'dl':''}">W${logState.week}</span><button class="btn" style="margin-left:auto;padding:7px 11px;font-size:12.5px" onclick="finishWorkout()">Abschließen ✓</button></div>`;
+ h+=`<div class="card"><div class="day-head"><span class="day-num">${logState.di+1}</span><span class="day-title">${logState.label}</span><span class="pill ${(cfgUI.deload===true&&PLAN.config.block>=3&&logState.week===PLAN.config.block)?'dl':''}">W${logState.week}</span><button class="btn" style="margin-left:auto;padding:7px 11px;font-size:12.5px" onclick="finishWorkout()">Abschließen ✓</button></div>`;
  let nextFound=false;
  logState.ex.forEach((e,xi)=>{const t=e.target;const load=t.loadStr&&!isBW(e.name)?` · ${t.loadStr}`:"";
   const tm=isTm(e.name);
@@ -1208,7 +1302,9 @@ function renderTrain(){
     h+=`<div class="swipewrap"><div class="del-bg">✕ Entfernen</div>
    <div class="logex" ontouchstart="swStart(event,${xi})" ontouchmove="swMove(event,${xi})" ontouchend="swEnd(event,${xi})">`;
   }
-  h+=`<div class="logex-h"><span class="nm" data-n="${e.name}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">${e.name}</span><span class="tg">Ziel: ${tm?`${t.sets} × ${TMSEC[S.goal]}${load}`:(presetSummary(t)?`${presetSummary(t)} · RIR ${t.rir}`:`${t.sets} × ${t.reps}${load} · RIR ${t.rir}`)} · P ${secStr(t.restSec)} <span class="info-i" data-n="${e.name}" onclick="event.stopPropagation();openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span> <button class="rm" title="gegen Alternative tauschen" onclick="swapLogEx(${xi})">↻</button> <button class="rm" title="entfernen" onclick="removeLogEx(${xi})">✕</button></span></div>`;
+  h+=`<div class="logex-h"><span class="nm" data-n="${e.name}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">${e.name}</span>
+   <span class="lx-icons"><button class="lxbtn" title="gegen Alternative tauschen" onclick="swapLogEx(${xi})">↻</button><button class="lxbtn lxbtn-danger" title="entfernen" onclick="removeLogEx(${xi})">✕</button></span></div>
+   <div class="logex-target">Ziel: ${tm?`${t.sets} × ${TMSEC[S.goal]}${load}`:(presetSummary(t)?`${presetSummary(t)} · RIR ${t.rir}`:`${t.sets} × ${t.reps}${load} · RIR ${t.rir}`)} · P ${secStr(t.restSec)} <span class="info-i" data-n="${e.name}" onclick="event.stopPropagation();openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span></div>`;
   if(lastStr)h+=`<div class="last-perf">Zuletzt: <b>${lastStr}</b>${tm?"":" "+unitLbl()}</div>`;
   const _tip=progressTip(e);if(_tip)h+=`<div class="prog-tip ${_tip.cls}">Vorschlag: ${_tip.text}</div>`;
   const warm=warmupSets(e.name,t);
@@ -1220,6 +1316,7 @@ function renderTrain(){
     <input type="number" inputmode="decimal" placeholder="${isBW(e.name)?'+'+unitLbl():unitLbl()}" title="${isBW(e.name)?'Zusatzgewicht, optional – leer lassen für reines Körpergewicht':''}" value="${st.w}" oninput="logState.ex[${xi}].sets[${si}].w=this.value;saveDraft()">
     <input type="number" inputmode="numeric" placeholder="${tm?'Sek':(st.tr||'Wdh')}" value="${st.r}" oninput="logState.ex[${xi}].sets[${si}].r=this.value;saveDraft()">
     ${tm?'<span></span>':`<select class="rir" title="Reps in Reserve – wie viele Wdh. waren noch drin?" onchange="logState.ex[${xi}].sets[${si}].rir=this.value;saveDraft()"><option value="">RIR</option>${[0,1,2,3,4,5].map(n=>`<option value="${n}" ${String(st.rir)===String(n)?'selected':''}>${n}${n===5?'+':''}</option>`).join('')}</select>`}
+    <button class="techbtn ${st.clean===false?'unclean':''}" id="tb-${xi}-${si}" title="Ausführung sauber oder unsauber – Klick zum Umschalten" onclick="toggleClean(${xi},${si})">${st.clean===false?'Unsauber':'Sauber'}</button>
     <button class="chk" onclick="doneSet(${xi},${si})">✓</button></div>`;});
   h+=`<div class="setops"><button class="sop" onclick="addSet(${xi})">+ Satz</button>${e.sets.length>1?`<button class="sop" onclick="delSet(${xi})">− Satz</button>`:""}</div>`;
   h+=allDone?`</details></div>`:`</div></div>`;});
@@ -1234,6 +1331,10 @@ const TMSEC={strength:"20–40 s",hypertrophy:"30–60 s",endurance:"45–90 s"}
 function addSet(xi){const ex=logState.ex[xi];const last=ex.sets[ex.sets.length-1];
  ex.sets.push({w:last?last.w:"",r:"",rir:"",done:false,tr:last?last.tr:""});saveDraft();renderTrain();}
 function delSet(xi){const ex=logState.ex[xi];if(ex.sets.length>1){ex.sets.pop();saveDraft();renderTrain();}}
+function toggleClean(xi,si){const st=logState.ex[xi].sets[si];st.clean=(st.clean===false)?true:false;saveDraft();
+ const b=document.getElementById(`tb-${xi}-${si}`);
+ if(b){const unclean=st.clean===false;b.classList.toggle("unclean",unclean);b.textContent=unclean?"Unsauber":"Sauber";}
+}
 function doneSet(xi,si){const ex=logState.ex[xi];const st=ex.sets[si];
  const allBefore=ex.sets.every(s=>s.done);st.done=!st.done;
  if(st.done&&!logState.startedAt){
@@ -1333,7 +1434,7 @@ function doneViewHTML(){
  return h;
 }
 function startEditSession(){const sess=sessionForDay(logState.di);if(!sess)return;
- editState={id:sess.id,entries:sess.entries.map(en=>({name:en.name,sets:en.sets.map(s=>({w:isTm(en.name)?"":(s.w>0?Math.round(fromKg(s.w)*10)/10:""),r:s.r,rir:(s.rir!=null?s.rir:"")}))}))};
+ editState={id:sess.id,entries:sess.entries.map(en=>({name:en.name,sets:en.sets.map(s=>({w:isTm(en.name)?"":(s.w>0?Math.round(fromKg(s.w)*10)/10:""),r:s.r,rir:(s.rir!=null?s.rir:""),clean:s.clean!==false}))}))};
  renderTrain();}
 function editRemoveEx(i){if(!editState)return;editState.entries.splice(i,1);renderTrain();}
 function editAddSet(i){if(!editState)return;const en=editState.entries[i];const last=en.sets[en.sets.length-1];
@@ -1341,7 +1442,7 @@ function editAddSet(i){if(!editState)return;const en=editState.entries[i];const 
 function editDelSet(i){if(!editState)return;const en=editState.entries[i];if(en.sets.length>1){en.sets.pop();renderTrain();}}
 function saveEditSession(){
  const log=jget("tpe.log",[]);const idx=log.findIndex(x=>x.id===editState.id);if(idx<0){editState=null;renderTrain();return;}
- const entries=editState.entries.map(en=>({name:en.name,sets:en.sets.filter(s=>+s.r>0&&(+s.w>0||isTm(en.name)||isBW(en.name))).map(s=>{const o={w:isTm(en.name)?0:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(en=>en.sets.length);
+ const entries=editState.entries.map(en=>({name:en.name,sets:en.sets.filter(s=>+s.r>0&&(+s.w>0||isTm(en.name)||isBW(en.name))).map(s=>{const o={w:isTm(en.name)?0:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;if(s.clean===false)o.clean=false;return o;})})).filter(en=>en.sets.length);
  if(!entries.length){toast("Mindestens ein Satz mit Wiederholungen nötig.");return;}
  log[idx].entries=entries;log[idx].totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
  jset("tpe.log",log);
@@ -1400,7 +1501,7 @@ function sessionSummaryHTML(sess,mapId){
 function finishWorkout(){
  const dayLabel=logState.label;
  const startedAt=logState.startedAt||null;
- const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(e=>e.sets.length);
+ const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;if(s.clean===false)o.clean=false;return o;})})).filter(e=>e.sets.length);
  if(!entries.length){toast("Noch keine Sätze eingetragen.");return;}
  const _snap={log:localStorage.getItem("tpe.log"),e1:localStorage.getItem("tpe.e1rm"),tb:localStorage.getItem("tpe.tmbest"),plan:localStorage.getItem("tpe.plan"),state:JSON.parse(JSON.stringify(logState)),di:logState.di,week:logState.week};
  const totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
@@ -1578,7 +1679,7 @@ function openInfo(name){const e=EX.find(x=>x.n===name);if(!e)return;const info=c
    <div class="catmus"><span><i class="sw" style="background:var(--hi)"></i>Primär: ${e.pri.map(m=>MUS[m]).join(", ")}</span>${e.sec.length?`<span><i class="sw" style="background:var(--mid)"></i>Sekundär: ${e.sec.map(m=>MUS[m]).join(", ")}</span>`:""}</div>`;
  document.getElementById("infomodal").style.display="flex";startImgCycle(name,"info");}
 function closeInfo(){stopImgCycle();document.getElementById("infomodal").style.display="none";}
-function syncToggles(){const a=document.getElementById("sw-warmup");if(a)a.classList.toggle("on",!!cfgUI.warmup);const b=document.getElementById("sw-topset");if(b)b.classList.toggle("on",cfgUI.topset!==false);}
+function syncToggles(){const a=document.getElementById("sw-warmup");if(a)a.classList.toggle("on",!!cfgUI.warmup);const b=document.getElementById("sw-topset");if(b)b.classList.toggle("on",cfgUI.topset!==false);const c=document.getElementById("sw-deload");if(c)c.classList.toggle("on",cfgUI.deload===true);}
 function openSettings(){syncToggles();syncBody();renderThemeSwatches();document.getElementById("setmodal").style.display="flex";}
 function syncBody(){const bw=document.getElementById("set-bw");if(bw)bw.value=S.bw>0?S.bw:"";const sm=document.getElementById("sex-m"),sf=document.getElementById("sex-f");if(sm)sm.classList.toggle("on",S.sex!=="f");if(sf)sf.classList.toggle("on",S.sex==="f");}
 function setBW(v){S.bw=Math.max(0,+v||0);saveCfg();renderHist();}
@@ -1586,6 +1687,7 @@ function setSex(s){S.sex=s==="f"?"f":"m";saveCfg();syncBody();renderHist();}
 function closeSettings(){document.getElementById("setmodal").style.display="none";}
 function toggleWarmup(){cfgUI.warmup=!cfgUI.warmup;saveUI();syncToggles();if(logState)renderTrain();}
 function toggleTopset(){cfgUI.topset=(cfgUI.topset===false);saveUI();syncToggles();if(typeof PLAN!=="undefined"&&PLAN)renderPlan();if(logState)toast("Übernommen – wirkt beim nächsten Start der Einheit.");}
+function toggleDeload(){cfgUI.deload=(cfgUI.deload===true)?false:true;saveUI();syncToggles();if(typeof PLAN!=="undefined"&&PLAN)renderPlan();if(logState)renderTrain();toast(cfgUI.deload?"Deload-Woche aktiviert – letzte Blockwoche wird reduziert.":"Deload-Woche deaktiviert – alle Wochen bleiben Aufbau.");}
 const HELP={
  howto:{title:"So nutzt du GymBuddy",html:`<p class="cat-desc">In fünf Schritten von der Planung bis zum Fortschritt:</p>
    <ol class="cat-cues" style="padding-left:22px">
@@ -1843,7 +1945,7 @@ function weekRingHTML(log){
  const rows=`<div class="hr-row"><div class="hl" style="color:var(--accent)">Einheiten</div><div class="hv">${done}<small> / ${target}</small></div></div>`
   +(planSets?`<div class="hr-row"><div class="hl" style="color:var(--ok)">Sätze</div><div class="hv">${sets}<small> / ${planSets}</small></div></div>`:"");
  const empty=done===0?`<p class="hint" style="margin-top:10px">Neue Woche, leere Ringe – die erste Einheit wartet 💪</p>`:"";
- return `<div class="panel"><div class="sec-h">Diese Woche</div>
+ return `<div class="panel"><div class="day-head" style="margin-bottom:0"><span class="sec-h" style="margin:0;flex:1">Diese Woche</span><button class="btn" style="padding:7px 11px;font-size:12.5px" onclick="openSpontanModal()">⚡ Spontan</button></div>
    <div class="hero">${ringSVG(target?done/target:0,planSets?sets/planSets:null)}<div class="hr-rows">${rows}</div></div>${empty}</div>`;}
 function trendHTML(log){
  const now=Date.now(),D=864e5;
@@ -2097,6 +2199,13 @@ function refresh(){
 let wakeLock=null;
 async function reqWake(){try{if("wakeLock" in navigator&&!wakeLock){wakeLock=await navigator.wakeLock.request("screen");wakeLock.addEventListener("release",()=>{wakeLock=null;});}}catch(e){wakeLock=null;}}
 function relWake(){try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){}}
+let _audioUnlocked=false;
+function unlockAudioCue(){
+ if(_audioUnlocked)return;_audioUnlocked=true;
+ try{if("speechSynthesis" in window){const u=new SpeechSynthesisUtterance(" ");u.volume=0.01;u.rate=10;speechSynthesis.speak(u);}}catch(e){}
+}
+document.addEventListener("touchend",unlockAudioCue,{once:true,passive:true});
+document.addEventListener("pointerdown",unlockAudioCue,{once:true});
 applyTheme();buildControls();applyUnitUI();
 if(PLAN)renderPlan();
 updateCfgPanel(!!PLAN);
@@ -2107,7 +2216,12 @@ try{if(PLAN&&!PLAN.created){
 }}catch(e){}
 if(PLAN){curWeek=currentBlockWeek();trainSel.week=curWeek;renderPlan();}
 try{if(PLAN){const _ck=startOfWeek(new Date()).getTime();let _st=false;PLAN.days.forEach(d=>{const n=d.items.length;d.items=d.items.filter(it=>!it.comp||it.wk===_ck);if(d.items.length!==n)_st=true;});if(_st){jset("tpe.plan",PLAN);renderPlan();}}}catch(e){}
-try{const _d=jget("tpe.draft",null);if(_d&&_d.state&&PLAN&&PLAN.days[_d.state.di]){trainSel={day:_d.state.di,week:_d.state.week};}}catch(e){}
+try{const _d=jget("tpe.draft",null);
+ if(_d&&_d.state&&_d.state.spontan){logState=_d.state;
+   const hasData=logState.ex.some(e=>e.sets.some(s=>s.done||+s.w>0||+s.r>0));
+   if(hasData)setTimeout(()=>toast("Spontane Einheit wiederhergestellt ✓"),600);
+ } else if(_d&&_d.state&&PLAN&&PLAN.days[_d.state.di]){trainSel={day:_d.state.di,week:_d.state.week};}
+}catch(e){}
 window.addEventListener("pagehide",saveDraft);
 document.addEventListener("visibilitychange",()=>{
  if(document.visibilityState==="hidden"){saveDraft();}
