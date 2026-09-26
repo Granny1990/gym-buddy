@@ -80,14 +80,7 @@
   .gen:hover{background:var(--accent-dark)}
   .btn{border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 15px;font:inherit;font-weight:600;font-size:13.5px;cursor:pointer}
   .btn:hover{border-color:var(--ink)} .btn.accent{background:var(--accent);color:#fff;border-color:var(--accent)} .btn.accent:hover{background:var(--accent-dark)}
-  .weeks{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin-top:6px}
   .goal-badge{display:inline-block;background:var(--accent);color:#fff;font-family:'Anton',sans-serif;font-size:15px;letter-spacing:.5px;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin:10px 0 4px;box-shadow:0 3px 10px rgba(232,67,29,.32)}
-  .wbtn{min-width:0;border:1.5px solid var(--line);background:var(--paper);border-radius:10px;padding:7px 3px;font:inherit;font-weight:600;font-size:12.5px;cursor:pointer;text-align:center;line-height:1.2}
-  .wbtn small{display:block;font-size:9px;color:var(--muted);font-weight:600}
-  .wbtn.on{background:var(--onbg);color:var(--onfg);border-color:var(--onbg)} .wbtn.on small{color:var(--onfg);opacity:.55}
-  .wbtn.deload{border-style:dashed} .wbtn.on.deload{background:var(--blue);border-color:var(--blue)}
-  .wbtn.cur{border-color:var(--accent);border-width:2px}
-  .wbtn.past{opacity:.45}
   .selh{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-top:14px}
   .selh:first-child{margin-top:0}
   .daysel{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
@@ -215,9 +208,7 @@
   .mp-icon{width:32px;height:32px;border-radius:9px;border:1.5px solid var(--line);background:var(--paper);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;padding:0}
   .mp-icon:hover{border-color:var(--ink);color:var(--ink)}
   .logex-h .nm{font-weight:600;font-size:15px} .logex-h .tg{font-size:11.5px;color:var(--muted);white-space:nowrap}
-  .setrow{display:grid;grid-template-columns:24px 1fr 1fr 46px 68px 34px;gap:6px;align-items:center;margin-bottom:6px}
-  .techbtn{width:70px;height:36px;border-radius:8px;border:1.5px solid var(--ok);background:var(--ok);color:#fff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 2px;white-space:nowrap}
-  .techbtn.unclean{border-color:var(--hi);background:var(--hi)}
+  .setrow{display:grid;grid-template-columns:28px 1fr 1fr 52px 40px;gap:7px;align-items:center;margin-bottom:6px}
   .setrow select.rir{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:8px 0;font:inherit;font-size:11.5px;text-align:center;background:var(--bg);color:var(--ink);appearance:none;-webkit-appearance:none;-moz-appearance:none}
   .setrow select.rir:focus{outline:none;border-color:var(--accent)}
   .prog-tip{font-size:12px;margin:0 0 8px;padding:5px 9px;border-radius:7px;font-weight:600;display:inline-block;line-height:1.35}
@@ -496,10 +487,9 @@
           <div><div class="sec-h">Tage / Woche</div><div class="row" id="days"></div></div>
           <div><div class="sec-h">Erfahrung <span class="info-i" onclick="openHelp('level')" title="Was bedeuten die Stufen?">ⓘ</span></div><div class="row" id="level"></div></div>
           <div><div class="sec-h">Split <span class="info-i" onclick="openHelp('split')" title="Welcher Split wann?">ⓘ</span></div><div class="row" id="split"></div></div>
-          <div><div class="sec-h">Blocklänge</div><div class="row" id="block"></div></div>
         </div>
         <div style="margin-top:20px"><div class="sec-h">Equipment</div><div class="row" id="equip"></div></div>
-        <button class="gen" id="genBtn" onclick="makePlan()">Trainingsblock erstellen</button>
+        <button class="gen" id="genBtn" onclick="makePlan()">Trainingsplan erstellen</button>
       </div>
     </details>
     <div id="plan-out"><p class="empty">Ziel und Parameter wählen, dann Trainingsblock erstellen.</p></div>
@@ -510,14 +500,13 @@
         Hypertrophie ~67–85&nbsp;% / 6–12&nbsp;Wdh / moderate Pausen; Kraftausdauer ≤67&nbsp;% / ≥15&nbsp;Wdh / kurze Pausen.</p>
       <p><b>Volumen-Landmarks (MEV–MRV).</b> Pro Muskelgruppe ein produktiver Korridor zwischen minimal effektivem (MEV)
         und maximal regenerierbarem Volumen (MRV); Richtwerte nach dem Modell von Israetel/Renaissance Periodization.
-        Der Umfang steigt über den Block an (Akkumulation) und wird in der Deload-Woche zurückgesetzt. Sekundärmuskeln zählen als halbe Sätze.</p>
+        Grundübungen mit 4, Isolationsübungen mit 3 Sätzen (ACSM 2026: ~10 Sätze/Muskel/Woche als Richtwert für Hypertrophie). Sekundärmuskeln zählen als halbe Sätze.</p>
       <p><b>Frequenz.</b> Jede Muskelgruppe möglichst ≥2×/Woche – verteiltes Volumen ist meist reizwirksamer als alles an einem Tag.</p>
       <p style="margin:16px 0 2px;font-family:'Anton',sans-serif;font-size:13px;letter-spacing:.6px;color:var(--accent);text-transform:uppercase">Aufbau &amp; Progression</p>
       <p><b>Übungsreihenfolge.</b> Die Einheit beginnt mit den anspruchsvollsten Mehrgelenkübungen (große Muskelgruppen),
         gefolgt von Isolationsübungen; der Rumpf steht am Ende. Begründung: Übungen am Anfang werden mit höherer
         Last/Leistung ausgeführt, da noch keine Ermüdung vorliegt (ACSM; Simão et al.). „Vorermüdung" verbessert Kraft und Aktivierung dagegen nicht.</p>
-      <p><b>Periodisierung.</b> Mehrwochen-Block mit progressiver Überlastung: Kraft über steigende Intensität (% 1RM ↑, Wdh ↓),
-        Hypertrophie über Volumenakkumulation (Sätze ↑), jeweils abschließende Deload-Woche zur Regeneration.</p>
+      <p><b>Wochenweise Erstellung statt fixem Mehrwochen-Block.</b> Jede Woche wird einzeln aus Split und Trainingstagen erzeugt, ohne vorausberechnete Steigerungskurve – die neue ACSM-Position 2026 sieht komplexe Periodisierung als nicht zwingend nötig für gute Ergebnisse. Fortschritt entsteht stattdessen laufend über echte Autoregulation.</p>
       <p><b>Progressive Überlastung &amp; Doppelprogression.</b> Fortschritt entsteht durch schrittweise steigende Anforderung.
         Die App nutzt Doppelprogression: erst die Wiederholungen innerhalb der Zielspanne steigern, dann – wenn das obere Ende bei
         passender Anstrengung erreicht ist – die Last erhöhen und wieder am unteren Spannen-Ende beginnen.</p>
@@ -599,9 +588,11 @@
 <div id="myplansmodal" class="modal-bg" style="display:none" onclick="if(event.target===this)closeMyPlans()">
   <div class="modal">
     <div class="modal-h"><span>📋 Meine Pläne</span><button class="tbtn" onclick="closeMyPlans()">✕</button></div>
-    <p class="hint" style="margin-top:0">Eigene Kurzeinheiten, jederzeit startbar – unabhängig von deinem Wochenplan.</p>
+    <p class="hint" style="margin-top:0">Eigene Kurzeinheiten, jederzeit startbar – unabhängig von deinem Wochenplan. 💾 Datei = sicherster Weg (auch zwischen Safari &amp; installierter App), 📤 Link = bequemer.</p>
     <div id="myplans-list"></div>
     <button class="btn accent" style="width:100%;margin-top:14px" onclick="closeMyPlans();openPlanBuilder()">+ Neuen Plan erstellen</button>
+    <button class="btn" style="width:100%;margin-top:10px" onclick="document.getElementById('planfileinput').click()">📥 Aus Datei importieren</button>
+    <input type="file" id="planfileinput" accept="application/json,.json" style="display:none" onchange="importPlanFile(this)">
   </div>
 </div>
 <div id="sharedplanmodal" class="modal-bg" style="display:none">
@@ -670,10 +661,6 @@
     <div class="setrow-opt">
       <div><div class="opt-t">Top-Set &amp; Back-off (Kraft)</div><div class="opt-d">Im Ziel „Kraft": ein schwerer Top-Satz plus leichtere Folgesätze bei Grundübungen. Aus = gleichmäßige Sätze.</div></div>
       <button id="sw-topset" class="toggle" onclick="toggleTopset()" role="switch" aria-label="Top-Set Back-off"><span class="knob"></span></button>
-    </div>
-    <div class="setrow-opt">
-      <div><div class="opt-t">Deload-Woche</div><div class="opt-d">Letzte Blockwoche mit reduziertem Volumen &amp; höherem RIR. Evidenz dafür ist dünn – standardmäßig aus, alle Wochen bleiben Aufbau.</div></div>
-      <button id="sw-deload" class="toggle" onclick="toggleDeload()" role="switch" aria-label="Deload-Woche"><span class="knob"></span></button>
     </div>
     <p class="hint" style="margin-top:10px">Änderungen wirken sofort. Eine bereits laufende Trainingseinheit übernimmt die Satzstruktur erst beim nächsten Start der Einheit.</p>
     <div class="set-sec">
@@ -884,7 +871,9 @@ const TPL={
  pull:{label:"Pull · Ziehen",comp:["vpull","hpull","hpull"],iso:["back","biceps","biceps"]},
  legs:{label:"Beine",comp:["squat","hinge","lunge"],iso:["quads","hamstrings","calves"]},
  upper:{label:"Oberkörper",comp:["hpush","vpull","vpush","hpull"],iso:["shoulders","biceps","triceps"]},
- lower:{label:"Unterkörper",comp:["squat","hinge","lunge"],iso:["hamstrings","quads","calves"]}};
+ lower:{label:"Unterkörper",comp:["squat","hinge","lunge"],iso:["hamstrings","quads","calves"]},
+ chestback:{label:"Brust · Rücken",comp:["hpush","hpull","hpush","vpull"],iso:["chest","back","back"]},
+ shoarms:{label:"Schultern · Arme",comp:["vpush"],iso:["biceps","triceps","shoulders","biceps","triceps"]}};
 const FB={vpull:["hpull"],vpush:["hpush"],hpull:["vpull"],hpush:["vpush"],lunge:["squat"],hinge:["squat"],squat:["lunge","hinge"]};
 const MUS={chest:"Brust",back:"Rücken",shoulders:"Schultern",biceps:"Bizeps",triceps:"Trizeps",quads:"Quadrizeps",hamstrings:"Beinbeuger",glutes:"Gesäß",calves:"Waden",core:"Rumpf",lowerback:"unt. Rücken"};
 const EQL={bw:"Eigengewicht",db:"Kurzhantel",bb:"Langhantel",kb:"Kettlebell",ma:"Maschine"};
@@ -893,26 +882,17 @@ const LM={chest:[8,22],back:[10,25],shoulders:[8,24],biceps:[6,20],triceps:[6,18
 
 // ============ STATE ============
 const S=jget("tpe.cfg",{goal:"hypertrophy",days:4,level:"int",split:"auto",block:4,unit:"kg",sex:"m",bw:0,equip:["bw","db","bb","kb","ma"]});
-const cfgUI=jget("tpe.ui",{warmup:false,topset:true,deload:false});
-function saveUI(){jset("tpe.ui",{warmup:!!cfgUI.warmup,topset:cfgUI.topset!==false,deload:cfgUI.deload===true});}
+const cfgUI=jget("tpe.ui",{warmup:false,topset:true});
+function saveUI(){jset("tpe.ui",{warmup:!!cfgUI.warmup,topset:cfgUI.topset!==false});}
 if(!S.unit)S.unit="kg";
 if(!S.sex)S.sex="m"; if(S.bw==null)S.bw=0;
 S.unit="kg"; // kg fest; Umschalter aus UI entfernt, Logik bleibt für späteres Einstellungsmenü
 S.equipSet=new Set(S.equip);
 let PLAN=jget("tpe.plan",null);      // {config, days:[{label,idx,items:[{ex,slot}]}]}
 let curWeek=1, trainSel={day:0,week:1};
-function blockWeekInfo(){
- if(!PLAN)return{cur:1,raw:1};
- const total=PLAN.config.block;
- const created=PLAN.created||0;
- const rel=jget("tpe.log",[]).filter(s=>new Date(s.date).getTime()>=created-864e5);
- if(!rel.length)return{cur:1,raw:1};
- let first=Infinity;rel.forEach(s=>{const t=startOfWeek(s.date).getTime();if(t<first)first=t;});
- const now=startOfWeek(new Date()).getTime();
- const raw=1+Math.round((now-first)/(7*864e5));
- return{cur:Math.min(total,Math.max(1,raw)),raw:Math.max(1,raw)};
-}
-function currentBlockWeek(){return blockWeekInfo().cur;}
+function blockWeekInfo(){return{cur:1,raw:1};}
+function currentBlockWeek(){return 1;}
+function weekIsDeload(){return false;}
 
 // ============ HELPERS ============
 function maxLvl(){return S.level==="beg"?1:(S.level==="adv"?3:2);}
@@ -921,6 +901,7 @@ function dayList(){const d=S.days,sp=S.split,lv=S.level;
   if(sp==="full"){const r=["full_a","full_b","full_c"];return Array.from({length:d},(_,i)=>r[i%3]);}
   if(sp==="ul"){const r=["upper","lower"];return Array.from({length:d},(_,i)=>r[i%2]);}
   if(sp==="ppl"){const r=["push","pull","legs"];return Array.from({length:d},(_,i)=>r[i%3]);}
+  if(sp==="arnold"){const r=["chestback","shoarms","legs"];return Array.from({length:d},(_,i)=>r[i%3]);}
   if(d<=1)return["full_a"];if(d===2)return["upper","lower"];
   if(d===3)return lv==="beg"?["full_a","full_b","full_c"]:["push","pull","legs"];
   if(d===4)return["upper","lower","upper","lower"];if(d===5)return["push","pull","legs","upper","lower"];
@@ -945,22 +926,15 @@ function pickIso(mus,mx,used){
 
 // periodization
 function periodize(cat,week,total){
- const hasDL=total>=3&&cfgUI.deload===true,isDL=hasDL&&week===total,buildN=hasDL?total-1:total;
- const s=SCHEME[S.goal][cat];const k=Math.min(week,buildN),frac=buildN>1?(k-1)/(buildN-1):0;
- let sets=s.sets,reps=s.reps,loadStr=s.load||null,restSec=s.restSec,rir=s.rir,phase="Aufbau",setPlan=null;
- if(cat==="core")return{sets:isDL?2:s.sets,reps:s.reps,loadStr:null,restSec:s.restSec,rir:isDL?"3–4":s.rir,phase:isDL?"Deload":"Basis",isDL};
- if(isDL){sets=Math.max(2,Math.round(s.sets/2));rir="3–4";phase="Deload";
-  if(S.goal==="strength"){reps=cat==="comp"?"5":"8";loadStr=cat==="comp"?"~65 %":"~60 %";}
-  else if(S.goal==="hypertrophy"){loadStr=cat==="comp"?"~60 %":"~55 %";}
-  else{reps=s.reps;loadStr="~45 %";}
-  return{sets,reps,loadStr,restSec,rir,phase,isDL};}
- if(S.goal==="strength"){if(cat==="comp"){const ld=Math.round(80+frac*10);const topReps=Math.round(6-frac*3);reps=String(topReps);loadStr=ld+" %";phase=frac<0.5?"Aufbau":"Intensivierung";
+ const s=SCHEME[S.goal][cat];
+ if(cat==="core")return{sets:s.sets,reps:s.reps,loadStr:null,restSec:s.restSec,rir:s.rir,phase:"Basis",isDL:false};
+ let sets=s.sets,reps=s.reps,loadStr=s.load||null,setPlan=null;
+ if(S.goal==="strength"&&cat==="comp"){
+   const ld=85,topReps=4;reps=String(topReps);loadStr=ld+" %";
    if(cfgUI.topset!==false){const boLoad=Math.max(60,ld-10),boReps=topReps+2,boSets=Math.max(2,s.sets-1);
      setPlan=[{reps:topReps,loadPct:ld,top:true}];for(let i=0;i<boSets;i++)setPlan.push({reps:boReps,loadPct:boLoad});sets=setPlan.length;}
-  }else{reps="6–8";loadStr="~80 %";phase="Assistenz";}}
- else if(S.goal==="hypertrophy"){const add=Math.round(frac*2);sets=3+add;loadStr=s.load;reps=s.reps;phase=frac<0.34?"Aufbau":(frac<0.84?"Akkumulation":"Intensivierung");}
- else{const rhi=cat==="comp"?22:25;const r=Math.round(15+frac*(rhi-15));reps=r+"+";loadStr=s.load;sets=s.sets+(frac>0.6?1:0);phase="Aufbau";}
- return{sets,reps,loadStr,restSec,rir,phase,isDL:false,setPlan};
+ }
+ return{sets,reps,loadStr,restSec:s.restSec,rir:s.rir,phase:"Training",isDL:false,setPlan};
 }
 function catOf(ex){return ex.pat==="core"?"core":(ex.t===C?"comp":"iso");}
 // Exercise order: multi-joint/large before single-joint, core last (ACSM / Simão et al.)
@@ -976,9 +950,9 @@ function makeSets(name,pr){
  const tip=lp?progressTip({name,target:pr,last:lp}):null;
  const useSchedule=!lp||(tip&&tip.cls==="up");
  const lw=i=>{if(!lp||isTm(name))return"";const s=lp.sets[Math.min(i,lp.sets.length-1)];return(s&&+s.w>0)?Math.round(fromKg(s.w)*10)/10:"";};
- if(pr.setPlan&&pr.setPlan.length)return pr.setPlan.map((sp,i)=>({w:(useSchedule?setWeight(name,sp.loadPct):"")||lw(i),r:"",rir:"",done:false,clean:true,tr:String(sp.reps),top:!!sp.top,pct:sp.loadPct}));
+ if(pr.setPlan&&pr.setPlan.length)return pr.setPlan.map((sp,i)=>({w:(useSchedule?setWeight(name,sp.loadPct):"")||lw(i),r:"",rir:"",done:false,tr:String(sp.reps),top:!!sp.top,pct:sp.loadPct}));
  const raw=useSchedule?workKg(name,pr.loadStr):null,w=raw?workLoad(raw):"";const tr=typeof pr.reps==="string"?pr.reps:String(pr.reps);
- return Array.from({length:pr.sets},(_,i)=>({w:w||lw(i),r:"",rir:"",done:false,clean:true,tr}));
+ return Array.from({length:pr.sets},(_,i)=>({w:w||lw(i),r:"",rir:"",done:false,tr}));
 }
 function topWorkKg(name,pr){const e=jget("tpe.e1rm",{})[name];if(!e)return null;let pct=null;
  if(pr.setPlan&&pr.setPlan.length)pct=Math.max(...pr.setPlan.map(s=>s.loadPct));else pct=pctMid(pr.loadStr);
@@ -1012,9 +986,6 @@ function progressTip(e){
  const lower=def&&(["squat","hinge","lunge"].includes(def.pat)||def.pri.some(m=>["quads","hamstrings","glutes"].includes(m)));
  const incStr=S.unit==="lbs"?(lower?"+10 lbs":"+5 lbs"):(lower?"+5 kg":"+2,5 kg");
  const isRange=/[–\-]/.test(String(t.reps||""));
- if(last.some(s=>s.clean===false)){
-   return{cls:"hold",text:`Technik zuerst festigen – letztes Mal war mind. ein Satz unsauber markiert, daher keine Laststeigerung.`};
- }
  if(allHit&&(!hasRIR||avgRIR>=rirT)){
    if(bw)return{cls:"up",text:`Ziel erreicht – mehr Wiederholungen oder Zusatzlast wagen.`};
    return{cls:"up",text:`Last erhöhen (${incStr})${isRange?", dann wieder am unteren Spannen-Ende starten":""}.`};
@@ -1025,11 +996,11 @@ function progressTip(e){
 
 // ============ GENERATE ============
 const LVLLBL={beg:"Einsteiger",int:"Geübt",adv:"Fortgeschritten"};
-const SPLLBL={auto:"Automatisch",full:"Ganzkörper",ul:"Ober/Unter",ppl:"Push/Pull/Beine"};
+const SPLLBL={auto:"Automatisch",full:"Ganzkörper",ul:"Ober/Unter",ppl:"Push/Pull/Beine",arnold:"Brust+Rücken/Schultern+Arme"};
 function planMeta(){if(!PLAN)return"";const c=PLAN.config||{};
  const goal=GOALS[c.goal]?GOALS[c.goal].label:(c.goal||"");const days=(c.days||PLAN.days.length)+"×/Woche";
- const lvl=LVLLBL[c.level]||c.level||"";const spl=SPLLBL[c.split]||"";const blk=c.block?c.block+"-Wochen-Block":"";
- return [goal,days,lvl,spl,blk].filter(Boolean).join(" · ");}
+ const lvl=LVLLBL[c.level]||c.level||"";const spl=SPLLBL[c.split]||"";
+ return [goal,days,lvl,spl].filter(Boolean).join(" · ");}
 function updateCfgPanel(collapse){const p=document.getElementById("cfgPanel");if(!p)return;const has=!!PLAN;
  const le=document.getElementById("lede");if(le)le.style.display=has?"none":"";
  const ic=document.getElementById("cfg-ic"),ti=document.getElementById("cfg-title"),me=document.getElementById("cfg-meta"),bt=document.getElementById("genBtn");
@@ -1185,7 +1156,7 @@ function renderMyPlansList(){
  const plans=getCustomPlans();const ids=Object.keys(plans);
  box.innerHTML=ids.length?ids.map(id=>{const p=plans[id];
    return `<div class="myplan-row"><div class="mp-n" onclick="closeMyPlans();startCustomPlan('${id}')"><div class="mp-t">${p.name}</div><div class="mp-d">${p.items.length} Übungen · Ziel ${GOALS[p.goal]?.label||p.goal}</div></div>
-     <div class="mp-btns"><button class="mp-icon" title="Teilen" onclick="sharePlan('${id}')">📤</button><button class="mp-icon" title="Löschen" onclick="deleteCustomPlan('${id}')">✕</button></div></div>`;
+     <div class="mp-btns"><button class="mp-icon" title="Als Datei exportieren" onclick="exportPlanFile('${id}')">💾</button><button class="mp-icon" title="Teilen (Link)" onclick="sharePlan('${id}')">📤</button><button class="mp-icon" title="Löschen" onclick="deleteCustomPlan('${id}')">✕</button></div></div>`;
  }).join(""):'<p class="hint">Noch keine eigenen Pläne – erstelle deinen ersten unten.</p>';
 }
 function deleteCustomPlan(id){
@@ -1217,6 +1188,28 @@ function decodeSharedPlanStr(str){try{
  if(!name||!Array.isArray(items))return null;
  return{name,goal:goal||"hypertrophy",items:items.map(([n,s])=>({name:n,sets:+s||3}))};
 }catch(e){return null;}}
+function exportPlanFile(id){
+ const tpl=getCustomPlans()[id];if(!tpl)return;
+ const data={app:"gymbuddy-plan",v:1,name:tpl.name,goal:tpl.goal,items:tpl.items};
+ const blob=new Blob([JSON.stringify(data,null,1)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");a.href=url;a.download="gymbuddy-plan-"+tpl.name.replace(/[^a-z0-9äöüß]+/gi,"_")+".json";
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),2000);
+ toast("Plan-Datei heruntergeladen – per AirDrop/Dateien/Mail teilen.");
+}
+function importPlanFile(input){
+ const f=input.files&&input.files[0];if(!f)return;
+ const rd=new FileReader();
+ rd.onload=()=>{try{
+   const d=JSON.parse(rd.result);
+   const name=addPlanToLibrary({name:d.name,goal:d.goal,items:d.items});
+   if(name){toast(`„${name}“ importiert ✓`);renderMyPlansList();}
+   else toast("Keine passenden Übungen in dieser Datei gefunden.");
+ }catch(e){alert("Import fehlgeschlagen – ungültige oder beschädigte Plan-Datei.");}
+ input.value="";};
+ rd.readAsText(f);
+}
 function sharePlan(id){
  const tpl=getCustomPlans()[id];if(!tpl)return;
  const url=location.origin+location.pathname+"?plan="+encodePlanForShare(tpl);
@@ -1244,17 +1237,23 @@ function checkSharedPlanFromURL(){
    document.getElementById("sharedplanmodal").style.display="flex";
  }catch(e){}
 }
+function addPlanToLibrary(planObj){
+ if(!planObj||!planObj.name||!Array.isArray(planObj.items))return null;
+ const items=planObj.items.filter(it=>EX.find(e=>e.n===it.name));
+ if(!items.length)return null;
+ const plans=getCustomPlans();
+ let name=planObj.name,n=1;
+ while(Object.values(plans).some(p=>p.name===name)){n++;name=planObj.name+" ("+n+")";}
+ plans["cp"+Date.now()+Math.floor(Math.random()*1000)]={name,goal:planObj.goal||"hypertrophy",items};
+ saveCustomPlans(plans);
+ return name;
+}
 function saveSharedPlan(){
  if(!incomingSharedPlan)return;
- const plans=getCustomPlans();
- let name=incomingSharedPlan.name,n=1;
- while(Object.values(plans).some(p=>p.name===name)){n++;name=incomingSharedPlan.name+" ("+n+")";}
- const items=incomingSharedPlan.items.filter(it=>EX.find(e=>e.n===it.name));
- plans["cp"+Date.now()]={name,goal:incomingSharedPlan.goal,items};
- saveCustomPlans(plans);
+ const name=addPlanToLibrary(incomingSharedPlan);
  document.getElementById("sharedplanmodal").style.display="none";
  incomingSharedPlan=null;
- toast(`„${name}“ gespeichert ✓`);
+ if(name)toast(`„${name}“ gespeichert ✓`);else toast("Keine passenden Übungen in diesem Plan gefunden.");
 }
 function discardSharedPlan(){document.getElementById("sharedplanmodal").style.display="none";incomingSharedPlan=null;}
 function manualRebalance(){
@@ -1349,16 +1348,10 @@ function balancePlan(){
 
 // ============ RENDER: PLAN ============
 function renderPlan(){
- const out=document.getElementById("plan-out");if(!PLAN){out.innerHTML='<p class="empty">Ziel und Parameter wählen, dann Trainingsblock erstellen.</p>';return;}
- const total=PLAN.config.block;const E1=jget("tpe.e1rm",{});
- const bw=blockWeekInfo();
- let h=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Trainingsblock · ${total} Wochen</span><div style="margin-left:auto;display:flex;gap:8px"><button class="btn" style="padding:7px 11px;font-size:12.5px" onclick="openMyPlans()">📋 Pläne</button><button class="btn" style="padding:7px 11px;font-size:12.5px" onclick="openSpontanModal()">⚡ Spontan</button></div></div>
-   <div class="goal-badge">Ziel: ${GOALS[PLAN.config.goal].label}</div>
-   <p class="hint">Du bist in <b>Woche ${bw.cur}</b> deines Blocks (automatisch anhand deiner Einheiten). Andere Wochen nur zur Vorschau.</p><div class="weeks">`;
- for(let w=1;w<=total;w++){const dl=(cfgUI.deload===true&&total>=3&&w===total);
-   const isCur=w===bw.cur,isPast=w<bw.cur;
-   h+=`<button class="wbtn ${w===curWeek?'on':''} ${dl?'deload':''} ${isCur?'cur':''} ${isPast?'past':''}" onclick="setWeek(${w})">${isPast?'✓ ':''}W${w}<small>${isCur?'aktuell':(dl?'Deload':'Aufbau')}</small></button>`;}
- h+=`</div>${bw.raw>total?`<p class="hint" style="margin-top:9px">🏁 Blockende erreicht – Zeit für einen neuen Trainingsblock („Plan aktualisieren" oben).</p>`:""}</div>`;
+ const out=document.getElementById("plan-out");if(!PLAN){out.innerHTML='<p class="empty">Ziel und Parameter wählen, dann Trainingsplan erstellen.</p>';return;}
+ const E1=jget("tpe.e1rm",{});
+ let h=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Trainingsplan</span><div style="margin-left:auto;display:flex;gap:8px"><button class="btn" style="padding:7px 11px;font-size:12.5px" onclick="openMyPlans()">📋 Pläne</button><button class="btn" style="padding:7px 11px;font-size:12.5px" onclick="openSpontanModal()">⚡ Spontan</button></div></div>
+   <div class="goal-badge">Ziel: ${GOALS[PLAN.config.goal].label}</div></div>`;
  const doneDays=weekDoneSet();
  PLAN.days.forEach((p,di)=>{
   const isDone=doneDays.has(di);
@@ -1373,7 +1366,6 @@ function renderPlan(){
   }
   h+=`<details class="card daycard ${isDone?'dcdone':''}"><summary class="day-head daysum"><span class="day-num ${isDone?'dn-done':''}">${isDone?'✓':p.idx}</span>
     <span class="dsum-txt"><span class="day-title">${p.label}</span><span class="dsum-meta">${metaLine}</span>${musList?`<span class="dsum-mus">${musList}</span>`:""}</span>
-    <span class="pill ${weekIsDeload()?'dl':''}">W${curWeek}</span>
     ${isDone?'':`<button class="btn accent dsum-start" type="button" onclick="event.stopPropagation();startWorkout(${di})">Start</button>`}
     <span class="cfg-chev">▾</span></summary>
     <div class="daybody">`;
@@ -1386,7 +1378,7 @@ function renderPlan(){
     <button class="btn" style="margin-top:2px" onclick="event.stopPropagation();openDaySessions('${dayKey(sess.date)}')">📋 Zusammenfassung ansehen</button></div></div></details>`;
     return;
   }
-  p.items.forEach((it,ei)=>{const pr=periodize(catOf(it.ex),curWeek,total);
+  p.items.forEach((it,ei)=>{const pr=periodize(catOf(it.ex),curWeek,PLAN.config.block);
    const iso=catOf(it.ex)==="iso"?'<span class="iso">Iso</span>':"";
    const mus=it.ex.pri.map(m=>`<span class="tag mus">${MUS[m]}</span>`).join("");
    const tm=isTm(it.ex.n);
@@ -1403,7 +1395,7 @@ function renderPlan(){
  // analysis
  const a=analyze(true),maxV=Math.max(...MORDER.map(m=>a.vol[m]),24),scaleMax=Math.max(28,Math.ceil(maxV));
  if(a.doneCount)h+=`<p class="hint" style="margin:0 0 6px">Für ${a.doneCount} bereits absolvierte${a.doneCount===1?"n Tag":" Tage"} dieser Woche fließen die tatsächlich geloggten Sätze ein – offene Tage nach Plan. <span style="white-space:nowrap">Gestrichelte Linie <b style="color:var(--ink)">┊</b> = dein bisheriger Ist-Stand.</span></p>`;
- h+=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Wochenanalyse · W${curWeek}</span>
+ h+=`<div class="card"><div class="day-head"><span class="day-title" style="color:var(--ink)">Wochenanalyse</span>
    <button class="btn" style="margin-left:auto;padding:7px 11px;font-size:12.5px" onclick="manualRebalance()" title="Prüft alle Muskelgruppen gegen dein Wochenminimum (MEV) und ergänzt bei Bedarf passende Übungen auf den noch offenen Tagen dieser Woche.">⚖ Ausgleichen</button></div>
    <div class="a-grid"><div><p class="hint">Sätze/Muskel · grünes Band = MEV–MRV-Korridor · Frequenz: <b style="color:var(--ok)">●</b>≥2× <b style="color:var(--accent-dark)">●</b>&lt;2×</p>`;
  MORDER.forEach(m=>{const v=a.vol[m],[mev,mrv]=LM[m];const w=Math.min(v/scaleMax*100,100);
@@ -1424,13 +1416,12 @@ function renderPlan(){
  if(low.length)nt.push(`<b>Unter Mindestvolumen:</b> ${low.map(m=>MUS[m]).join(", ")} – mit aktueller Geräte-/Erfahrungswahl nicht voll abdeckbar. Geräte erweitern oder Übung manuell ergänzen.`);
  if(over.length)nt.push(`<b>Über Maximalvolumen:</b> ${over.map(m=>MUS[m]).join(", ")} – hoher Wochenumfang. Auf ausreichende Regeneration achten oder Trainingstage reduzieren.`);
  if(lowF.length)nt.push(`<b>Nur 1×/Woche:</b> ${lowF.map(m=>MUS[m]).join(", ")} – viel Volumen an einem einzigen Tag. Mehr Trainingstage oder ein anderer Split verteilen es besser.`);
- if(nt.length)h+=`<div class="note"><b>Status &amp; Hinweise (W${curWeek}):</b><br>${nt.map(x=>"· "+x).join("<br>")}<div class="note-sub">Der Plan wurde bereits automatisch ausbalanciert – diese Punkte lassen sich nicht allein über die Übungsauswahl lösen.</div></div>`;
- else h+=`<div class="note ok"><b>✓ Ausgewogen (W${curWeek})</b><br>Alle Muskelgruppen liegen im optimalen Volumenkorridor. Der Plan wurde automatisch ausbalanciert.</div>`;
+ if(nt.length)h+=`<div class="note"><b>Status &amp; Hinweise:</b><br>${nt.map(x=>"· "+x).join("<br>")}<div class="note-sub">Der Plan wurde bereits automatisch ausbalanciert – diese Punkte lassen sich nicht allein über die Übungsauswahl lösen.</div></div>`;
+ else h+=`<div class="note ok"><b>✓ Ausgewogen</b><br>Alle Muskelgruppen liegen im optimalen Volumenkorridor. Der Plan wurde automatisch ausbalanciert.</div>`;
  h+=`</div>`;
  out.innerHTML=h;
  MORDER.forEach(m=>{document.querySelectorAll(`#plan-out [data-m="${m}"]`).forEach(el=>el.style.fill=volColor(m,a.vol[m]));});
 }
-function weekIsDeload(){return PLAN&&cfgUI.deload===true&&PLAN.config.block>=3&&curWeek===PLAN.config.block;}
 function setWeek(w){curWeek=w;renderPlan();}
 function secStr(s){return s>=60?(s%60?Math.floor(s/60)+":"+String(s%60).padStart(2,"0")+" min":s/60+" min"):s+" s";}
 
@@ -1466,11 +1457,9 @@ function renderTrain(){
  } else {
    const doneT=weekDoneSet();
    let dayBtns="";PLAN.days.forEach((d,i)=>{const dn=doneT.has(i);dayBtns+=`<button class="dbtn ${i===logState.di?'on':''} ${dn?'dbdone':''}" onclick="trainSel.day=${i};buildLog()"><b>${dn?'✓ ':''}Tag ${i+1}</b><span>${d.label}</span></button>`;});
-   const dlNow=(cfgUI.deload===true&&PLAN.config.block>=3&&logState.week===PLAN.config.block);
    h=`<div class="panel">
    <div class="day-head" style="margin-bottom:0"><span class="selh" style="margin:0">Trainingstag</span><div style="margin-left:auto;display:flex;gap:6px"><button class="btn" style="padding:6px 9px;font-size:11.5px" onclick="openMyPlans()">📋 Pläne</button><button class="btn" style="padding:6px 9px;font-size:11.5px" onclick="openSpontanModal()">⚡ Spontan</button></div></div>
    <div class="daysel">${dayBtns}</div>
-   <div class="row" style="margin-top:12px;align-items:center;gap:8px"><span class="pill ${dlNow?'dl':''}">W${logState.week} · ${dlNow?'Deload':'Aufbau'}</span><span class="hint" style="margin:0">Blockwoche automatisch anhand deines Fortschritts.</span></div>
    ${logState.doneView?"":`<p class="hint" style="margin:12px 0 0">Gewicht &amp; Wdh eintragen, Satz mit ✓ abschließen – startet die Pause.</p>`}</div>`;
  }
  if(logState.doneView){h+=doneViewHTML();out.innerHTML=h;return;}
@@ -1495,7 +1484,7 @@ function renderTrain(){
      <button class="ticon" onclick="toggleTimerMin()" title="Timer aufklappen">▴</button></div>
    </div>`;
  // exercises
- h+=`<div class="card"><div class="day-head"><span class="day-num">${logState.di+1}</span><span class="day-title">${logState.label}</span><span class="pill ${(cfgUI.deload===true&&PLAN.config.block>=3&&logState.week===PLAN.config.block)?'dl':''}">W${logState.week}</span><button class="btn" style="margin-left:auto;padding:7px 11px;font-size:12.5px" onclick="finishWorkout()">Abschließen ✓</button></div>`;
+ h+=`<div class="card"><div class="day-head"><span class="day-num">${logState.di+1}</span><span class="day-title">${logState.label}</span><button class="btn" style="margin-left:auto;padding:7px 11px;font-size:12.5px" onclick="finishWorkout()">Abschließen ✓</button></div>`;
  let nextFound=false;
  logState.ex.forEach((e,xi)=>{const t=e.target;const load=t.loadStr&&!isBW(e.name)?` · ${t.loadStr}`:"";
   const tm=isTm(e.name);
@@ -1521,7 +1510,6 @@ function renderTrain(){
     <input type="number" inputmode="decimal" placeholder="${isBW(e.name)?'+'+unitLbl():unitLbl()}" title="${isBW(e.name)?'Zusatzgewicht, optional – leer lassen für reines Körpergewicht':''}" value="${st.w}" oninput="logState.ex[${xi}].sets[${si}].w=this.value;saveDraft()">
     <input type="number" inputmode="numeric" placeholder="${tm?'Sek':(st.tr||'Wdh')}" value="${st.r}" oninput="logState.ex[${xi}].sets[${si}].r=this.value;saveDraft()">
     ${tm?'<span></span>':`<select class="rir" title="Reps in Reserve – wie viele Wdh. waren noch drin?" onchange="logState.ex[${xi}].sets[${si}].rir=this.value;saveDraft()"><option value="">RIR</option>${[0,1,2,3,4,5].map(n=>`<option value="${n}" ${String(st.rir)===String(n)?'selected':''}>${n}${n===5?'+':''}</option>`).join('')}</select>`}
-    <button class="techbtn ${st.clean===false?'unclean':''}" id="tb-${xi}-${si}" title="Ausführung sauber oder unsauber – Klick zum Umschalten" onclick="toggleClean(${xi},${si})">${st.clean===false?'Unsauber':'Sauber'}</button>
     <button class="chk" onclick="doneSet(${xi},${si})">✓</button></div>`;});
   h+=`<div class="setops"><button class="sop" onclick="addSet(${xi})">+ Satz</button>${e.sets.length>1?`<button class="sop" onclick="delSet(${xi})">− Satz</button>`:""}</div>`;
   h+=allDone?`</details></div>`:`</div></div>`;});
@@ -1536,10 +1524,6 @@ const TMSEC={strength:"20–40 s",hypertrophy:"30–60 s",endurance:"45–90 s"}
 function addSet(xi){const ex=logState.ex[xi];const last=ex.sets[ex.sets.length-1];
  ex.sets.push({w:last?last.w:"",r:"",rir:"",done:false,tr:last?last.tr:""});saveDraft();renderTrain();}
 function delSet(xi){const ex=logState.ex[xi];if(ex.sets.length>1){ex.sets.pop();saveDraft();renderTrain();}}
-function toggleClean(xi,si){const st=logState.ex[xi].sets[si];st.clean=(st.clean===false)?true:false;saveDraft();
- const b=document.getElementById(`tb-${xi}-${si}`);
- if(b){const unclean=st.clean===false;b.classList.toggle("unclean",unclean);b.textContent=unclean?"Unsauber":"Sauber";}
-}
 function doneSet(xi,si){const ex=logState.ex[xi];const st=ex.sets[si];
  const allBefore=ex.sets.every(s=>s.done);st.done=!st.done;
  if(st.done&&!logState.startedAt){
@@ -1636,12 +1620,12 @@ function doneViewHTML(){
    <p class="hint" style="margin:0 0 4px">Abgeschlossen am ${when}</p>
    ${sessionSummaryHTML(sess,"trainmap-"+sess.id)}
    <div style="margin-top:14px"><button class="btn" onclick="startEditSession()">✎ Bearbeiten</button></div>
- <p class="hint" style="margin:12px 0 0">Der Tag ist für diese <b>Kalenderwoche</b> abgeschlossen und öffnet sich nächste Woche automatisch – die Blockwochen-Auswahl (W1–W${PLAN.config.block}) ändert daran nichts.</p></div>`;
+ <p class="hint" style="margin:12px 0 0">Der Tag ist für diese <b>Kalenderwoche</b> abgeschlossen und öffnet sich nächste Woche automatisch.</p></div>`;
  setTimeout(()=>paintMuscleMap("trainmap-"+sess.id,sess.entries),0);
  return h;
 }
 function startEditSession(){const sess=sessionForDay(logState.di);if(!sess)return;
- editState={id:sess.id,entries:sess.entries.map(en=>({name:en.name,sets:en.sets.map(s=>({w:isTm(en.name)?"":(s.w>0?Math.round(fromKg(s.w)*10)/10:""),r:s.r,rir:(s.rir!=null?s.rir:""),clean:s.clean!==false}))}))};
+ editState={id:sess.id,entries:sess.entries.map(en=>({name:en.name,sets:en.sets.map(s=>({w:isTm(en.name)?"":(s.w>0?Math.round(fromKg(s.w)*10)/10:""),r:s.r,rir:(s.rir!=null?s.rir:"")}))}))};
  renderTrain();}
 function editRemoveEx(i){if(!editState)return;editState.entries.splice(i,1);renderTrain();}
 function editAddSet(i){if(!editState)return;const en=editState.entries[i];const last=en.sets[en.sets.length-1];
@@ -1649,7 +1633,7 @@ function editAddSet(i){if(!editState)return;const en=editState.entries[i];const 
 function editDelSet(i){if(!editState)return;const en=editState.entries[i];if(en.sets.length>1){en.sets.pop();renderTrain();}}
 function saveEditSession(){
  const log=jget("tpe.log",[]);const idx=log.findIndex(x=>x.id===editState.id);if(idx<0){editState=null;renderTrain();return;}
- const entries=editState.entries.map(en=>({name:en.name,sets:en.sets.filter(s=>+s.r>0&&(+s.w>0||isTm(en.name)||isBW(en.name))).map(s=>{const o={w:isTm(en.name)?0:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;if(s.clean===false)o.clean=false;return o;})})).filter(en=>en.sets.length);
+ const entries=editState.entries.map(en=>({name:en.name,sets:en.sets.filter(s=>+s.r>0&&(+s.w>0||isTm(en.name)||isBW(en.name))).map(s=>{const o={w:isTm(en.name)?0:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(en=>en.sets.length);
  if(!entries.length){toast("Mindestens ein Satz mit Wiederholungen nötig.");return;}
  log[idx].entries=entries;log[idx].totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
  jset("tpe.log",log);
@@ -1708,7 +1692,7 @@ function sessionSummaryHTML(sess,mapId){
 function finishWorkout(){
  const dayLabel=logState.label;
  const startedAt=logState.startedAt||null;
- const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;if(s.clean===false)o.clean=false;return o;})})).filter(e=>e.sets.length);
+ const entries=logState.ex.map(e=>({name:e.name,sets:e.sets.filter(s=>(+s.w>0||s.done||isTm(e.name))&&+s.r>0).map(s=>{const o={w:Math.round(toKg(s.w)*10)/10,r:+s.r};if(s.rir!==""&&s.rir!=null&&!isNaN(+s.rir))o.rir=+s.rir;return o;})})).filter(e=>e.sets.length);
  if(!entries.length){toast("Noch keine Sätze eingetragen.");return;}
  const _snap={log:localStorage.getItem("tpe.log"),e1:localStorage.getItem("tpe.e1rm"),tb:localStorage.getItem("tpe.tmbest"),plan:localStorage.getItem("tpe.plan"),state:JSON.parse(JSON.stringify(logState)),di:logState.di,week:logState.week};
  const totalSets=entries.reduce((a,e)=>a+e.sets.length,0);
@@ -1886,7 +1870,7 @@ function openInfo(name){const e=EX.find(x=>x.n===name);if(!e)return;const info=c
    <div class="catmus"><span><i class="sw" style="background:var(--hi)"></i>Primär: ${e.pri.map(m=>MUS[m]).join(", ")}</span>${e.sec.length?`<span><i class="sw" style="background:var(--mid)"></i>Sekundär: ${e.sec.map(m=>MUS[m]).join(", ")}</span>`:""}</div>`;
  document.getElementById("infomodal").style.display="flex";startImgCycle(name,"info");}
 function closeInfo(){stopImgCycle();document.getElementById("infomodal").style.display="none";}
-function syncToggles(){const a=document.getElementById("sw-warmup");if(a)a.classList.toggle("on",!!cfgUI.warmup);const b=document.getElementById("sw-topset");if(b)b.classList.toggle("on",cfgUI.topset!==false);const c=document.getElementById("sw-deload");if(c)c.classList.toggle("on",cfgUI.deload===true);}
+function syncToggles(){const a=document.getElementById("sw-warmup");if(a)a.classList.toggle("on",!!cfgUI.warmup);const b=document.getElementById("sw-topset");if(b)b.classList.toggle("on",cfgUI.topset!==false);}
 function openSettings(){syncToggles();syncBody();renderThemeSwatches();document.getElementById("setmodal").style.display="flex";}
 function syncBody(){const bw=document.getElementById("set-bw");if(bw)bw.value=S.bw>0?S.bw:"";const sm=document.getElementById("sex-m"),sf=document.getElementById("sex-f");if(sm)sm.classList.toggle("on",S.sex!=="f");if(sf)sf.classList.toggle("on",S.sex==="f");}
 function setBW(v){S.bw=Math.max(0,+v||0);saveCfg();renderHist();}
@@ -1894,11 +1878,10 @@ function setSex(s){S.sex=s==="f"?"f":"m";saveCfg();syncBody();renderHist();}
 function closeSettings(){document.getElementById("setmodal").style.display="none";}
 function toggleWarmup(){cfgUI.warmup=!cfgUI.warmup;saveUI();syncToggles();if(logState)renderTrain();}
 function toggleTopset(){cfgUI.topset=(cfgUI.topset===false);saveUI();syncToggles();if(typeof PLAN!=="undefined"&&PLAN)renderPlan();if(logState)toast("Übernommen – wirkt beim nächsten Start der Einheit.");}
-function toggleDeload(){cfgUI.deload=(cfgUI.deload===true)?false:true;saveUI();syncToggles();if(typeof PLAN!=="undefined"&&PLAN)renderPlan();if(logState)renderTrain();toast(cfgUI.deload?"Deload-Woche aktiviert – letzte Blockwoche wird reduziert.":"Deload-Woche deaktiviert – alle Wochen bleiben Aufbau.");}
 const HELP={
  howto:{title:"So nutzt du GymBuddy",html:`<p class="cat-desc">In fünf Schritten von der Planung bis zum Fortschritt:</p>
    <ol class="cat-cues" style="padding-left:22px">
-   <li><b>Plan erstellen</b> – im Reiter <b>Plan</b> Ziel, Tage pro Woche, Erfahrung, Split und Blocklänge wählen und generieren. Die App verteilt die Übungen ausgewogen über alle Muskelgruppen. Über die ⓘ-Symbole kannst du Erfahrung und Split nachlesen.</li>
+   <li><b>Plan erstellen</b> – im Reiter <b>Plan</b> Ziel, Tage pro Woche, Erfahrung und Split wählen und generieren. Die App verteilt die Übungen ausgewogen über alle Muskelgruppen. Über die ⓘ-Symbole kannst du Erfahrung und Split nachlesen.</li>
    <li><b>Maximalkraft hinterlegen</b> (optional, empfohlen) – tippe bei einer Übung auf das 1RM-Feld und trage dein Maximum direkt ein oder lass es aus einem Testsatz berechnen. Dann zeigt der Plan konkrete Arbeitsgewichte statt nur Prozentwerte.</li>
    <li><b>Trainieren</b> – im Reiter <b>Training</b> den Tag wählen, je Satz Gewicht und Wiederholungen eintragen und abhaken. Der Pausentimer startet automatisch und vibriert am Ende. „Zuletzt" zeigt dir deine letzte Leistung als Ziel zum Überbieten.</li>
    <li><b>Übungen verstehen</b> – das ⓘ neben jeder Übung öffnet Technik, Hinweise und beanspruchte Muskeln. Den vollen Katalog mit Muskelbild findest du im Reiter <b>Katalog</b>.</li>
@@ -2526,8 +2509,7 @@ function buildControls(){
    d.innerHTML=`<h3>${v.label}</h3><p>${v.desc}</p><div class="params">${v.params}</div>`;d.onclick=()=>{S.goal=k;refresh();};g.appendChild(d);});
  const dd=document.getElementById("days");[1,2,3,4,5,6].forEach(n=>{const b=document.createElement("button");b.className="chip day"+(n===S.days?" on":"");b.textContent=n;b.onclick=()=>{S.days=n;refresh();};dd.appendChild(b);});
  const lv=document.getElementById("level");[["beg","Einsteiger"],["int","Geübt"],["adv","Fortgeschritten"]].forEach(([k,t])=>{const b=document.createElement("button");b.className="chip"+(k===S.level?" on":"");b.textContent=t;b.dataset.lv=k;b.onclick=()=>{S.level=k;refresh();};lv.appendChild(b);});
- const sp=document.getElementById("split");[["auto","Automatisch"],["full","Ganzkörper"],["ul","Ober/Unter"],["ppl","Push/Pull/Beine"]].forEach(([k,t])=>{const b=document.createElement("button");b.className="chip"+(k===S.split?" on":"");b.textContent=t;b.dataset.sp=k;b.onclick=()=>{S.split=k;refresh();};sp.appendChild(b);});
- const bl=document.getElementById("block");[4,6].forEach(n=>{const b=document.createElement("button");b.className="chip"+(n===S.block?" on":"");b.textContent=n+" Wochen";b.dataset.bl=n;b.onclick=()=>{S.block=n;refresh();};bl.appendChild(b);});
+ const sp=document.getElementById("split");[["auto","Automatisch"],["full","Ganzkörper"],["ul","Ober/Unter"],["ppl","Push/Pull/Beine"],["arnold","Brust+Rücken/Schultern+Arme"]].forEach(([k,t])=>{const b=document.createElement("button");b.className="chip"+(k===S.split?" on":"");b.textContent=t;b.dataset.sp=k;b.onclick=()=>{S.split=k;refresh();};sp.appendChild(b);});
  const eq=document.getElementById("equip");Object.entries(EQL).forEach(([k,t])=>{const b=document.createElement("button");b.className="chip"+(S.equipSet.has(k)?" on":"");b.textContent=t;b.dataset.eq=k;b.onclick=()=>{if(S.equipSet.has(k)){if(S.equipSet.size>1)S.equipSet.delete(k);}else S.equipSet.add(k);refresh();};eq.appendChild(b);});
 }
 function refresh(){
