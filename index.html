@@ -460,6 +460,7 @@
   .navbar{left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom));background:var(--nav);-webkit-backdrop-filter:none;backdrop-filter:none;
     border:1px solid var(--navline);border-radius:22px;padding:7px;gap:4px;box-shadow:0 12px 30px var(--shadow)}
   html.dark .navbar{background:var(--nav);box-shadow:0 12px 30px var(--shadow)}
+  body.kb .navbar{display:none}
   .navitem{color:var(--navfg);border:none;border-radius:16px;padding:8px 4px;justify-content:center;min-height:52px}
   .navitem span{font-size:11px;font-weight:800}
   .navitem.on{color:#fff;background:var(--accent);border:none;padding:8px 4px;box-shadow:none}
@@ -1661,7 +1662,6 @@ function renderTrain(){
  logState.ex.forEach((e,xi)=>{const t=e.target;const load=t.loadStr&&!isBW(e.name)?` · ${t.loadStr}`:"";
   const tm=isTm(e.name);
   const allDone=e.sets.length>0&&e.sets.every(s=>s.done);
-  let lastStr="";if(e.last&&e.last.sets&&e.last.sets.length){lastStr=e.last.sets.map(s=>tm?(s.w>0?`${showW(s.w)}×${s.r}s`:`${s.r}s`):`${showW(s.w)}×${s.r}`).join(", ");}
   if(allDone){
     h+=`<div class="swipewrap"><details class="logex donex"><summary class="donex-s"><span class="dchk">✓</span><span class="nm">${e.name}</span><span class="dmeta">${e.sets.length} Sätze erledigt</span><span class="cfg-chev">▾</span></summary>`;
   } else {
@@ -1671,7 +1671,6 @@ function renderTrain(){
   h+=`<div class="logex-h"><span class="nm" data-n="${e.name}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">${e.name}</span>
    <span class="lx-icons"><button class="lxbtn" title="gegen Alternative tauschen" onclick="swapLogEx(${xi})">↻</button><button class="lxbtn lxbtn-danger" title="entfernen" onclick="removeLogEx(${xi})">✕</button></span></div>
    <div class="logex-target">${(tm?[`${t.sets} × ${TMSEC[S.goal]}`,t.loadStr&&!isBW(e.name)?t.loadStr:""]:(presetSummary(t)?[presetSummary(t),`RIR ${t.rir}`]:[`${t.sets} × ${t.reps}`,t.loadStr&&!isBW(e.name)?t.loadStr:"",`RIR ${t.rir}`])).concat([`Pause ${secStr(t.restSec)}`]).filter(Boolean).map(c=>`<span class="lt-chip">${c}</span>`).join("")}<span class="info-i" data-n="${e.name}" onclick="event.stopPropagation();openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span></div>`;
-  if(lastStr)h+=`<div class="last-perf">Zuletzt: <b>${lastStr}</b>${tm?"":" "+unitLbl()}</div>`;
   const _tip=progressTip(e);if(_tip)h+=`<div class="prog-tip ${_tip.cls}">${_tip.cls==="up"?IC.trend:""}Vorschlag: ${_tip.text}</div>`;
   const warm=warmupSets(e.name,t);
   if(warm.length){h+=`<div class="warmlabel">Aufwärmen · zählt nicht</div>`;warm.forEach(ws=>{h+=`<div class="warmrow"><span class="wn">↑</span><span>${ws.w>0?showW(ws.w)+" "+unitLbl():"leere Stange"} × ${ws.r}</span></div>`;});}
@@ -2735,6 +2734,10 @@ try{
  if(!lb)jset("tpe.lastBackup",Date.now());
  else if(Date.now()-lb>28*864e5&&jget("tpe.log",[]).length)setTimeout(()=>toast("💾 Letztes Backup ist über 4 Wochen her – exportiere deine Daten (⚙ Einstellungen)."),1500);
 }catch(e){}
+/* iOS: Tastatur schiebt fixierte Navbar nach oben → während Eingabe ausblenden, danach Layout zurücksetzen */
+(()=>{const isF=t=>t&&t.matches&&t.matches('input:not([type=checkbox]):not([type=radio]):not([type=range]),textarea,select');let kt;
+document.addEventListener('focusin',e=>{if(isF(e.target)){clearTimeout(kt);document.body.classList.add('kb')}});
+document.addEventListener('focusout',e=>{if(isF(e.target)){clearTimeout(kt);kt=setTimeout(()=>{if(!isF(document.activeElement)){document.body.classList.remove('kb');window.scrollTo(window.scrollX,window.scrollY)}},120)}});})();
 </script>
 </body>
 </html>
