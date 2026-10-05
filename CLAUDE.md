@@ -10,7 +10,10 @@ Wissenschaftsbasierte Krafttraining-App für Jan (Berufskolleg-Lehrer) und eine 
 
 - **Eine einzige, selbstenthaltene HTML-Datei**: im Repo `index.html` (GitHub Pages liefert sie aus; Jan lädt lokal oft eine `gym-buddy.html`/`gym-buddy-v2.html` hoch → Inhalt 1:1 nach `index.html` übernehmen). Sonst liegt nichts im Repo. Kein Build-Schritt, kein Bundler, kein npm-Projekt zur Laufzeit.
 - CSS und JavaScript **inline** in derselben Datei. Keine externen `<script src>`/`<link>` außer Google Fonts (Anton, Hanken Grotesk, JetBrains Mono).
-- Einzige externe Laufzeit-Abhängigkeit: Übungsbilder von `raw.githubusercontent.com/yuhonas/free-exercise-db` (kostenlos, kein Schlüssel, Public Domain). Keine weiteren APIs, keine Schlüssel im Code (Sicherheitsrisiko bei einer öffentlichen Datei – jeder Schlüssel im Quelltext ist für jeden Besucher einsehbar).
+- Externe Laufzeit-Quellen (nur Bilder, keine Schlüssel):
+  - **Übungs-GIFs** (`GIF`/`GIFHOSTS`): `hasaneyldrm/exercises-dataset`, fest auf Commit `7455efa…`, primär über `cdn.jsdelivr.net/gh/…`, Ersatz `raw.githubusercontent.com/…`. Animationen © Gym visual – Jan hat eine **Erlaubnis für private Nutzung**; GIFs nie ins Repo kopieren, nur verlinken, Quellenhinweis „© Gym visual“ beibehalten.
+  - **Rückfall-Standbilder** (`IMG`/`IMGHOSTS`): `yuhonas/free-exercise-db` (gemeinfrei), wenn kein GIF existiert oder beide GIF-Quellen ausfallen.
+  - Keine weiteren APIs/Hosts ohne Jans ausdrückliche Freigabe, keine Schlüssel im Code (öffentliche Datei).
 - Daten liegen ausschließlich in `localStorage` des Nutzers (Präfix `tpe.`), nichts läuft über einen eigenen Server.
 - Demo-Datei `gym-buddy-demo.html`: **nur auf ausdrückliche Bitte erstellen**, nicht automatisch bei jeder Änderung.
 
@@ -42,11 +45,11 @@ Hinweis Sandbox: Google Fonts laden im Test ggf. nicht → Screenshots zeigen Er
 4. Bei Bugfixes: den ursprünglichen Fehler zuerst reproduzieren, dann den Fix verifizieren, dann eine kleine Regressionsprüfung angrenzender Funktionen.
 5. Erst nach bestandenen Tests ausliefern.
 
-## Aufbau von `index.html` (~2900 Zeilen)
+## Aufbau von `index.html` (~3000 Zeilen)
 
 - **CSS in Schichten**: Basis-Styles oben, darunter Block `/* REDESIGN 2026 · Logbuch-Look */`, der frühere Regeln per Kaskade **überschreibt** (z. B. `.navbar`, `.cat-search`, `:root`-Farben), danach `/* Redesign · Übungen & Fortschritt */`. Vor dem Ändern einer Regel immer nach allen Vorkommen des Selektors greppen – die letzte gewinnt.
 - **HTML**: vier Ansichten `section.view#v-plan|v-train|v-hist|v-cat` mit Container `#…-out`, Umschalten per `showView(v)`; Desktop-Tabs `.tabs` + mobile `nav.navbar` (unter 761px). Modals als `.modal-bg`.
-- **JS** (ein `<script>` am Ende, Abschnitte mit `// ============ NAME ============`): STORAGE (`jget`/`jset`) → DATA (`EX` Übungskatalog mit `n,pat,eq,lvl,t,pri,sec[,tm]`; `MUS`, `EQL`, `MORDER`, `LM` = MEV/MRV je Muskel) → GENERATE/ANALYSIS (Planerzeugung, Volumen) → RENDER: PLAN → TRAINING (`logState`, `renderTrain`, `finishWorkout`) → TIMER → HISTORY (`renderHist`, `drawE1`, `areaChart`, DOTS) → EXERCISE CATALOG (`renderCatalog`, `catCardHTML`, `renderCatDetail`) → CONTROLS/VIEWS.
+- **JS** (ein `<script>` am Ende, Abschnitte mit `// ============ NAME ============`): STORAGE (`jget`/`jset`) → DATA (`EX` Übungskatalog mit `n,pat,eq,lvl,t,pri,sec[,tm]` – `eq` nur `bw|db|bb|kb|ma` (Kabel/Multipresse/Maschine = `ma`, SZ = `bb`); `MUS`, `EQL`, `MORDER`, `LM` = MEV/MRV je Muskel) → GENERATE/ANALYSIS (Planerzeugung, Volumen) → RENDER: PLAN → TRAINING (`logState`, `renderTrain`, `finishWorkout`) → TIMER → HISTORY (`renderHist`, `drawE1`, `areaChart`, DOTS) → EXERCISE CATALOG (`renderCatalog`, `catCardHTML`, `renderCatDetail`) → CONTROLS/VIEWS.
 - **Rendering**: jede Ansicht baut per Template-String einen HTML-String und setzt `innerHTML`; Events über Inline-`onclick`. Kein Framework, kein virtuelles DOM.
 - **localStorage-Schlüssel** (`tpe.`): `log` (Einheiten, neueste zuerst), `e1rm`/`repbest`/`tmbest` (Bestwerte je Übung), `plan`, `cfg`, `customplans`, `fav`, `excl`, `draft` (laufendes Workout), `theme`/`colortheme`, `histP` (Zeitraum Fortschritt), `audiocue`, `ui`, `username`, `lastBackup`. Formate nie inkompatibel ändern – Nutzerdaten müssen Updates überleben.
 - Log-Eintrag: `{id,date(ISO),week,di,dayLabel,entries:[{name,sets:[{w(kg),r,rir?}]}],totalSets,durationSec,goal}`; Gewichte intern immer kg, Anzeige über `showW`/`fromKg`/`unitLbl` (kg/lbs).
@@ -75,7 +78,8 @@ Jans Redesign-Entwürfe liegen im claude.ai-Artefakt „Gym Buddy Redesign“ (D
 
 - **Trainingsplan**: Wird **wochenweise** erzeugt (kein fixer Mehrwochen-Block mehr, keine Wochenauswahl, kein Deload-Konzept). Sätze: Grundübungen 4, Isolationsübungen 3 (nie mehr, feste Werte aus `SCHEME`). Fortschritt läuft über Autoregulation: Gewichtsvorschlag folgt dem tatsächlichen Ergebnis der letzten Einheit (Ziel-Wdh + RIR erreicht → Last steigern, sonst Gewicht halten), nicht über eine vorausberechnete Kurve.
 - **Splits**: Automatisch, Ganzkörper, Ober/Unter, Push/Pull/Beine, sowie „Brust+Rücken / Schultern+Arme / Beine" (Arnold-Split-Variante).
-- **Übungskatalog**: 125 Übungen, nach Muskelgruppe gruppiert, mit Bildern, Favoriten- und Sperrliste-Funktion.
+- **Übungskatalog**: 248 Übungen (125 ursprüngliche + 123 kuratiert aus exercises-dataset), nach Muskelgruppe gruppiert, 245 mit GIF, Favoriten- und Sperrliste-Funktion. Alle 248 sind Teil der automatischen Planerzeugung (zufällige Auswahl je Bewegungsmuster/Muskel).
+- **Anleitungen**: jede Übung hat einen eigenen Text in `EXINFO` (`desc` + 4 `cues`); `PATINFO`/`ISOINFO` sind nur noch Rückfall. Neue Übungen immer mit eigenem `EXINFO`-Eintrag und `GIF`-Zuordnung (Media-Dateiname aus dem Datensatz) anlegen.
 - **Workout-Logging**: Satz-Eingabe mit Gewicht/Wdh/RIR, Übungstausch, Timer mit Sprachansage (30s/15s/„Los geht's", Erstnutzung braucht einmaliges „Aufwecken" der Sprachausgabe per Nutzer-Tap), PR-Erkennung, Konfetti-Feier-Fenster nach Abschluss.
 - **Eigene Pläne**: Baukasten zum manuellen Zusammenstellen, speicherbar unter eigenem Namen, jederzeit spontan startbar (wie „Spontanes Training"), Teilen per Link (Base64 in URL) oder – sicherer, umgeht Safari/installierte-App-Speichertrennung auf iOS – per Datei-Export/Import. Teilen überträgt **nur** die Planstruktur, nie Trainingsdaten.
 - **Fortschritt**: Zeitraum 4 W/12 W/Jahr, Kennzahlen (Einheiten/Serie/Tonnage), Bestleistungen-Liste, Balance Druck:Zug und Quad:Beinbeuger, e1RM-Kurven (RIR-Vertrauensanzeige: volle vs. hohle Punkte), DOTS-Score, Muskelmännchen-Visualisierung, druckbarer PDF-Fortschrittsbericht (über `window.print()`, kein PDF-Build nötig).
