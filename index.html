@@ -1831,7 +1831,7 @@ function renderPlan(){
    const e1tag=tm?"":`<span class="tag e1tag" data-n="${it.ex.n}" onclick="openE1Modal(this.dataset.n)">1RM ${e1cur?showW(e1cur)+" "+unitLbl()+" ✎":"+"}</span>`;
    const ps=presetSummary(pr);
    const presStr=tm?`${pr.sets} × ${TMSEC[S.goal]} · P ${secStr(pr.restSec)}`:`${raw?`<span class="kg">≈ ${workLoad(raw)} ${unitLbl()}</span><br>`:""}${ps||`${pr.sets} × ${pr.reps}${load}`} · P ${secStr(pr.restSec)} · RIR ${pr.rir}`;
-   h+=`<div class="ex"><div class="ex-main"><div class="ex-name"><span data-n="${it.ex.n}" onclick="openInfo(this.dataset.n)" style="cursor:pointer">${it.ex.n}${iso}</span> <span class="info-i" data-n="${it.ex.n}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span></div>
+   h+=`<div class="ex"><div class="ex-main"><div class="ex-name"><span data-n="${it.ex.n}" onclick="openInfo(this.dataset.n)" style="cursor:pointer">${it.ex.n}${iso}</span></div>
      <div class="ex-meta"><span class="tag">${EQL[it.ex.eq]}</span>${mus}<span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${pr.phase}</span>${it.comp?'<span class="tag" style="background:var(--accent);color:#fff">Ausgleich</span>':''}${e1tag}</div></div>
      <div class="pres">${presStr}</div>
      <button class="swap" title="tauschen" onclick="swap(${di},${ei})">↻</button></div>`;});
@@ -1965,7 +1965,7 @@ function renderTrain(){
   }
   h+=`<div class="logex-h"><span class="nm" data-n="${e.name}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">${e.name}</span>
    <span class="lx-icons"><button class="lxbtn" title="gegen Alternative tauschen" onclick="swapLogEx(${xi})">↻</button><button class="lxbtn lxbtn-danger" title="entfernen" onclick="removeLogEx(${xi})">✕</button></span></div>
-   <div class="logex-target">${(tm?[`${t.sets} × ${TMSEC[S.goal]}`,t.loadStr&&!isBW(e.name)?t.loadStr:""]:(presetSummary(t)?[presetSummary(t),`RIR ${t.rir}`]:[`${t.sets} × ${t.reps}`,t.loadStr&&!isBW(e.name)?t.loadStr:"",`RIR ${t.rir}`])).concat([`Pause ${secStr(t.restSec)}`]).filter(Boolean).map(c=>`<span class="lt-chip">${c}</span>`).join("")}<span class="info-i" data-n="${e.name}" onclick="event.stopPropagation();openInfo(this.dataset.n)" title="Technik &amp; Muskeln">ⓘ</span></div>`;
+   <div class="logex-target">${(tm?[`${t.sets} × ${TMSEC[S.goal]}`,t.loadStr&&!isBW(e.name)?t.loadStr:""]:(presetSummary(t)?[presetSummary(t),`RIR ${t.rir}`]:[`${t.sets} × ${t.reps}`,t.loadStr&&!isBW(e.name)?t.loadStr:"",`RIR ${t.rir}`])).concat([`Pause ${secStr(t.restSec)}`]).filter(Boolean).map(c=>`<span class="lt-chip">${c}</span>`).join("")}</div>`;
   const _tip=progressTip(e);if(_tip)h+=`<div class="prog-tip ${_tip.cls}">${_tip.cls==="up"?IC.trend:""}Vorschlag: ${_tip.text}</div>`;
   const warm=warmupSets(e.name,t);
   if(warm.length){h+=`<div class="warmlabel">Aufwärmen · zählt nicht</div>`;warm.forEach(ws=>{h+=`<div class="warmrow"><span class="wn">↑</span><span>${ws.w>0?showW(ws.w)+" "+unitLbl():"leere Stange"} × ${ws.r}</span></div>`;});}
