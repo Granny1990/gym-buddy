@@ -876,6 +876,31 @@
   .cd-fav{font-size:20px;color:var(--muted)} .cd-fav.on{color:var(--ink);background:var(--sig);border-color:var(--sig)}
   .cd-excl{display:block;margin:18px auto 2px;border:none;background:none;color:var(--muted);font:inherit;font-size:13.5px;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px}
   .cd-excl.on{color:var(--warn)}
+
+  /* ===================== VERLAUF JE ÜBUNG · NOTIZEN · MUSKELKARTE ===================== */
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .note-f{display:block;margin:6px 0 8px}
+  .note-f textarea{display:block;width:100%;box-sizing:border-box;min-height:36px;resize:none;border:1px dashed var(--line);border-radius:10px;background:transparent;color:var(--ink);font:inherit;font-size:13.5px;line-height:1.4;padding:8px 10px;overflow:hidden}
+  .note-f textarea::placeholder{color:var(--ph)}
+  .note-f.has textarea{border-style:solid;border-color:transparent;background:var(--sub)}
+  .note-f textarea:focus{outline:none;border-style:solid;border-color:var(--accent);background:var(--paper)}
+  .exh{margin:4px 0 18px}
+  .exh-k{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:10px}
+  .exh-k>div{padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+  .exh-k>div+div{border-left:1px solid var(--line)}
+  .exh-k span{font-size:12px;color:var(--muted)}
+  .exh-k b{font-family:var(--fd);font-stretch:110%;font-weight:800;font-size:19px;white-space:nowrap}
+  .exh-k small{font-family:var(--fb);font-stretch:100%;font-size:11px;font-weight:600;color:var(--muted)}
+  .exh-c{margin:4px 0 8px}
+  .exh-l,.mm-l{list-style:none;margin:0 0 6px;padding:0}
+  .exh-l li,.mm-l li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--sub);font-size:13.5px}
+  .exh-l li:first-child,.mm-l li:first-child{border-top:none}
+  .exh-l span,.mm-l span{color:var(--muted)}
+  .exh-l b{font-weight:600;text-align:right}
+  .mm-l b.ov{color:var(--over)}
+  .mm-ok{font-size:14px;font-weight:600;margin:8px 0 2px}
+  .mmap .bodymap-fig{display:block;max-width:420px;margin:4px auto 0}
+  .mmap .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin:8px 0 6px}
 </style>
 </head>
 <body>
@@ -2096,6 +2121,7 @@ function renderTrain(){
   h+=`<div class="logex-h"><span class="nm" data-n="${e.name}" onclick="openInfo(this.dataset.n)" title="Technik &amp; Muskeln">${e.name}</span>
    <button class="lx-sum" onclick="toggleLx(${xi})" aria-label="Übung auf- oder zuklappen"><span>${e.sets.filter(q=>q.done).length}/${e.sets.length}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button><span class="lx-icons"><button class="lxbtn" title="gegen Alternative tauschen" onclick="swapLogEx(${xi})">↻</button><button class="lxbtn lxbtn-danger" title="entfernen" onclick="removeLogEx(${xi})">✕</button></span></div>
    <div class="logex-target">${(tm?[`${t.sets} × ${TMSEC[S.goal]}`,t.loadStr&&!isBW(e.name)?t.loadStr:""]:(presetSummary(t)?[presetSummary(t),`RIR ${t.rir}`]:[`${t.sets} × ${t.reps}`,t.loadStr&&!isBW(e.name)?t.loadStr:"",`RIR ${t.rir}`])).concat([`Pause ${secStr(t.restSec)}`]).filter(Boolean).map(c=>`<span class="lt-chip">${c}</span>`).join("")}</div>`;
+  h+=noteFieldHTML(e.name);
   const _tip=progressTip(e);if(_tip)h+=`<div class="prog-tip ${_tip.cls}">${_tip.cls==="up"?IC.trend:""}Vorschlag: ${_tip.text}</div>`;
   const warm=warmupSets(e.name,t);
   if(warm.length){h+=`<div class="warmlabel">Aufwärmen · zählt nicht</div>`;warm.forEach(ws=>{h+=`<div class="warmrow"><span class="wn">↑</span><span>${ws.w>0?showW(ws.w)+" "+unitLbl():"leere Stange"} × ${ws.r}</span></div>`;});}
@@ -2114,7 +2140,7 @@ function renderTrain(){
  h+=`<button class="btn" style="margin-top:14px" onclick="openAdd()">+ Übung hinzufügen</button>`;
  h+=`<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn accent" onclick="finishWorkout()">Einheit abschließen &amp; speichern</button>
    <button class="btn" onclick="showView('plan')">Zurück zum Plan</button></div></div>`;
- out.innerHTML=h;updateWoProg();
+ out.innerHTML=h;updateWoProg();growAllNotes(out);
 }
 function isBW(name){const e=EX.find(x=>x.n===name);return e&&e.eq==="bw";}
 function isTm(name){const e=EX.find(x=>x.n===name);return!!(e&&e.tm);}
@@ -2449,12 +2475,12 @@ function removeE1(){const name=modalEx||document.getElementById("m-sel").value;c
 function setE1(name,val){const e1=jget("tpe.e1rm",{});const v=toKg(+val);if(v>0)e1[name]=Math.round(v*10)/10;else delete e1[name];jset("tpe.e1rm",e1);afterDataChange();}
 function renderE1Mgr(){const el=document.getElementById("e1mgr");if(el)el.innerHTML=histTopSections(jget("tpe.e1rm",{}));}
 function afterDataChange(){if(PLAN)renderPlan();renderE1Mgr();const hv=document.getElementById("v-hist");if(hv&&hv.classList.contains("on"))renderHist();}
-function exportData(){jset("tpe.lastBackup",Date.now());const data={app:"trainings-engine",v:1,exported:new Date().toISOString(),cfg:jget("tpe.cfg",{}),plan:jget("tpe.plan",null),e1rm:jget("tpe.e1rm",{}),tmbest:jget("tpe.tmbest",{}),repbest:jget("tpe.repbest",{}),log:jget("tpe.log",[]),fav:jget("tpe.fav",[]),excl:jget("tpe.excl",[]),customplans:jget("tpe.customplans",{})};
+function exportData(){jset("tpe.lastBackup",Date.now());const data={app:"trainings-engine",v:1,exported:new Date().toISOString(),cfg:jget("tpe.cfg",{}),plan:jget("tpe.plan",null),e1rm:jget("tpe.e1rm",{}),tmbest:jget("tpe.tmbest",{}),repbest:jget("tpe.repbest",{}),log:jget("tpe.log",[]),fav:jget("tpe.fav",[]),excl:jget("tpe.excl",[]),customplans:jget("tpe.customplans",{}),notes:jget("tpe.notes",{})};
  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);
  const a=document.createElement("a");a.href=url;a.download="trainings-engine-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function importData(input){const f=input.files&&input.files[0];if(!f)return;const rd=new FileReader();
  rd.onload=()=>{try{const d=JSON.parse(rd.result);
-   if(d.cfg)jset("tpe.cfg",d.cfg);if("plan" in d)jset("tpe.plan",d.plan);if(d.e1rm)jset("tpe.e1rm",d.e1rm);if(d.tmbest)jset("tpe.tmbest",d.tmbest);if(d.repbest)jset("tpe.repbest",d.repbest);if(d.log)jset("tpe.log",d.log);if(d.fav)jset("tpe.fav",d.fav);if(d.excl)jset("tpe.excl",d.excl);if(d.customplans)jset("tpe.customplans",d.customplans);
+   if(d.cfg)jset("tpe.cfg",d.cfg);if("plan" in d)jset("tpe.plan",d.plan);if(d.e1rm)jset("tpe.e1rm",d.e1rm);if(d.tmbest)jset("tpe.tmbest",d.tmbest);if(d.repbest)jset("tpe.repbest",d.repbest);if(d.log)jset("tpe.log",d.log);if(d.fav)jset("tpe.fav",d.fav);if(d.excl)jset("tpe.excl",d.excl);if(d.customplans)jset("tpe.customplans",d.customplans);if(d.notes)jset("tpe.notes",d.notes);
    const cfg=jget("tpe.cfg",{});Object.assign(S,cfg);S.unit="kg";S.equipSet=new Set(S.equip&&S.equip.length?S.equip:["bw","db","bb","kb","ma"]);
    PLAN=jget("tpe.plan",null);curWeek=PLAN?currentBlockWeek():1;trainSel={day:0,week:curWeek};logState=null;editState=null;
    refresh();applyUnitUI();renderPlan();renderHist();updateCfgPanel(!!PLAN);toast("Daten erfolgreich importiert ✓");
@@ -2967,6 +2993,42 @@ function milestonesHTML(log,tonnage){const n=log.length,st=weekStreakOf(log),t=t
  const rows=cats.map(([l,v,tiers,f])=>{const won=tiers.filter(x=>v>=x).length,nx=tiers[won];
    return `<div class="mrow"><div class="mrow-h"><span>${l}</span><b>${nx?f(v)+" / "+f(nx):"Alle Stufen erreicht"}</b></div><div class="mbar steps">${tiers.map((x,i)=>`<i class="${i<won?"on":(i===won?"part":"")}" style="${i===won?"--p:"+Math.min(100,Math.round(v/x*100))+"%":""}"></i>`).join("")}</div></div>`;}).join("");
  return `<section class="pcard"><h2>Meilensteine</h2>${rows}</section>`;}
+function escH(t){return String(t==null?"":t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);}
+function getNote(n){return (jget("tpe.notes",{})||{})[n]||"";}
+function setNote(n,t){const all=jget("tpe.notes",{})||{};t=String(t||"").slice(0,500);if(t.trim())all[n]=t;else delete all[n];jset("tpe.notes",all);}
+function noteFieldHTML(n){const v=getNote(n);return `<label class="note-f${v?" has":""}"><span class="sr">Notiz zu ${escH(n)}</span><textarea rows="1" maxlength="500" data-n="${escH(n)}" placeholder="Notiz, z. B. Sitz auf Stufe 4" oninput="setNote(this.dataset.n,this.value);this.parentNode.classList.toggle('has',!!this.value.trim());noteGrow(this)" onfocus="noteGrow(this)">${escH(v)}</textarea></label>`;}
+function noteGrow(t){t.style.height="auto";t.style.height=Math.min(t.scrollHeight,160)+"px";}
+function growAllNotes(root){(root||document).querySelectorAll(".note-f textarea").forEach(noteGrow);}
+
+/* ---- Verlauf je Übung (Detailansicht) ---- */
+function exHistoryHTML(name){const log=jget("tpe.log",[]);const tm=isTm(name),bw=isBW(name);
+ const ses=log.filter(s=>s.entries.some(x=>x.name===name));
+ if(!ses.length)return `<section class="exh"><div class="sec-h">Dein Verlauf</div><p class="hint">Noch nicht trainiert. Sobald du die Übung loggst, siehst du hier Bestleistung, Kurve und letzte Einheiten.</p>${noteFieldHTML(name)}</section>`;
+ const everW=ses.some(s=>s.entries.some(x=>x.name===name&&x.sets.some(st=>+st.w>0)));const repMode=(bw&&!everW)||tm;
+ const pts=ses.slice().reverse().map(s=>{let mx=0;s.entries.filter(x=>x.name===name).forEach(x=>x.sets.forEach(st=>{const w=+st.w||0,r=+st.r||0;if(!(r>0))return;mx=Math.max(mx,repMode?r:(w>0?e1RM(w,r):0));}));return {x:new Date(s.date).getTime(),y:repMode?mx:Math.round(fromKg(mx)*10)/10};}).filter(q=>q.y>0);
+ const unit=tm?"s":(repMode?"Wdh":unitLbl());const best=pts.reduce((a,q)=>Math.max(a,q.y),0);
+ const last=ses.slice(0,5).map(s=>{const sets=[];s.entries.filter(x=>x.name===name).forEach(x=>x.sets.forEach(st=>sets.push(tm?`${st.r}s`:(+st.w>0?`${fmtDe(showW(st.w))}×${st.r}`:`${st.r} Wdh`))));
+   return `<li><span>${new Date(s.date).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}</span><b>${sets.join(" · ")}</b></li>`;}).join("");
+ return `<section class="exh"><div class="sec-h">Dein Verlauf</div>
+  <div class="exh-k"><div><span>Bestwert</span><b>${fmtDe(best)} <small>${repMode?unit:unit+" e1RM"}</small></b></div><div><span>Einheiten</span><b>${ses.length}</b></div><div><span>Zuletzt</span><b>${new Date(ses[0].date).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit"})}</b></div></div>
+  ${pts.length>1?`<div class="exh-c">${areaChart(pts,unit,[])}</div>`:""}
+  <ul class="exh-l">${last}</ul>${noteFieldHTML(name)}</section>`;}
+
+/* ---- Muskelkarte (Fortschritt) ---- */
+function muscleVolPerWeek(log){const now=Date.now(),P=histP*7*864e5;const inP=log.filter(s=>new Date(s.date).getTime()>now-P);
+ const vol={};MORDER.forEach(m=>vol[m]=0);
+ inP.forEach(s=>s.entries.forEach(en=>{const ex=EX.find(e=>e.n===en.name);if(!ex)return;const n=en.sets.length;ex.pri.forEach(m=>vol[m]+=n);ex.sec.forEach(m=>vol[m]+=n*0.5);}));
+ const first=inP.length?Math.min(...inP.map(s=>new Date(s.date).getTime())):now;const weeks=Math.max(1,Math.min(histP,Math.ceil((now-startOfWeek(new Date(first)).getTime())/(7*864e5))));
+ MORDER.forEach(m=>vol[m]=Math.round(vol[m]/weeks*10)/10);return {vol,weeks};}
+function muscleMapHTML(log){const {vol,weeks}=muscleVolPerWeek(log);
+ const low=MORDER.filter(m=>LM[m][0]>0&&vol[m]<LM[m][0]).sort((a,b)=>vol[a]/LM[a][0]-vol[b]/LM[b][0]);
+ const high=MORDER.filter(m=>vol[m]>LM[m][1]);
+ const list=low.map(m=>`<li><span>${MUS[m]}</span><b class="dn">${fmtDe(vol[m])} / ${LM[m][0]} Sätze</b></li>`).join("")+high.map(m=>`<li><span>${MUS[m]}</span><b class="ov">${fmtDe(vol[m])} · über ${LM[m][1]}</b></li>`).join("");
+ return `<section class="pcard mmap" id="mmap"><h2>Muskelvolumen</h2><p class="hint" style="margin:2px 0 6px">Sätze pro Woche, Durchschnitt der letzten ${weeks} Woche${weeks===1?"":"n"}. Nebenmuskeln zählen halb.</p>
+  ${bodySVG()}<div class="legend"><span><i class="sw" style="background:var(--ok)"></i>im Korridor</span><span><i class="sw" style="background:var(--lo)"></i>unter MEV</span><span><i class="sw" style="background:var(--over)"></i>über MRV</span><span><i class="sw" style="background:var(--hi)"></i>kaum</span></div>
+  ${list?`<ul class="mm-l">${list}</ul>`:`<p class="mm-ok up">Alle Muskelgruppen liegen im Korridor.</p>`}</section>`;}
+function paintMuscleMap(){const box=document.getElementById("mmap");if(!box)return;const {vol}=muscleVolPerWeek(jget("tpe.log",[]));
+ MORDER.forEach(m=>box.querySelectorAll(`[data-m="${m}"]`).forEach(el=>el.style.fill=volColor(m,vol[m])));}
 function balanceHTML(log){const now=Date.now(),P=histP*7*864e5;const c={push:0,pull:0,q:0,h:0};
  log.forEach(s=>{if(new Date(s.date).getTime()<=now-P)return;s.entries.forEach(e=>{const x=EX.find(z=>z.n===e.name);if(!x)return;const n=e.sets.length;
    if(x.pat==="hpush"||x.pat==="vpush")c.push+=n;if(x.pat==="hpull"||x.pat==="vpull")c.pull+=n;
@@ -2995,7 +3057,7 @@ function renderHist(){
    <label class="liftmore">Weitere<select id="exsel" onchange="pickLift(this.value)">${exNames.map(n=>`<option value="${n}" ${n===defaultEx?"selected":""}>${n}</option>`).join("")}</select></label></div>
    <div class="e1top"><div id="e1big"></div><span id="e1delta"></span></div><div id="e1chart"></div><div id="rrout"></div></section>`;
  h+=prListHTML(log);
- h+=`<h2 class="hsec">Training</h2><section class="pcard"><h2>Diese Woche</h2>${weekBarsHTML(log)}<h2 class="pc-sub">Muskelbalance</h2>${balanceHTML(log)}</section>`;
+ h+=`<h2 class="hsec">Training</h2><section class="pcard"><h2>Diese Woche</h2>${weekBarsHTML(log)}<h2 class="pc-sub">Muskelbalance</h2>${balanceHTML(log)}</section>`+muscleMapHTML(log);
  h+=`<h2 class="hsec">Verlauf &amp; Ziele</h2>`;
  h+=calRowHTML(log);
  h+=sessionsHTML(log);
@@ -3003,7 +3065,7 @@ function renderHist(){
  h+=relStrengthHTML(e1,log);
  h+=`<button class="btn wide-btn" onclick="openReportPicker()">Fortschrittsbericht erstellen</button>`;
  out.innerHTML=h;
- drawE1();
+ drawE1();paintMuscleMap();
 }
 function drawE1(){const log=jget("tpe.log",[]);const sel=document.getElementById("exsel");if(!sel)return;const name=sel.value;const tm=isTm(name);
  const bw=isBW(name);
@@ -3190,14 +3252,14 @@ function renderCatDetail(out){const e=EX.find(x=>x.n===catSel);if(!e){catSel=nul
   <h2 class="cat-title">${e.n}</h2>
   <div class="ex-meta" style="margin-bottom:16px"><span class="tag">${EQL[e.eq]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${LVL[e.lvl]}</span><span class="tag" style="background:var(--tagbg);color:var(--tagfg)">${iso?"Isolation":"Grundübung"}</span></div>
   ${exImgHTML(e.n,"cat")}
-  <div class="sec-h">Ausführung</div><p class="cat-desc">${info.desc}</p>
+  ${exHistoryHTML(e.n)}<div class="sec-h">Ausführung</div><p class="cat-desc">${info.desc}</p>
   <div class="sec-h" style="margin-top:16px">Worauf achten</div><ul class="cat-cues">${info.cues.map(c=>`<li>${c}</li>`).join("")}</ul>
   <div class="sec-h" style="margin-top:16px">Beanspruchte Muskulatur</div>
   <div class="catmus"><span><i class="sw" style="background:var(--hi)"></i>Primär: ${e.pri.map(m=>MUS[m]).join(", ")}</span>${e.sec.length?`<span><i class="sw" style="background:var(--mid)"></i>Sekundär: ${e.sec.map(m=>MUS[m]).join(", ")}</span>`:""}</div>
   ${bodySVG()}<button class="cd-excl${isExcl(e.n)?" on":""}" data-n="${e.n}" onclick="toggleExcl(this.dataset.n);renderCatalog()">${isExcl(e.n)?"Gesperrt – wieder in Pläne aufnehmen":"Nicht mehr in Pläne aufnehmen"}</button></div>`;
  e.sec.forEach(m=>document.querySelectorAll(`#cat-out [data-m="${m}"]`).forEach(el=>el.style.fill="var(--mid)"));
  e.pri.forEach(m=>document.querySelectorAll(`#cat-out [data-m="${m}"]`).forEach(el=>el.style.fill="var(--hi)"));
- startImgCycle(e.n,"cat");
+ startImgCycle(e.n,"cat");growAllNotes(out);
 }
 
 // ============ CONTROLS / VIEWS ============
