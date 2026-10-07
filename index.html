@@ -747,6 +747,56 @@
   .logex-h{align-items:flex-start}
   .vhead{margin-top:18px}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+  /* ===================== BEWEGUNG (Okt 2026) =====================
+     Nur als Antwort auf eine Aktion. Eine Kurve, kurze Dauer. „Bewegung reduzieren“ schaltet alles ab. */
+  :root{--ease:cubic-bezier(.2,.8,.2,1);--t-fast:120ms;--t-mid:260ms}
+
+  /* 1) Bildschirmwechsel (View Transitions): Inhalt gleitet in Reiter-Richtung, Kopf + Leiste stehen */
+  .topbar{view-transition-name:gb-head}
+  .navbar{view-transition-name:gb-nav}
+  .navitem.on{view-transition-name:gb-pill}
+  .timer-wrap{view-transition-name:gb-timer}
+  ::view-transition-group(*){animation-duration:var(--t-mid);animation-timing-function:var(--ease)}
+  ::view-transition-old(root){animation:var(--t-mid) var(--ease) both gb-out}
+  ::view-transition-new(root){animation:var(--t-mid) var(--ease) both gb-in}
+  html[data-vdir="back"]::view-transition-old(root){animation-name:gb-out-back}
+  html[data-vdir="back"]::view-transition-new(root){animation-name:gb-in-back}
+  @keyframes gb-in{from{opacity:0;transform:translateX(28px)}}
+  @keyframes gb-out{to{opacity:0;transform:translateX(-28px)}}
+  @keyframes gb-in-back{from{opacity:0;transform:translateX(-28px)}}
+  @keyframes gb-out-back{to{opacity:0;transform:translateX(28px)}}
+
+  /* 2) Satz abhaken: Stempel auf dem Haken, Markierung wandert weich */
+  .setrow{transition:background-color var(--t-mid) var(--ease),box-shadow var(--t-mid) var(--ease)}
+  .setrow.stamp .chk,.setrow.stamp button[onclick^="doneSet"]{animation:gb-stamp 380ms var(--ease)}
+  @keyframes gb-stamp{0%{transform:scale(1)}35%{transform:scale(1.22)}65%{transform:scale(.94)}100%{transform:scale(1)}}
+
+  /* 3) Fenster heben sich an */
+  .modal-bg{animation:gb-fade 180ms ease-out}
+  .modal-bg>.modal{animation:gb-rise var(--t-mid) var(--ease)}
+  @keyframes gb-fade{from{opacity:0}}
+  @keyframes gb-rise{from{opacity:0;transform:translateY(24px) scale(.98)}}
+
+  /* 4) Antippen: kurzes Nachgeben */
+  .btn,.gen,.today-go,.navitem,.chip,.fchip,.goal,.crow,.iconbtn,.lxbtn,.seg button,.wk-d,button[onclick^="doneSet"]{transition:transform var(--t-fast) var(--ease),background-color var(--t-mid) var(--ease),color var(--t-mid) var(--ease),border-color var(--t-mid) var(--ease)}
+  .btn:active,.gen:active,.today-go:active,.chip:active,.fchip:active,.iconbtn:active,.lxbtn:active,.seg button:active,button[onclick^="doneSet"]:active{transform:scale(.96)}
+  .navitem:active,.goal:active,.crow:active{transform:scale(.98)}
+  .today-big{transition:transform 520ms var(--ease)}
+  .htoday:has(.today-go:active) .today-big,.htoday:has(.today-go:hover) .today-big{transform:rotate(-40deg)}
+
+  /* 5) Aufklappbereiche öffnen weich (wo unterstützt) */
+  @supports (interpolate-size:allow-keywords){
+    :root{interpolate-size:allow-keywords}
+    details::details-content{height:0;overflow:clip;transition:height var(--t-mid) var(--ease),content-visibility var(--t-mid) allow-discrete}
+    details[open]::details-content{height:auto}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
+    .htoday:has(.today-go:active) .today-big,.htoday:has(.today-go:hover) .today-big{transform:none}
+    details::details-content{transition:none!important}
+  }
 </style>
 </head>
 <body>
@@ -763,19 +813,19 @@
     <p class="lede" id="lede">Dein Trainingsplan mit Lastberechnung, Satz-Log und Pausentimer.</p>
   </header>
   <div class="tabs">
-    <button class="tab on" data-v="plan" onclick="showView('plan')">Home</button>
-    <button class="tab" data-v="train" onclick="showView('train')">Workout</button>
-    <button class="tab" data-v="hist" onclick="showView('hist')">Fortschritt</button>
-    <button class="tab" data-v="cat" onclick="showView('cat')">Übungen</button>
+    <button class="tab on" data-v="plan" onclick="navTo('plan')">Home</button>
+    <button class="tab" data-v="train" onclick="navTo('train')">Workout</button>
+    <button class="tab" data-v="hist" onclick="navTo('hist')">Fortschritt</button>
+    <button class="tab" data-v="cat" onclick="navTo('cat')">Übungen</button>
   </div>
   <nav class="navbar" id="navbar">
-    <button class="navitem on" data-v="plan" onclick="showView('plan')" aria-label="Home">
+    <button class="navitem on" data-v="plan" onclick="navTo('plan')" aria-label="Home">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5V14h4v5.5"/></svg><span>Home</span></button>
-    <button class="navitem" data-v="train" onclick="showView('train')" aria-label="Workout">
+    <button class="navitem" data-v="train" onclick="navTo('train')" aria-label="Workout">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9v6M6 7.5v9M18 7.5v9M21 9v6M6.5 12h11"/></svg><span>Workout</span></button>
-    <button class="navitem" data-v="hist" onclick="showView('hist')" aria-label="Fortschritt">
+    <button class="navitem" data-v="hist" onclick="navTo('hist')" aria-label="Fortschritt">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="M7 15l4-4 3 2 5-6"/><path d="M16 6h3v3"/></svg><span>Fortschritt</span></button>
-    <button class="navitem" data-v="cat" onclick="showView('cat')" aria-label="Übungen">
+    <button class="navitem" data-v="cat" onclick="navTo('cat')" aria-label="Übungen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="3.4" height="14" rx="1"/><rect x="8.3" y="5" width="3.4" height="14" rx="1"/><path d="M13.8 6.2l3.3.9-3 11.6-3.3-.9z"/></svg><span>Übungen</span></button>
   </nav>
 
@@ -1881,7 +1931,7 @@ function todayHeroHTML(doneDays){
    <h2 class="today-t">${p.label}</h2>
    <div class="today-m"><span>${IC.dumbbell}${p.items.length} Übungen</span><span>${IC.clock}ca. ${dayMin(p)} min</span>${goal?`<span>${goal}</span>`:""}</div>
    ${mus?`<div class="today-c">${mus}</div>`:""}
-   <button class="today-go" onclick="startWorkout(${di})">Workout starten<b>${IC.arrow}</b></button></section>`;}
+   <button class="today-go" onclick="withTransition('train',()=>startWorkout(${di}))">Workout starten<b>${IC.arrow}</b></button></section>`;}
 function weekStripHTML(doneDays){
  const start=startOfWeek(new Date()),todayK=dayKey(Date.now());
  const trained=new Set(jget("tpe.log",[]).filter(x=>startOfWeek(x.date).getTime()===start.getTime()).map(x=>dayKey(x.date)));
@@ -2009,7 +2059,7 @@ function doneSet(xi,si){const ex=logState.ex[xi];const st=ex.sets[si];
        if(old>0&&v>old){st.pr=true;toast("🏆 Neue Bestleistung: "+ex.name+" · "+showW(v)+" "+unitLbl()+" (e1RM)");}else st.pr=false;}}
    startTimer(ex.target.restSec);}
  else st.pr=false;
- if(row){row.classList.toggle("done",st.done);row.classList.toggle("pr",!!st.pr);const sn=row.querySelector(".sn");if(sn)sn.textContent=st.pr?"★":(si+1);}
+ if(row){row.classList.toggle("done",st.done);if(st.done){row.classList.remove("stamp");void row.offsetWidth;row.classList.add("stamp");setTimeout(()=>row.classList.remove("stamp"),450);}row.classList.toggle("pr",!!st.pr);const sn=row.querySelector(".sn");if(sn)sn.textContent=st.pr?"★":(si+1);}
  if(allBefore!==allAfter)renderTrain();else markNextSet();}
 function markNextSet(){document.querySelectorAll("#train-out .setrow.next").forEach(r=>r.classList.remove("next"));
  for(let i=0;i<logState.ex.length;i++){const j=logState.ex[i].sets.findIndex(s=>!s.done);if(j<0)continue;const r=document.getElementById(`sr-${i}-${j}`);if(r)r.classList.add("next");break;}}
@@ -3042,6 +3092,12 @@ function renderCatDetail(out){const e=EX.find(x=>x.n===catSel);if(!e){catSel=nul
 }
 
 // ============ CONTROLS / VIEWS ============
+const VORDER=["plan","train","hist","cat"];
+function withTransition(to,fn){const cur=(document.querySelector(".view.on")||{}).id,from=cur?cur.slice(2):null;
+ if(!document.startViewTransition||from===to||!from||matchMedia("(prefers-reduced-motion: reduce)").matches)return fn();
+ const h=document.documentElement;h.dataset.vdir=VORDER.indexOf(to)<VORDER.indexOf(from)?"back":"fwd";
+ try{document.startViewTransition(fn).finished.finally(()=>delete h.dataset.vdir);}catch(e){delete h.dataset.vdir;fn();}}
+function navTo(v){withTransition(v,()=>showView(v));}
 function showView(v){stopImgCycle();document.querySelectorAll(".navitem,.tab").forEach(t=>t.classList.toggle("on",t.dataset.v===v));
  document.querySelectorAll(".view").forEach(s=>s.classList.remove("on"));document.getElementById("v-"+v).classList.add("on");
  if(v==="plan"&&PLAN)renderPlan();if(v==="hist")renderHist();if(v==="train"){renderE1Mgr();if(!logState&&PLAN)buildLog();else renderTrain();reqWake();}else{relWake();}if(v==="cat")renderCatalog();}
