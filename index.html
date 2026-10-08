@@ -932,7 +932,65 @@
   .mm-ok{font-size:14px;font-weight:600;margin:8px 0 2px}
   .mmap .bodymap-fig{display:block;max-width:420px;margin:4px auto 0}
   .mmap .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin:8px 0 6px}
-  </style>
+  
+  /* ===================== ÜBUNGEN A (Kachelraster) · FORTSCHRITT A (Dashboard) ===================== */
+  .cg-eq{display:flex;align-items:center;gap:8px;margin:14px 4px 8px;font-size:13.5px;font-weight:700;color:var(--body)}
+  .cg-eq small{margin-left:auto;font-size:12px;font-weight:600;color:var(--muted)}
+  .cg-tag{min-width:26px;height:20px;padding:0 5px;box-sizing:border-box;border-radius:6px;background:var(--sub);color:var(--ink);font-size:10.5px;font-weight:800;font-stretch:112%;display:inline-flex;align-items:center;justify-content:center}
+  .cg-tag.cg-bb{background:var(--accent);color:#fff}
+  html.dark .cg-tag.cg-bb{color:var(--onink)}
+  .cgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .ctl{display:flex;flex-direction:column;padding:0;background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;text-align:left;color:var(--ink);font:inherit;cursor:pointer}
+  .ctl-img{position:relative;height:112px;background:#fff;border-bottom:1px solid var(--sub);display:flex;align-items:center;justify-content:center}
+  .ctl-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  .ctl-ph{width:48px;height:48px;color:#C4CACF}
+  .ctl-eq{position:absolute;right:8px;top:8px}
+  .ctl-fav{position:absolute;left:8px;top:6px;width:24px;height:24px;border-radius:50%;background:var(--sig);color:var(--onsig);font-size:13px;display:flex;align-items:center;justify-content:center}
+  .ctl-b{padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px;flex-grow:1}
+  .ctl-n{font-size:14px;font-weight:700;line-height:1.22;min-height:34px}
+  .ctl-m{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto}
+  .ctl-m span{font-size:12px;color:var(--muted)}
+  .ctl-m b{font-size:12.5px;font-weight:800;font-stretch:110%;white-space:nowrap}
+  .ctl-m b.none{color:var(--ph);font-weight:600}
+  .ctl.exdim{opacity:.5}
+  .ctl:active{transform:scale(.98)}
+  #cat-out .cgh{margin-top:22px}
+
+  .hsec-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:22px 4px 10px}
+  .hsec-row .hsec{margin:0}
+  .hsec-row>span{font-size:12.5px;font-weight:600;color:var(--muted)}
+  .whero{background:var(--hero);color:var(--herofg);border:1px solid var(--heroline);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:14px;margin-bottom:6px}
+  .wh-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+  .wh-top>div:first-child{display:flex;flex-direction:column;gap:4px}
+  .wh-k,.wh-s{font-size:13px;color:var(--herodim)} .wh-k{font-weight:600}
+  .wh-v{font-family:var(--fd);font-stretch:118%;font-weight:800;font-size:34px;line-height:1}
+  .wh-pl{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;max-width:150px}
+  .wh-pl i{width:26px;height:26px;border-radius:50%;box-sizing:border-box;border:2px solid #4A5158}
+  .wh-pl i.on{border:none;background:var(--sig);box-shadow:inset 0 0 0 5px var(--sig),inset 0 0 0 7px rgba(27,31,35,.25)}
+  .wh-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid var(--heroline);padding-top:12px}
+  .wh-g div{display:flex;flex-direction:column;gap:2px}
+  .wh-g span{font-size:12px;color:var(--herodim)}
+  .wh-g b{font-family:var(--fd);font-stretch:110%;font-weight:800;font-size:19px;white-space:nowrap}
+  .ltgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .lt{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:6px;text-align:left;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
+  .lt-h{display:flex;justify-content:space-between;align-items:center;gap:6px}
+  .lt-n{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lt .dbadge{font-size:11px;padding:2px 6px}
+  .lt-v{font-family:var(--fd);font-stretch:112%;font-weight:800;font-size:26px;line-height:1}
+  .lt-v small{font-family:var(--fb);font-stretch:100%;font-size:12px;font-weight:600;color:var(--muted)}
+  .lt-sp{display:block;width:100%;height:40px}
+  .lt-none{height:40px;display:flex;align-items:center;font-size:12px;color:var(--muted)}
+  .vbars{padding:8px 14px 14px}
+  .vb{padding:8px 0}
+  .vb-h{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:6px}
+  .vb-h span{color:var(--body)} .vb-h b{font-weight:700}
+  .vb-h b.ov{color:var(--over)}
+  .vb-bar{position:relative;height:8px;border-radius:999px;background:var(--sub)}
+  .vb-z{position:absolute;top:0;bottom:0;background:color-mix(in srgb,var(--ok) 22%,transparent)}
+  .vb-f{position:absolute;top:0;bottom:0;left:0;border-radius:999px;background:var(--accent)}
+  .vb-f.lo{background:var(--warnfill,#C98A1B)} .vb-f.hi{background:var(--over)}
+  .vbars .hint{margin:8px 0 0;font-size:12px}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -3076,19 +3134,10 @@ function renderHist(){
  if(!log.length){out.innerHTML=histHeadHTML()+relStrengthHTML(e1)+'<div class="panel"><p class="empty">Noch keine Einheiten gespeichert. Logge dein erstes Training im Bereich „Workout".</p></div>';return;}
  let tonnage=0;
  log.forEach(s=>{s.entries.forEach(e=>{if(!isTm(e.name))e.sets.forEach(st=>{tonnage+=(+st.w||0)*(+st.r||0);});});});
- let h=histHeadHTML()+kpiHTML(log);
- const exCount={};log.forEach(s=>s.entries.forEach(e=>{exCount[e.name]=(exCount[e.name]||0)+1;}));
- const exNames=Object.keys(exCount).sort((a,b)=>a.localeCompare(b,"de"));
- const bigLifts=["Bankdrücken (LH)","Kniebeuge (LH)","Kreuzheben (LH)"];
- const prevSel=document.getElementById("exsel");const keep=prevSel&&exCount[prevSel.value]?prevSel.value:null;
- const defaultEx=keep||bigLifts.find(n=>exCount[n])||Object.entries(exCount).sort((a,b)=>b[1]-a[1])[0]?.[0]||exNames[0];
- const top=Object.entries(exCount).sort((a,b)=>b[1]-a[1]).map(x=>x[0]).filter(n=>!isTm(n)).slice(0,5);if(!top.includes(defaultEx))top.unshift(defaultEx);
- h+=`<h2 class="hsec">Kraft</h2><section class="pcard">
-   <div class="liftchips" role="group" aria-label="Übung für die Kraftkurve">${top.map(n=>`<button class="fchip${n===defaultEx?" on":""}" data-n="${n}" aria-pressed="${n===defaultEx}" onclick="pickLift(this.dataset.n)">${n}</button>`).join("")}
-   <label class="liftmore">Weitere<select id="exsel" onchange="pickLift(this.value)">${exNames.map(n=>`<option value="${n}" ${n===defaultEx?"selected":""}>${n}</option>`).join("")}</select></label></div>
-   <div class="e1top"><div id="e1big"></div><span id="e1delta"></span></div><div id="e1chart"></div><div id="rrout"></div></section>`;
+ let h=histHeadHTML()+weekHeroHTML(log);
+ h+=liftTilesHTML(log);
+ h+=volBarsHTML(log);
  h+=prListHTML(log);
- h+=`<h2 class="hsec">Training</h2><section class="pcard"><h2>Diese Woche</h2>${weekBarsHTML(log)}<h2 class="pc-sub">Muskelbalance</h2>${balanceHTML(log)}</section>`+muscleMapHTML(log);
  h+=`<h2 class="hsec">Verlauf &amp; Ziele</h2>`;
  h+=calRowHTML(log);
  h+=sessionsHTML(log);
@@ -3096,8 +3145,40 @@ function renderHist(){
  h+=relStrengthHTML(e1,log);
  h+=`<button class="btn wide-btn" onclick="openReportPicker()">Fortschrittsbericht erstellen</button>`;
  out.innerHTML=h;
- drawE1();paintMuscleMap();
 }
+function weekHeroHTML(log){const curKey=startOfWeek(new Date()).getTime();const wk=log.filter(s=>startOfWeek(s.date).getTime()===curKey);
+ const done=wk.length,sets=wk.reduce((a,s)=>a+(+s.totalSets||0),0),ton=wk.reduce((a,s)=>a+sessionTon(s),0);
+ const target=PLAN?(PLAN.config.days||PLAN.days.length):S.days;
+ let planSets=null;if(PLAN)planSets=PLAN.days.reduce((a,p)=>a+p.items.reduce((x,it)=>x+periodize(catOf(it.ex),curWeek,PLAN.config.block).sets,0),0);
+ const left=Math.max(0,target-done);const st=weekStreakOf(log);
+ const plates=Array.from({length:target},(_,i)=>`<i class="${i<done?"on":""}"></i>`).join("");
+ return `<section class="whero"><div class="wh-top"><div><span class="wh-k">Diese Woche</span><span class="wh-v">${done} von ${target}</span>
+   <span class="wh-s">Einheiten · ${left?`noch ${left} bis Sonntag`:"Woche geschafft"}</span></div><div class="wh-pl" aria-label="${done} von ${target} Einheiten erledigt">${plates}</div></div>
+   <div class="wh-g"><div><span>Sätze</span><b>${sets}${planSets?" / "+planSets:""}</b></div><div><span>Tonnage</span><b>${fmtTon(ton)}</b></div><div><span>Serie</span><b>${st} Wo</b></div></div></section>`;}
+function liftSeries(log,name,since){const tm=isTm(name),bw=isBW(name);
+ const everW=log.some(s=>s.entries.some(x=>x.name===name&&x.sets.some(st=>+st.w>0)));const repMode=tm||(bw&&!everW);
+ const pts=log.slice().reverse().filter(s=>new Date(s.date).getTime()>=since).map(s=>{let mx=0;s.entries.filter(x=>x.name===name).forEach(x=>x.sets.forEach(st=>{const w=+st.w||0,r=+st.r||0;if(!(r>0))return;mx=Math.max(mx,repMode?r:(w>0?e1RM(w,r):0));}));return repMode?mx:Math.round(fromKg(mx)*10)/10;}).filter(v=>v>0);
+ return {pts,unit:tm?"s":(repMode?"Wdh":unitLbl())};}
+function sparkSVG(ys){if(ys.length<2)return '<div class="lt-none">Noch kein Verlauf</div>';const lo=Math.min(...ys),hi=Math.max(...ys),n=ys.length;
+ const P=ys.map((y,i)=>[(i/(n-1)*140).toFixed(1),(36-(y-lo)/((hi-lo)||1)*30).toFixed(1)]);const line=P.map((q,i)=>(i?"L":"M")+q[0]+" "+q[1]).join(" ");
+ return `<svg class="lt-sp" viewBox="0 0 140 40" preserveAspectRatio="none" aria-hidden="true"><path d="${line} L140 40 L0 40 Z" fill="var(--asoft)"/><path d="${line}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;}
+function liftTilesHTML(log){const since=Date.now()-histP*7*864e5;const cnt={};
+ log.forEach(s=>{if(new Date(s.date).getTime()<since)return;s.entries.forEach(e=>{if(!isTm(e.name))cnt[e.name]=(cnt[e.name]||0)+1;});});
+ let names=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+ const big=["Bankdrücken (LH)","Kniebeuge (LH)","Kreuzheben (LH)"].filter(n=>cnt[n]);names=[...big,...names.filter(n=>!big.includes(n))].slice(0,4);
+ if(!names.length)return "";
+ const tiles=names.map(n=>{const {pts,unit}=liftSeries(log,n,since);const last=pts[pts.length-1]||0,first=pts[0]||0;
+   const d=pts.length>1&&first>0?(last/first-1)*100:null;
+   return `<button type="button" class="lt" data-n="${n}" onclick="showView('cat');openCatDetail(this.dataset.n)">
+    <span class="lt-h"><span class="lt-n">${n.replace(/ \((LH|KH)\)$/,"")}</span>${d!=null?`<span class="dbadge ${d<0?"dn":""}">${d>=0?"+":""}${fmtDe(d.toFixed(1))} %</span>`:""}</span>
+    <span class="lt-v">${fmtDe(last)} <small>${unit}</small></span>${sparkSVG(pts)}</button>`;}).join("");
+ return `<div class="hsec-row"><h2 class="hsec">Hauptübungen</h2><span>e1RM · ${histP===52?"1 Jahr":histP+" Wochen"}</span></div><div class="ltgrid">${tiles}</div>`;}
+function volBarsHTML(log){const {vol,weeks}=muscleVolPerWeek(log);const scale=26;
+ const rows=MORDER.map(m=>{const v=vol[m],[mev,mrv]=LM[m];const under=mev>0&&v<mev,over=v>mrv;
+   return `<div class="vb"><div class="vb-h"><span>${MUS[m]}</span><b class="${under?"dn":over?"ov":"up"}">${fmtDe(v)} / ${mev}–${mrv}</b></div>
+    <div class="vb-bar"><span class="vb-z" style="left:${mev/scale*100}%;width:${(Math.min(mrv,scale)-mev)/scale*100}%"></span><span class="vb-f${under?" lo":over?" hi":""}" style="width:${Math.min(100,v/scale*100)}%"></span></div></div>`;}).join("");
+ return `<div class="hsec-row"><h2 class="hsec">Muskelvolumen</h2><span>Ø Sätze pro Woche</span></div><section class="pcard vbars">${rows}<p class="hint">Durchschnitt der letzten ${weeks} Woche${weeks===1?"":"n"}, Nebenmuskeln zählen halb. Grün = Zielbereich (MEV–MRV).</p><h2 class="pc-sub">Muskelbalance</h2>${balanceHTML(log)}</section>`;}
+
 function drawE1(){const log=jget("tpe.log",[]);const sel=document.getElementById("exsel");if(!sel)return;const name=sel.value;const tm=isTm(name);
  const bw=isBW(name);
  const everWeighted=bw&&log.some(s=>s.entries.some(e=>e.name===name&&e.sets.some(st=>+st.w>0)));
@@ -3253,13 +3334,23 @@ function renderCatalog(){const out=document.getElementById("cat-out");if(!out)re
  else if(grouped){
    const order=catF.mus?[catF.mus]:MORDER;
    order.forEach(m=>{const items=list.filter(e=>catF.mus?true:e.pri[0]===m).sort(byName);if(!items.length)return;
-     h+=`<div class="cgh"><h2>${MUS[m]}</h2><span>${lm(m)}</span></div><div class="cgrp">${items.map(catCardHTML).join("")}</div>`;});
+     h+=`<div class="cgh"><h2>${MUS[m]}</h2><span>${lm(m)}</span></div>`;
+     EQORDER.forEach(q=>{const g=items.filter(e=>e.eq===q);if(!g.length)return;
+       h+=`<h3 class="cg-eq"><span class="cg-tag cg-${q}">${EQS[q]}</span>${EQLONG[q]}<small>${g.length}</small></h3><div class="cgrid">${g.map(e=>catTileHTML(e,false)).join("")}</div>`;});});
  } else {
    const rk=e=>!q?0:e.n.toLowerCase().includes(q)?0:e.pri.some(m=>MUS[m].toLowerCase().includes(q))?1:2;
-   h+=`<div class="cgh"><h2>${list.length} Treffer</h2></div><div class="cgrp">${list.slice().sort((a,b)=>rk(a)-rk(b)||byName(a,b)).map(catCardHTML).join("")}</div>`;
+   h+=`<div class="cgh"><h2>${list.length} Treffer</h2></div><div class="cgrid">${list.slice().sort((a,b)=>rk(a)-rk(b)||byName(a,b)).map(e=>catTileHTML(e,true)).join("")}</div>`;
  }
  out.innerHTML=h;
 }
+const EQORDER=["bb","db","ma","kb","bw"];
+const EQLONG={bb:"Langhantel",db:"Kurzhantel",ma:"Maschine & Kabel",kb:"Kettlebell",bw:"Körpergewicht"};
+function catTileHTML(e,showEq){const xc=isExcl(e.n),fav=isFav(e.n);const iso=e.t!==C&&e.pat!=="core";const[bv,bl]=catBestOf(e);const none=bv==="–";
+ const img=GIF[e.n]?`<img src="${GIFHOSTS[0]+GIF[e.n]}.gif" loading="lazy" decoding="async" alt="" data-n="${e.n}" data-h="0" onerror="tileImgErr(this)">`:"";
+ return `<button type="button" class="ctl${xc?" exdim":""}" data-n="${e.n}" onclick="openCatDetail(this.dataset.n)" aria-label="${e.n}${fav?", Favorit":""}${xc?", gesperrt":""}">
+  <span class="ctl-img"><svg class="ctl-ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9v6M6 7.5v9M18 7.5v9M21 9v6M6.5 12h11"/></svg>${img}${showEq?`<span class="ctl-eq cg-tag cg-${e.eq}">${EQS[e.eq]}</span>`:""}${fav?'<span class="ctl-fav" aria-hidden="true">★</span>':""}</span>
+  <span class="ctl-b"><span class="ctl-n">${e.n}</span><span class="ctl-m"><span>${xc?"Gesperrt":(iso?"Isolation":"Grundübung")}</span><b class="${none?"none":""}">${none?"neu":bv+(/kg|lbs/.test(bl)?" "+unitLbl():(bl==="Wdh"?" Wdh":bl==="Sek"?" s":""))}</b></span></span></button>`;}
+function tileImgErr(img){const h=+img.dataset.h+1;if(h<GIFHOSTS.length){img.dataset.h=h;img.src=GIFHOSTS[h]+GIF[img.dataset.n]+".gif";}else img.remove();}
 function catReset(){catF={mus:"",eq:"",q:"",fav:false,excl:false};renderCatalog();}
 let catBestMaps={e1:{},rb:{},tb:{}};
 const EQS={bb:"LH",db:"KH",bw:"KG",kb:"KB",ma:"MA"};
